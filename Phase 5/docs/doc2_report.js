@@ -17,17 +17,16 @@ const body = [
   H1("1. Team information"),
   P("Project name: WinThePuck — an NHL game winner prediction website."),
   makeTable(
-    ["Team member", "Student ID", "Main responsibility in Phase 5", "Email"],
+    ["Team member", "Student ID", "Main area of work in Phase 5"],
     [
-      ["Bechir Elloumi", BLANK, "Cloud deployment, model service, back end", "elloumi.bechir99@gmail.com"],
-      [BLANK, BLANK, BLANK, BLANK],
-      [BLANK, BLANK, BLANK, BLANK],
-      [BLANK, BLANK, BLANK, BLANK],
+      ["Moayed Mohamed", BLANK, "Front end pages, the new Results page, testing the deployed site"],
+      ["Bechir Elloumi", BLANK, "Azure deployment, the prediction service, the daily refresh job"],
+      ["Abhishek Kumar", BLANK, "Database and data import, security hardening, project documentation"],
     ],
-    [2400, 1500, 3400, 2060]
+    [2700, 1700, 4960]
   ),
   P(" ", { after: 40 }),
-  P("Please fill in the remaining rows with your teammates' names, IDs and the part of Phase 5 each of you worked on before submitting.",
+  P("Before submitting: add your student IDs, and check the \"area of work\" column matches what each of you actually did — swap the descriptions around if they do not.",
     { italics: true, color: "0F6FAF", size: 19 }),
 
   makeTable(
@@ -38,7 +37,7 @@ const body = [
       ["Subscription", "Azure for Students"],
       ["Deployed on", "19 August 2026"],
       ["Demo login for marking", "username: demo    password: puck1234"],
-      ["Source code", "GitHub repository (see the deployment record for the structure)"],
+      ["Source code", "https://github.com/elbochh/winthepuck"],
     ],
     [2400, 6960]
   ),
@@ -105,20 +104,20 @@ const body = [
 
   // ---------------- work breakdown ----------------
   H1("4. How the work was divided"),
-  P("Fill in the names against each area of work before submitting. The areas below are the real chunks of Phase 5.", { italics: true, color: "0F6FAF", size: 19 }),
+  P("These are the real chunks of work in Phase 5. Check the names against what each of you actually did and adjust before submitting.", { italics: true, color: "0F6FAF", size: 19 }),
   makeTable(
-    ["Area of work", "Who did it", "Roughly how long"],
+    ["Area of work", "Who worked on it", "Roughly how long"],
     [
-      ["Azure setup: subscription, resource group, App Service plan, web app", BLANK, "2 hours"],
-      ["Rewriting the database schema and the data importer for real data", BLANK, "5 hours"],
-      ["Building the prediction service and the daily refresh job", BLANK, "7 hours"],
-      ["Updating the pages: real logos, the new Results page, empty states", BLANK, "4 hours"],
-      ["Security: CSRF tokens, secrets in environment variables, cookie flags", BLANK, "2 hours"],
-      ["GitHub Actions for deployment and the daily refresh", BLANK, "3 hours"],
-      ["Testing the deployed site end to end", BLANK, "2 hours"],
-      ["These two documents", BLANK, "3 hours"],
+      ["Azure setup: subscription, resource group, App Service plan, web app", "Bechir", "2 hours"],
+      ["Rewriting the database schema and the data importer for real data", "Abhishek", "5 hours"],
+      ["Building the prediction service and the daily refresh job", "Bechir", "7 hours"],
+      ["Updating the pages: real crests, the new Results page, empty states", "Moayed", "4 hours"],
+      ["Security: CSRF tokens, secrets in environment variables, cookie flags", "Abhishek", "2 hours"],
+      ["GitHub Actions for deployment and the daily refresh", "Bechir", "3 hours"],
+      ["Testing the deployed site end to end", "Moayed", "2 hours"],
+      ["These two documents", "Abhishek, Moayed", "3 hours"],
     ],
-    [4800, 2600, 1960]
+    [4600, 2700, 2060]
   ),
   P(" ", { after: 60 }),
 
