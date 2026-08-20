@@ -37,6 +37,9 @@ SERVING = HERE / "serving"
 # and half the players on the ice will be in the minor leagues by October.
 COUNTED_GAME_TYPES = {2, 3}
 
+# In the off-season, how many days of the new season to predict once we find it.
+OFFSEASON_EXTRA_DAYS = 5
+
 # A playoff game has extra inputs about the series. For a regular season game
 # they are all zero, which is exactly what the model was trained on.
 REGULAR_SEASON_PLAYOFF_COLUMNS = {
@@ -265,11 +268,25 @@ def build_payload(days_ahead: int, history_days: int) -> dict:
     played_this_season = sum(
         1 for g in games if g["finished"] and g["season"] == current_season)
 
+    scheduled = [g for g in games
+                 if not g["finished"] and nhl_api.parse_date(g["game_date"]) >= today]
+    wanted = [g for g in scheduled
+              if nhl_api.parse_date(g["game_date"]) <= horizon]
+
+    # Between seasons the next game can be months away, and a website with an
+    # empty schedule page looks broken. If the normal window is empty, reach
+    # further ahead and take the first slate of the new season instead.
+    if not wanted and scheduled:
+        first_day = nhl_api.parse_date(scheduled[0]["game_date"])
+        stretch = first_day + timedelta(days=OFFSEASON_EXTRA_DAYS)
+        wanted = [g for g in scheduled
+                  if nhl_api.parse_date(g["game_date"]) <= stretch]
+        print(f"nothing scheduled before {horizon}; the next games are on "
+              f"{first_day}, so predicting {len(wanted)} of them instead")
+
     rows, meta = [], []
-    for game in games:
+    for game in wanted:
         game_day = nhl_api.parse_date(game["game_date"])
-        if game["finished"] or not (today <= game_day <= horizon):
-            continue
         home, away = game["home_team"], game["away_team"]
         if home not in states or away not in states:
             continue

@@ -38,7 +38,7 @@ jobs:
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
         run: |
           python refresh_predictions.py \
-            --days-ahead 30 \
+            --days-ahead 14 \
             --history-days 21 \
             --out refresh_payload.json \
             --post "$SITE_URL" \
