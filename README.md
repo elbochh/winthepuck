@@ -113,7 +113,7 @@ pipeline output, so it has to run on a machine that has the full dataset.
 
 ```bash
 cd "Phase 5/model-service"
-python3 build_serving_bundle.py     # retrains and rewrites serving/
+pip install -r requirements-training.txt\n python3 build_serving_bundle.py     # retrains and rewrites serving/
 python3 export_history.py           # re-exports the finished season
 ```
 

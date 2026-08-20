@@ -1,0 +1,10 @@
+# What the daily refresh job needs.
+#
+# It only loads the already-trained model and runs it, so there is no pandas
+# here - that keeps the nightly GitHub Actions run down to about a minute.
+# scikit-learn and catboost are needed to unpickle the trained models, even
+# though we never call them to train anything.
+numpy==2.3.5
+scikit-learn==1.7.2
+catboost==1.2.10
+joblib==1.5.2
