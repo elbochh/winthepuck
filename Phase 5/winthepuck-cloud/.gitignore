@@ -1,0 +1,17 @@
+# the SQLite database is created at run time, never committed
+instance/
+*.db
+*.db-wal
+*.db-shm
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# editors and macOS
+.DS_Store
+.vscode/
+.idea/

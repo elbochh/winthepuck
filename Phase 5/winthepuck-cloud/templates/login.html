@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Sign in{% endblock %}
+
+{% block content %}
+
+<section class="section narrow page-top">
+  <div class="glass auth-card">
+    <h2 class="section-title center">Sign in</h2>
+    <p class="section-desc center">Sign in to save picks, post messages and climb the leaderboard.</p>
+
+    <form method="post" class="auth-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autofocus />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+    </form>
+
+    <p class="muted small center auth-switch">
+      New here? <a href="{{ url_for('register') }}" class="accent bold">Create an account</a>
+    </p>
+
+    <p class="muted tiny center demo-hint">
+      Just marking this project? Sign in with
+      <span class="mono bold">{{ demo_username }}</span> /
+      <span class="mono bold">{{ demo_password }}</span>,
+      or create your own account — both work the same way.
+    </p>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,253 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as ui %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ============ HERO ============ -->
+<section id="top" class="hero">
+  <!-- animated ice-rink background -->
+  <div class="rink-bg">
+    <div class="hero-glow"></div>
+    <div class="hero-fade"></div>
+
+    <svg class="rink-lines" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="rinkLine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--primary)" />
+          <stop offset="1" stop-color="var(--live)" />
+        </linearGradient>
+      </defs>
+      <!-- center red line -->
+      <line x1="600" y1="40" x2="600" y2="560" stroke="var(--live)" stroke-width="4" />
+      <!-- blue lines -->
+      <line x1="430" y1="40" x2="430" y2="560" stroke="var(--primary)" stroke-width="6" />
+      <line x1="770" y1="40" x2="770" y2="560" stroke="var(--primary)" stroke-width="6" />
+      <!-- center circle -->
+      <circle cx="600" cy="300" r="90" stroke="url(#rinkLine)" stroke-width="3" fill="none" />
+      <circle cx="600" cy="300" r="6" fill="var(--live)" />
+      <!-- faceoff circles -->
+      <circle cx="250" cy="170" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <circle cx="250" cy="430" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <circle cx="950" cy="170" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <circle cx="950" cy="430" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <!-- rink outline -->
+      <rect x="40" y="40" width="1120" height="520" rx="120" stroke="var(--primary)" stroke-width="3" fill="none" />
+      <!-- goal creases -->
+      <path d="M90 260 a40 40 0 0 1 0 80" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <path d="M1110 260 a40 40 0 0 0 0 80" stroke="var(--live)" stroke-width="2.5" fill="none" />
+    </svg>
+
+    <!-- gliding pucks -->
+    <span class="puck puck1"></span>
+    <span class="puck puck2"></span>
+    <span class="puck puck3"></span>
+
+    <!-- drifting light streak -->
+    <div class="light-streak"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge glass">
+      <span class="ping"><span class="ping-dot"></span></span>
+      Live win probability • served from a Flask and SQLite back end
+    </div>
+
+    <h1 class="hero-title">
+      Predict every shift before the
+      <span class="gradient-text">puck drops</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      WinThePuck blends advanced team metrics with real-time game events to
+      give you pre-game predictions and win probabilities that shift live
+      with every goal, power play, and save.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="{{ url_for('games_page') }}" class="btn btn-primary btn-lg">View today's slate →</a>
+      <a href="#live" class="btn btn-secondary btn-lg">Watch a live game</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-card glass">
+        <span class="stat-icon">🎯</span>
+        <div>
+          <div class="stat-value">{{ top_members[0].accuracy if top_members else 0 }}%</div>
+          <div class="stat-label">Best member accuracy</div>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-icon">📊</span>
+        <div>
+          <div class="stat-value">{{ total_games }}</div>
+          <div class="stat-label">Games in the database</div>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-icon">📈</span>
+        <div>
+          <div class="stat-value">{{ live.total_events if live else 0 }}</div>
+          <div class="stat-label">Live events tracked</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIVE GAME ============ -->
+<section id="live" class="section">
+  {{ ui.section_head("Live now", "Win probability, updating in real time",
+     "The bar and chart react to every goal, penalty, and momentum swing as the game unfolds.") }}
+
+  {% if live %}
+    <!-- The events already played are handed to main.js here so the chart
+         is drawn straight away. After that main.js asks /api/live for more. -->
+    <div class="live-card glass" id="liveCard"
+         data-events="{{ live.events|tojson|forceescape }}"
+         data-home-abbr="{{ live.home_abbr }}">
+      <!-- left: scoreboard -->
+      <div class="live-left">
+        <div class="live-top">
+          <span class="live-tag">
+            <span class="ping"><span class="ping-dot"></span></span>
+            ● Live
+          </span>
+          <span class="mono muted">2nd Period · <span id="liveMinute">{{ live.minute }}</span>:00</span>
+        </div>
+
+        <div class="scoreboard">
+          <div class="team-row">
+            {{ ui.team_logo(live.home_team) }}
+            <div>
+              <div class="muted small">{{ live.home_team.city }}</div>
+              <div class="bold">{{ live.home_team.name }}</div>
+            </div>
+            <div class="score mono" id="homeScore">{{ live.home_score }}</div>
+          </div>
+
+          <span class="vs mono">VS</span>
+
+          <div class="team-row reverse">
+            {{ ui.team_logo(live.away_team) }}
+            <div class="right">
+              <div class="muted small">{{ live.away_team.city }}</div>
+              <div class="bold">{{ live.away_team.name }}</div>
+            </div>
+            <div class="score mono" id="awayScore">{{ live.away_score }}</div>
+          </div>
+        </div>
+
+        <!-- win prob bar -->
+        <div class="prob-block">
+          <div class="prob-labels">
+            <div class="prob-side">
+              <span class="dot" style="background:{{ live.home_team.color }}"></span>
+              <span class="bold">{{ live.home_abbr }}</span>
+              <span class="mono bold" id="homeProbText">{{ live.home_prob }}%</span>
+            </div>
+            <div class="prob-side">
+              <span class="mono bold" id="awayProbText">{{ live.away_prob }}%</span>
+              <span class="bold">{{ live.away_abbr }}</span>
+              <span class="dot" style="background:{{ live.away_team.color }}"></span>
+            </div>
+          </div>
+          <div class="prob-bar">
+            <div class="prob-fill-home" id="homeProbBar" style="width:{{ live.home_prob }}%"></div>
+            <div class="prob-fill-away" id="awayProbBar" style="width:{{ live.away_prob }}%"></div>
+            <div class="prob-mid"></div>
+          </div>
+        </div>
+
+        <!-- last event note -->
+        <div class="event-note">
+          <span class="event-arrow" id="eventArrow">{{ "↗" if live.change >= 0 else "↘" }}</span>
+          <div>
+            <p class="bold small" id="eventLabel">{{ live.event_label }}</p>
+            <p class="muted tiny" id="eventDelta">
+              {{ live.home_abbr }} win prob {{ "+" if live.change >= 0 }}{{ live.change }}% on this play
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: chart -->
+      <div class="live-right">
+        <div class="chart-head">
+          <p class="muted small bold">{{ live.home_abbr }} win probability</p>
+          <span class="mono chart-big" id="chartBig">{{ live.home_prob }}%</span>
+        </div>
+
+        <svg class="prob-chart" viewBox="0 0 640 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="liveArea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--primary)" stop-opacity="0.35" />
+              <stop offset="1" stop-color="var(--primary)" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <!-- grid lines -->
+          <line x1="8" x2="632" y1="8" y2="8" class="grid-line" />
+          <line x1="8" x2="632" y1="51" y2="51" class="grid-line" />
+          <line x1="8" x2="632" y1="90" y2="90" class="grid-line ref-line" />
+          <line x1="8" x2="632" y1="129" y2="129" class="grid-line" />
+          <line x1="8" x2="632" y1="172" y2="172" class="grid-line" />
+          <path id="chartArea" fill="url(#liveArea)" />
+          <path id="chartLine" fill="none" stroke="var(--primary)" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round" />
+          <circle id="chartDotGlow" r="9" fill="var(--primary)" opacity="0.2" />
+          <circle id="chartDot" r="4.5" fill="var(--primary)" />
+        </svg>
+
+        <div class="event-feed" id="eventFeed"></div>
+      </div>
+    </div>
+  {% else %}
+    <p class="glass empty-note">No game is being played right now. Check back later.</p>
+  {% endif %}
+</section>
+
+<!-- ============ FEATURED PREDICTIONS ============ -->
+<section class="section">
+  {{ ui.section_head("Today's slate", "Next up on the schedule",
+     "A quick look at the next three games. Every matchup comes with a model win probability and a confidence score.") }}
+
+  <div class="cards-grid">
+    {% for game in games %}
+      {{ ui.game_card(game) }}
+    {% endfor %}
+  </div>
+
+  <p class="center more-link">
+    <a href="{{ url_for('games_page') }}" class="btn btn-secondary">See every game →</a>
+  </p>
+</section>
+
+<!-- ============ TOP MEMBERS ============ -->
+<section class="section">
+  {{ ui.section_head("Top predictions", "Leading the community",
+     "The three sharpest forecasters this season, worked out from every pick saved in the database.") }}
+
+  <div class="podium">
+    {# second place is shown first so the winner sits in the middle #}
+    {% set podium_order = [top_members[1], top_members[0], top_members[2]] if top_members|length >= 3 else top_members %}
+    {% for member in podium_order %}
+      <div class="podium-card glass {% if member.rank == 1 %}first{% endif %}">
+        {% if member.rank == 1 %}<span class="crown">👑</span>{% endif %}
+        <span class="avatar" style="--h:{{ member.hue }}">{{ member.initials }}</span>
+        <p class="podium-name">{{ member.username }}</p>
+        <p class="muted tiny">Rank #{{ member.rank }}</p>
+        <div class="podium-stats">
+          <div><div class="mono acc">{{ member.accuracy }}%</div><div class="muted">accuracy</div></div>
+          <div><div class="mono">{{ member.points }}</div><div class="muted">points</div></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <p class="center more-link">
+    <a href="{{ url_for('leaderboard_page') }}" class="btn btn-secondary">Full leaderboard →</a>
+  </p>
+</section>
+
+{% endblock %}

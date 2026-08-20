@@ -1,0 +1,49 @@
+# ===========================================================
+# What never goes into GitHub
+# ===========================================================
+
+# ---- the raw data ----
+# The pipeline downloads about 18 GB of play-by-play and shift charts.
+# It is far too big for a repository, and anybody can download it again by
+# running `python main.py --mode historical` in nhl_data_pipeline.
+nhl_data_pipeline/data/
+nhl_data_pipeline/logs/
+nhl_data_pipeline/reports/
+
+# ---- secrets ----
+# Passwords, tokens and Azure publish profiles. Never commit these.
+Phase 5/.secrets/
+.secrets/
+*.env
+.env
+
+# ---- databases created at run time ----
+*.db
+*.db-wal
+*.db-shm
+Phase 5/winthepuck-cloud/instance/
+
+# ---- generated output ----
+Phase 5/model-service/refresh_payload.json
+Phase 5/model-service/*.log
+nhl_model/*.log
+
+# ---- submission archives (the marked copies live in Brightspace) ----
+*.zip
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# ---- node / next.js ----
+node_modules/
+.next/
+*.tsbuildinfo
+
+# ---- editors and macOS ----
+.DS_Store
+.vscode/
+.idea/

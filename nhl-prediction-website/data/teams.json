@@ -1,0 +1,834 @@
+{
+ "COL": {
+  "abbr": "COL",
+  "name": "Avalanche",
+  "city": "Colorado",
+  "color": "#6F263D",
+  "record": "49-15-10",
+  "points": 108,
+  "pointsPct": 0.73,
+  "streak": "L1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.68,
+   "goalsAgainst": 2.48,
+   "powerPlay": 17.1,
+   "penaltyKill": 84.6,
+   "shotsPerGame": 33.7,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "CAR": {
+  "abbr": "CAR",
+  "name": "Hurricanes",
+  "city": "Carolina",
+  "color": "#CE1126",
+  "record": "47-21-6",
+  "points": 100,
+  "pointsPct": 0.676,
+  "streak": "W1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.61,
+   "goalsAgainst": 2.93,
+   "powerPlay": 24.9,
+   "penaltyKill": 80.5,
+   "shotsPerGame": 32.2,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "W",
+   "W",
+   "W"
+  ]
+ },
+ "BUF": {
+  "abbr": "BUF",
+  "name": "Sabres",
+  "city": "Buffalo",
+  "color": "#003087",
+  "record": "46-21-8",
+  "points": 100,
+  "pointsPct": 0.667,
+  "streak": "W2",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.51,
+   "goalsAgainst": 2.94,
+   "powerPlay": 19.5,
+   "penaltyKill": 81.9,
+   "shotsPerGame": 28.1,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "L",
+   "W",
+   "L"
+  ]
+ },
+ "DAL": {
+  "abbr": "DAL",
+  "name": "Stars",
+  "city": "Dallas",
+  "color": "#006847",
+  "record": "44-19-12",
+  "points": 100,
+  "pointsPct": 0.667,
+  "streak": "L1",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.4,
+   "goalsAgainst": 2.76,
+   "powerPlay": 28.6,
+   "penaltyKill": 80.3,
+   "shotsPerGame": 25.3,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "W",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "TBL": {
+  "abbr": "TBL",
+  "name": "Lightning",
+  "city": "Tampa Bay",
+  "color": "#002868",
+  "record": "46-22-6",
+  "points": 98,
+  "pointsPct": 0.662,
+  "streak": "L1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.54,
+   "goalsAgainst": 2.82,
+   "powerPlay": 20.7,
+   "penaltyKill": 82.6,
+   "shotsPerGame": 28.1,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "L",
+   "W",
+   "L"
+  ]
+ },
+ "MTL": {
+  "abbr": "MTL",
+  "name": "Canadiens",
+  "city": "Montr\u00e9al",
+  "color": "#AF1E2D",
+  "record": "43-21-10",
+  "points": 96,
+  "pointsPct": 0.649,
+  "streak": "W6",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.45,
+   "goalsAgainst": 3.12,
+   "powerPlay": 23.1,
+   "penaltyKill": 78.2,
+   "shotsPerGame": 26.3,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "MIN": {
+  "abbr": "MIN",
+  "name": "Wild",
+  "city": "Minnesota",
+  "color": "#154734",
+  "record": "41-21-12",
+  "points": 94,
+  "pointsPct": 0.635,
+  "streak": "L1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.32,
+   "goalsAgainst": 2.93,
+   "powerPlay": 25.2,
+   "penaltyKill": 79.8,
+   "shotsPerGame": 29.2,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "W",
+   "L",
+   "L"
+  ]
+ },
+ "BOS": {
+  "abbr": "BOS",
+  "name": "Bruins",
+  "city": "Boston",
+  "color": "#FFB81C",
+  "record": "43-24-8",
+  "points": 94,
+  "pointsPct": 0.627,
+  "streak": "W4",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.32,
+   "goalsAgainst": 3.05,
+   "powerPlay": 23.4,
+   "penaltyKill": 77.0,
+   "shotsPerGame": 27.0,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "W",
+   "L"
+  ]
+ },
+ "PIT": {
+  "abbr": "PIT",
+  "name": "Penguins",
+  "city": "Pittsburgh",
+  "color": "#FCB514",
+  "record": "38-21-16",
+  "points": 92,
+  "pointsPct": 0.613,
+  "streak": "W2",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.57,
+   "goalsAgainst": 3.27,
+   "powerPlay": 24.1,
+   "penaltyKill": 81.4,
+   "shotsPerGame": 28.6,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "W",
+   "W",
+   "L"
+  ]
+ },
+ "NYI": {
+  "abbr": "NYI",
+  "name": "Islanders",
+  "city": "New York",
+  "color": "#00539B",
+  "record": "42-29-5",
+  "points": 89,
+  "pointsPct": 0.586,
+  "streak": "L2",
+  "gamesPlayed": 76,
+  "stats": {
+   "goalsFor": 2.84,
+   "goalsAgainst": 2.94,
+   "powerPlay": 16.5,
+   "penaltyKill": 80.8,
+   "shotsPerGame": 28.2,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "CBJ": {
+  "abbr": "CBJ",
+  "name": "Jackets",
+  "city": "Columbus Blue",
+  "color": "#002654",
+  "record": "38-25-12",
+  "points": 88,
+  "pointsPct": 0.587,
+  "streak": "L1",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.09,
+   "goalsAgainst": 3.09,
+   "powerPlay": 18.9,
+   "penaltyKill": 76.0,
+   "shotsPerGame": 29.4,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "W",
+   "L",
+   "L"
+  ]
+ },
+ "ANA": {
+  "abbr": "ANA",
+  "name": "Ducks",
+  "city": "Anaheim",
+  "color": "#F47A38",
+  "record": "41-29-5",
+  "points": 87,
+  "pointsPct": 0.58,
+  "streak": "L1",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.33,
+   "goalsAgainst": 3.51,
+   "powerPlay": 18.6,
+   "penaltyKill": 76.4,
+   "shotsPerGame": 30.8,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "W",
+   "L",
+   "L"
+  ]
+ },
+ "OTT": {
+  "abbr": "OTT",
+  "name": "Senators",
+  "city": "Ottawa",
+  "color": "#DA1A32",
+  "record": "38-26-10",
+  "points": 86,
+  "pointsPct": 0.581,
+  "streak": "L2",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.39,
+   "goalsAgainst": 3.0,
+   "powerPlay": 24.0,
+   "penaltyKill": 75.7,
+   "shotsPerGame": 28.9,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "DET": {
+  "abbr": "DET",
+  "name": "Wings",
+  "city": "Detroit Red",
+  "color": "#CE1126",
+  "record": "39-27-8",
+  "points": 86,
+  "pointsPct": 0.581,
+  "streak": "L2",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.94,
+   "goalsAgainst": 3.15,
+   "powerPlay": 22.6,
+   "penaltyKill": 77.1,
+   "shotsPerGame": 28.2,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "PHI": {
+  "abbr": "PHI",
+  "name": "Flyers",
+  "city": "Philadelphia",
+  "color": "#F74902",
+  "record": "37-25-12",
+  "points": 86,
+  "pointsPct": 0.581,
+  "streak": "L1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.05,
+   "goalsAgainst": 2.96,
+   "powerPlay": 15.7,
+   "penaltyKill": 77.6,
+   "shotsPerGame": 25.5,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "WSH": {
+  "abbr": "WSH",
+  "name": "Capitals",
+  "city": "Washington",
+  "color": "#C8102E",
+  "record": "38-28-9",
+  "points": 85,
+  "pointsPct": 0.567,
+  "streak": "W3",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.21,
+   "goalsAgainst": 2.98,
+   "powerPlay": 17.8,
+   "penaltyKill": 80.1,
+   "shotsPerGame": 28.0,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "W",
+   "W",
+   "W"
+  ]
+ },
+ "EDM": {
+  "abbr": "EDM",
+  "name": "Oilers",
+  "city": "Edmonton",
+  "color": "#FF4C00",
+  "record": "38-28-9",
+  "points": 85,
+  "pointsPct": 0.567,
+  "streak": "W4",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.44,
+   "goalsAgainst": 3.28,
+   "powerPlay": 30.6,
+   "penaltyKill": 77.8,
+   "shotsPerGame": 29.7,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "L",
+   "W",
+   "L"
+  ]
+ },
+ "UTA": {
+  "abbr": "UTA",
+  "name": "Hockey Club",
+  "city": "Utah",
+  "color": "#71AFE5",
+  "record": "38-30-6",
+  "points": 82,
+  "pointsPct": 0.554,
+  "streak": "W1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.27,
+   "goalsAgainst": 2.93,
+   "powerPlay": 20.0,
+   "penaltyKill": 78.1,
+   "shotsPerGame": 27.7,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "W",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "VGK": {
+  "abbr": "VGK",
+  "name": "Knights",
+  "city": "Vegas Golden",
+  "color": "#B4975A",
+  "record": "33-26-16",
+  "points": 82,
+  "pointsPct": 0.547,
+  "streak": "W1",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.23,
+   "goalsAgainst": 3.05,
+   "powerPlay": 24.6,
+   "penaltyKill": 81.4,
+   "shotsPerGame": 29.0,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "NJD": {
+  "abbr": "NJD",
+  "name": "Devils",
+  "city": "New Jersey",
+  "color": "#CE1126",
+  "record": "38-34-2",
+  "points": 78,
+  "pointsPct": 0.527,
+  "streak": "L1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.8,
+   "goalsAgainst": 3.1,
+   "powerPlay": 22.0,
+   "penaltyKill": 79.3,
+   "shotsPerGame": 29.6,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "W",
+   "W",
+   "L"
+  ]
+ },
+ "LAK": {
+  "abbr": "LAK",
+  "name": "Kings",
+  "city": "Los Angeles",
+  "color": "#111111",
+  "record": "30-26-18",
+  "points": 78,
+  "pointsPct": 0.527,
+  "streak": "W1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.74,
+   "goalsAgainst": 3.01,
+   "powerPlay": 17.0,
+   "penaltyKill": 74.6,
+   "shotsPerGame": 28.0,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "SJS": {
+  "abbr": "SJS",
+  "name": "Sharks",
+  "city": "San Jose",
+  "color": "#006D75",
+  "record": "35-31-7",
+  "points": 77,
+  "pointsPct": 0.527,
+  "streak": "W3",
+  "gamesPlayed": 73,
+  "stats": {
+   "goalsFor": 3.06,
+   "goalsAgainst": 3.56,
+   "powerPlay": 21.2,
+   "penaltyKill": 76.4,
+   "shotsPerGame": 25.8,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "W",
+   "L",
+   "W"
+  ]
+ },
+ "NSH": {
+  "abbr": "NSH",
+  "name": "Predators",
+  "city": "Nashville",
+  "color": "#FFB81C",
+  "record": "34-31-9",
+  "points": 77,
+  "pointsPct": 0.52,
+  "streak": "L3",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.01,
+   "goalsAgainst": 3.28,
+   "powerPlay": 23.1,
+   "penaltyKill": 81.7,
+   "shotsPerGame": 27.9,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "W",
+   "L",
+   "L"
+  ]
+ },
+ "TOR": {
+  "abbr": "TOR",
+  "name": "Leafs",
+  "city": "Toronto Maple",
+  "color": "#00205B",
+  "record": "32-30-13",
+  "points": 77,
+  "pointsPct": 0.513,
+  "streak": "W1",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 3.09,
+   "goalsAgainst": 3.65,
+   "powerPlay": 21.3,
+   "penaltyKill": 81.2,
+   "shotsPerGame": 26.3,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "WPG": {
+  "abbr": "WPG",
+  "name": "Jets",
+  "city": "Winnipeg",
+  "color": "#041E42",
+  "record": "32-30-12",
+  "points": 76,
+  "pointsPct": 0.514,
+  "streak": "W2",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.82,
+   "goalsAgainst": 3.17,
+   "powerPlay": 18.5,
+   "penaltyKill": 77.6,
+   "shotsPerGame": 26.4,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "SEA": {
+  "abbr": "SEA",
+  "name": "Kraken",
+  "city": "Seattle",
+  "color": "#99D9D9",
+  "record": "32-30-11",
+  "points": 75,
+  "pointsPct": 0.514,
+  "streak": "L1",
+  "gamesPlayed": 73,
+  "stats": {
+   "goalsFor": 2.76,
+   "goalsAgainst": 3.21,
+   "powerPlay": 19.5,
+   "penaltyKill": 72.2,
+   "shotsPerGame": 25.6,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "W",
+   "L",
+   "L",
+   "L"
+  ]
+ },
+ "FLA": {
+  "abbr": "FLA",
+  "name": "Panthers",
+  "city": "Florida",
+  "color": "#C8102E",
+  "record": "36-35-3",
+  "points": 75,
+  "pointsPct": 0.507,
+  "streak": "W1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 3.06,
+   "goalsAgainst": 3.37,
+   "powerPlay": 19.5,
+   "penaltyKill": 81.0,
+   "shotsPerGame": 28.0,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "W",
+   "W",
+   "W"
+  ]
+ },
+ "STL": {
+  "abbr": "STL",
+  "name": "Blues",
+  "city": "St. Louis",
+  "color": "#002F87",
+  "record": "31-31-12",
+  "points": 74,
+  "pointsPct": 0.5,
+  "streak": "OT1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.82,
+   "goalsAgainst": 3.15,
+   "powerPlay": 17.6,
+   "penaltyKill": 76.7,
+   "shotsPerGame": 25.3,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "W",
+   "W",
+   "W"
+  ]
+ },
+ "NYR": {
+  "abbr": "NYR",
+  "name": "Rangers",
+  "city": "New York",
+  "color": "#0038A8",
+  "record": "31-35-9",
+  "points": 71,
+  "pointsPct": 0.473,
+  "streak": "W3",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 2.9,
+   "goalsAgainst": 3.05,
+   "powerPlay": 24.7,
+   "penaltyKill": 79.9,
+   "shotsPerGame": 25.2,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "W",
+   "L",
+   "L",
+   "L",
+   "W"
+  ]
+ },
+ "CGY": {
+  "abbr": "CGY",
+  "name": "Flames",
+  "city": "Calgary",
+  "color": "#D2001C",
+  "record": "31-35-8",
+  "points": 70,
+  "pointsPct": 0.473,
+  "streak": "L1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.59,
+   "goalsAgainst": 3.16,
+   "powerPlay": 16.2,
+   "penaltyKill": 80.4,
+   "shotsPerGame": 28.1,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "W",
+   "L",
+   "W"
+  ]
+ },
+ "CHI": {
+  "abbr": "CHI",
+  "name": "Blackhawks",
+  "city": "Chicago",
+  "color": "#CF0A2C",
+  "record": "27-34-14",
+  "points": 68,
+  "pointsPct": 0.453,
+  "streak": "OT1",
+  "gamesPlayed": 75,
+  "stats": {
+   "goalsFor": 2.6,
+   "goalsAgainst": 3.35,
+   "powerPlay": 16.9,
+   "penaltyKill": 83.6,
+   "shotsPerGame": 24.6,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "L",
+   "L",
+   "L",
+   "W"
+  ]
+ },
+ "VAN": {
+  "abbr": "VAN",
+  "name": "Canucks",
+  "city": "Vancouver",
+  "color": "#00843D",
+  "record": "22-44-8",
+  "points": 52,
+  "pointsPct": 0.351,
+  "streak": "W1",
+  "gamesPlayed": 74,
+  "stats": {
+   "goalsFor": 2.63,
+   "goalsAgainst": 3.85,
+   "powerPlay": 21.8,
+   "penaltyKill": 71.5,
+   "shotsPerGame": 26.0,
+   "faceoffWin": 0.5
+  },
+  "form": [
+   "L",
+   "W",
+   "W",
+   "W",
+   "L"
+  ]
+ }
+}

@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as ui %}
+
+{% block title %}Games{% endblock %}
+
+{% block content %}
+
+<section class="section page-top">
+  {{ ui.section_head("Today's slate", "Upcoming games & predictions",
+     "Every matchup comes with a model-generated win probability, betting odds, recent form, and a confidence score. Sign in to save your own pick on any game.") }}
+
+  {% if games %}
+    <div class="cards-grid">
+      {% for game in games %}
+        {{ ui.game_card(game, show_pick_form=true, logged_in=logged_in) }}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="glass empty-note">There are no upcoming games in the database yet.</p>
+  {% endif %}
+</section>
+
+{% endblock %}

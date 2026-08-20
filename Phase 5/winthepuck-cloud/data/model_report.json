@@ -1,0 +1,103 @@
+{
+ "testedGames": 5592,
+ "testedSeasons": 4,
+ "overallAccuracy": 58.6,
+ "confidentAccuracy": 65.4,
+ "confidentGames": 2356,
+ "perModel": [
+  {
+   "model": "WinThePuck Ensemble",
+   "accuracy": 58.6,
+   "logLoss": 0.6662,
+   "correctPicks": 3278,
+   "games": 5592,
+   "bestStreak": 15,
+   "rank": 1
+  },
+  {
+   "model": "Logistic Regression",
+   "accuracy": 58.6,
+   "logLoss": 0.6665,
+   "correctPicks": 3278,
+   "games": 5592,
+   "bestStreak": 14,
+   "rank": 2
+  },
+  {
+   "model": "CatBoost",
+   "accuracy": 58.4,
+   "logLoss": 0.668,
+   "correctPicks": 3266,
+   "games": 5592,
+   "bestStreak": 15,
+   "rank": 3
+  },
+  {
+   "model": "Gradient Boosting",
+   "accuracy": 58.2,
+   "logLoss": 0.6687,
+   "correctPicks": 3253,
+   "games": 5592,
+   "bestStreak": 13,
+   "rank": 4
+  },
+  {
+   "model": "Elo Baseline",
+   "accuracy": 57.6,
+   "logLoss": 0.6726,
+   "correctPicks": 3220,
+   "games": 5592,
+   "bestStreak": 14,
+   "rank": 5
+  }
+ ],
+ "perSeason": [
+  {
+   "season": "2022-23",
+   "games": 1400,
+   "accuracy": 59.6
+  },
+  {
+   "season": "2023-24",
+   "games": 1400,
+   "accuracy": 61.1
+  },
+  {
+   "season": "2024-25",
+   "games": 1398,
+   "accuracy": 58.3
+  },
+  {
+   "season": "2025-26",
+   "games": 1394,
+   "accuracy": 55.4
+  }
+ ],
+ "confidenceBuckets": [
+  {
+   "range": "50-55%",
+   "games": 1742,
+   "accuracy": 51.3
+  },
+  {
+   "range": "55-60%",
+   "games": 1494,
+   "accuracy": 56.4
+  },
+  {
+   "range": "60-65%",
+   "games": 1220,
+   "accuracy": 60.6
+  },
+  {
+   "range": "65-70%",
+   "games": 664,
+   "accuracy": 66.6
+  },
+  {
+   "range": "70-100%",
+   "games": 472,
+   "accuracy": 76.5
+  }
+ ]
+}

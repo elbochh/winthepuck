@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as ui %}
+
+{% block title %}Games{% endblock %}
+
+{% block content %}
+
+<section class="section page-top">
+  {{ ui.section_head("The schedule", "Upcoming games & predictions",
+     "Every game the NHL has scheduled next, with the win probability our model
+      gives the home team, the fair odds behind it and how confident the model is.
+      Sign in to save your own pick on any game.") }}
+
+  {% if games %}
+    <p class="center muted small more-link">
+      {{ games|length }} game{{ "s" if games|length != 1 }} predicted, starting
+      {{ season_starts }}.
+    </p>
+
+    <div class="cards-grid">
+      {% for game in games %}
+        {{ ui.game_card(game, show_pick_form=true, logged_in=logged_in, csrf_token=csrf_token) }}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="glass empty-note">
+      <p class="bold">No games on the schedule right now.</p>
+      <p class="muted small">
+        This happens between seasons. As soon as the NHL publishes the next
+        fixtures, the nightly job predicts them and they appear here.
+        In the meantime you can look at
+        <a href="{{ url_for('results_page') }}" class="accent bold">how the model did last season</a>.
+      </p>
+    </div>
+  {% endif %}
+</section>
+
+{% endblock %}

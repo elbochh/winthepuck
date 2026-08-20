@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Page not found{% endblock %}
+
+{% block content %}
+
+<section class="section narrow page-top center">
+  <div class="glass auth-card">
+    <p class="error-code mono">404</p>
+    <h2 class="section-title center">That page went wide of the net</h2>
+    <p class="section-desc center">
+      The page you asked for does not exist. Try one of the links below.
+    </p>
+    <div class="hero-buttons center-buttons">
+      <a href="{{ url_for('home') }}" class="btn btn-primary">Back to the home page</a>
+      <a href="{{ url_for('games_page') }}" class="btn btn-secondary">See today's games</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

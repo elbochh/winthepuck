@@ -1,0 +1,130 @@
+{# ===========================================================
+   Small reusable pieces of HTML.
+
+   A macro is like a function for templates: we write the HTML once
+   here and then call it from any page, which keeps the pages short.
+   =========================================================== #}
+
+
+{# the coloured square with a team's three letters #}
+{% macro team_logo(team, extra="") %}
+  <span class="team-logo {{ extra }}" style="--c:{{ team.color }}">{{ team.abbr }}</span>
+{% endmacro %}
+
+
+{# the last five results as little W / L / O pills #}
+{% macro form_pips(form) %}
+  <div class="form-pips">
+    {% for result in form %}
+      <span class="pip {{ result }}">{{ result }}</span>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
+
+{# the two colour win-probability bar #}
+{% macro prob_bar(game) %}
+  <div class="prob-block" style="margin-top:0">
+    <div class="prob-labels">
+      <div class="prob-side">
+        <span class="dot" style="background:{{ game.home.color }}"></span>
+        <span class="bold">{{ game.home.abbr }}</span>
+        <span class="mono bold">{{ game.home_win_prob }}%</span>
+      </div>
+      <div class="prob-side">
+        <span class="mono bold">{{ game.away_win_prob }}%</span>
+        <span class="bold">{{ game.away.abbr }}</span>
+        <span class="dot" style="background:{{ game.away.color }}"></span>
+      </div>
+    </div>
+    <div class="prob-bar">
+      <div class="prob-fill-home"
+           style="width:{{ game.home_win_prob }}%;background:linear-gradient(90deg,{{ game.home.color }},#fff)"></div>
+      <div class="prob-fill-away"
+           style="width:{{ game.away_win_prob }}%;background:linear-gradient(270deg,{{ game.away.color }},#fff)"></div>
+      <div class="prob-mid"></div>
+    </div>
+  </div>
+{% endmacro %}
+
+
+{# the circle that shows how confident the model is.
+   main.js reads the data- values and draws the ring. #}
+{% macro conf_ring(value, size) %}
+  <div class="conf-ring-box" data-value="{{ value }}" data-size="{{ size }}"></div>
+{% endmacro %}
+
+
+{# one side of a prediction card: logo, name, record, form and odds #}
+{% macro team_side(team, odds, is_favourite) %}
+  <div class="team-side {% if is_favourite %}fav{% endif %}">
+    {{ team_logo(team) }}
+    <div class="team-side-info">
+      <div class="team-name-row">
+        <span class="bold">{{ team.name }}</span>
+        {% if is_favourite %}<span class="fav-tag">Fav</span>{% endif %}
+      </div>
+      <div class="team-meta">
+        <span class="muted tiny">{{ team.record }}</span>
+        {{ form_pips(team.form) }}
+      </div>
+    </div>
+    <span class="odds">{{ odds }}</span>
+  </div>
+{% endmacro %}
+
+
+{# a full prediction card for one upcoming game #}
+{% macro game_card(game, show_pick_form=false, logged_in=false) %}
+  <article class="pred-card glass">
+    <div class="pred-top">
+      <span>🕒 {{ game.time }}</span>
+      <span class="edge-pill">📈 Model edge {{ game.edge }}%</span>
+    </div>
+
+    <div class="pred-teams">
+      <div class="pred-sides">
+        {{ team_side(game.home, game.home_odds, game.favourite.id == game.home.id) }}
+        {{ team_side(game.away, game.away_odds, game.favourite.id == game.away.id) }}
+      </div>
+      <div class="mini-ring">{{ conf_ring(game.confidence, 60) }}</div>
+    </div>
+
+    {{ prob_bar(game) }}
+
+    {% if show_pick_form %}
+      <form class="pick-form" method="post" action="{{ url_for('make_prediction', game_id=game.id) }}">
+        <span class="muted tiny">My pick:</span>
+        <button type="submit" name="team_id" value="{{ game.home.id }}"
+                class="pick-btn {% if game.my_pick == game.home.id %}active{% endif %}">
+          {{ game.home.abbr }}
+        </button>
+        <button type="submit" name="team_id" value="{{ game.away.id }}"
+                class="pick-btn {% if game.my_pick == game.away.id %}active{% endif %}">
+          {{ game.away.abbr }}
+        </button>
+        {% if not logged_in %}
+          <span class="muted tiny">(sign in to save)</span>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    <div class="pred-foot">
+      <span class="muted tiny">
+        Model pick:
+        <span class="bold" style="color:var(--foreground)">{{ game.favourite.full_name }}</span>
+      </span>
+      <a href="{{ url_for('discussion_page', game_id=game.id) }}" class="btn btn-secondary btn-sm">💬 Discuss</a>
+    </div>
+  </article>
+{% endmacro %}
+
+
+{# the small heading that sits above every section #}
+{% macro section_head(eyebrow, title, description) %}
+  <div class="section-head">
+    <div class="eyebrow"><span class="eyebrow-line"></span>{{ eyebrow }}</div>
+    <h2 class="section-title">{{ title }}</h2>
+    <p class="section-desc">{{ description }}</p>
+  </div>
+{% endmacro %}

@@ -1,0 +1,52 @@
+# ===========================================================
+# Refresh the model's predictions every day
+#
+# This is the job that keeps the website alive during the season. It runs the
+# trained model over the games coming up, sends the new probabilities to the
+# site on Azure, and fills in the scores of any game that has been played.
+#
+# It runs on GitHub's free runners rather than on Azure, which keeps the
+# website itself small enough for the free App Service tier.
+# ===========================================================
+name: Refresh NHL predictions
+
+on:
+  schedule:
+    - cron: '30 11 * * *'      # 11:30 UTC every day = early morning in Calgary
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install what the model needs
+        working-directory: 'Phase 5/model-service'
+        run: pip install -r requirements.txt
+
+      - name: Predict the next games and send them to the website
+        working-directory: 'Phase 5/model-service'
+        env:
+          SITE_URL: ${{ secrets.WINTHEPUCK_URL }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+        run: |
+          python refresh_predictions.py \
+            --days-ahead 30 \
+            --history-days 21 \
+            --out refresh_payload.json \
+            --post "$SITE_URL" \
+            --token "$REFRESH_TOKEN"
+
+      - name: Keep a copy of what we sent
+        uses: actions/upload-artifact@v4
+        with:
+          name: refresh-payload
+          path: 'Phase 5/model-service/refresh_payload.json'
+          retention-days: 14

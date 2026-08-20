@@ -1,0 +1,257 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as ui %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ============ HERO ============ -->
+<section id="top" class="hero">
+  <div class="rink-bg">
+    <div class="hero-glow"></div>
+    <div class="hero-fade"></div>
+
+    <svg class="rink-lines" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="rinkLine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--primary)" />
+          <stop offset="1" stop-color="var(--live)" />
+        </linearGradient>
+      </defs>
+      <line x1="600" y1="40" x2="600" y2="560" stroke="var(--live)" stroke-width="4" />
+      <line x1="430" y1="40" x2="430" y2="560" stroke="var(--primary)" stroke-width="6" />
+      <line x1="770" y1="40" x2="770" y2="560" stroke="var(--primary)" stroke-width="6" />
+      <circle cx="600" cy="300" r="90" stroke="url(#rinkLine)" stroke-width="3" fill="none" />
+      <circle cx="600" cy="300" r="6" fill="var(--live)" />
+      <circle cx="250" cy="170" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <circle cx="250" cy="430" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <circle cx="950" cy="170" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <circle cx="950" cy="430" r="55" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <rect x="40" y="40" width="1120" height="520" rx="120" stroke="var(--primary)" stroke-width="3" fill="none" />
+      <path d="M90 260 a40 40 0 0 1 0 80" stroke="var(--live)" stroke-width="2.5" fill="none" />
+      <path d="M1110 260 a40 40 0 0 0 0 80" stroke="var(--live)" stroke-width="2.5" fill="none" />
+    </svg>
+
+    <span class="puck puck1"></span>
+    <span class="puck puck2"></span>
+    <span class="puck puck3"></span>
+    <div class="light-streak"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge glass">
+      <span class="ping"><span class="ping-dot"></span></span>
+      Tested on {{ "{:,}".format(stats.tested_games|int) }} real NHL games
+    </div>
+
+    <h1 class="hero-title">
+      Predict every shift before the
+      <span class="gradient-text">puck drops</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      WinThePuck runs an ensemble of three machine learning models over ten
+      seasons of NHL data. Every probability on this site was produced by that
+      model — and every result it is measured against really happened.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="{{ url_for('games_page') }}" class="btn btn-primary btn-lg">See the next games →</a>
+      <a href="{{ url_for('results_page') }}" class="btn btn-secondary btn-lg">Check our track record</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-card glass">
+        <span class="stat-icon">🎯</span>
+        <div>
+          <div class="stat-value">{{ stats.accuracy }}%</div>
+          <div class="stat-label">Accuracy over {{ "{:,}".format(stats.tested_games|int) }} tested games</div>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-icon">🔥</span>
+        <div>
+          <div class="stat-value">{{ stats.confident_accuracy }}%</div>
+          <div class="stat-label">When the model is confident</div>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <span class="stat-icon">📅</span>
+        <div>
+          <div class="stat-value">{{ stats.upcoming }}</div>
+          <div class="stat-label">Predictions waiting to be graded</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WIN PROBABILITY REPLAY ============ -->
+<section id="live" class="section">
+  {% if replay %}
+    {{ ui.section_head("Win probability, play by play",
+       replay.away_team.abbr ~ " at " ~ replay.home_team.abbr ~ " — " ~ replay.title,
+       "A real game from " ~ replay.played_on ~ ", replayed through our live model.
+        The bar and the chart move on every goal, penalty and momentum swing,
+        exactly as they did on the night.") }}
+
+    <div class="live-card glass" id="liveCard"
+         data-events="{{ replay.events|tojson|forceescape }}"
+         data-home-abbr="{{ replay.home_abbr }}">
+      <div class="live-left">
+        <div class="live-top">
+          <span class="live-tag">
+            <span class="ping"><span class="ping-dot"></span></span>
+            ● Replay
+          </span>
+          <span class="mono muted">
+            Period <span id="livePeriod">{{ replay.period }}</span> ·
+            <span id="liveClock">{{ replay.clock }}</span>
+          </span>
+        </div>
+
+        <div class="scoreboard">
+          <div class="team-row">
+            {{ ui.team_logo(replay.home_team) }}
+            <div>
+              <div class="muted small">{{ replay.home_team.city }}</div>
+              <div class="bold">{{ replay.home_team.name }}</div>
+            </div>
+            <div class="score mono" id="homeScore">{{ replay.home_score }}</div>
+          </div>
+
+          <span class="vs mono">VS</span>
+
+          <div class="team-row reverse">
+            {{ ui.team_logo(replay.away_team) }}
+            <div class="right">
+              <div class="muted small">{{ replay.away_team.city }}</div>
+              <div class="bold">{{ replay.away_team.name }}</div>
+            </div>
+            <div class="score mono" id="awayScore">{{ replay.away_score }}</div>
+          </div>
+        </div>
+
+        <div class="prob-block">
+          <div class="prob-labels">
+            <div class="prob-side">
+              <span class="dot" style="background:{{ replay.home_team.color }}"></span>
+              <span class="bold">{{ replay.home_abbr }}</span>
+              <span class="mono bold" id="homeProbText">{{ replay.home_prob }}%</span>
+            </div>
+            <div class="prob-side">
+              <span class="mono bold" id="awayProbText">{{ replay.away_prob }}%</span>
+              <span class="bold">{{ replay.away_abbr }}</span>
+              <span class="dot" style="background:{{ replay.away_team.color }}"></span>
+            </div>
+          </div>
+          <div class="prob-bar">
+            <div class="prob-fill-home" id="homeProbBar" style="width:{{ replay.home_prob }}%"></div>
+            <div class="prob-fill-away" id="awayProbBar" style="width:{{ replay.away_prob }}%"></div>
+            <div class="prob-mid"></div>
+          </div>
+        </div>
+
+        <div class="event-note">
+          <span class="event-arrow" id="eventArrow">{{ "↗" if replay.change >= 0 else "↘" }}</span>
+          <div>
+            <p class="bold small" id="eventLabel">{{ replay.event_label }}</p>
+            <p class="muted tiny" id="eventDelta">
+              {{ replay.home_abbr }} win prob {{ "+" if replay.change >= 0 }}{{ replay.change }}% on this play
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-right">
+        <div class="chart-head">
+          <p class="muted small bold">{{ replay.home_abbr }} win probability</p>
+          <span class="mono chart-big" id="chartBig">{{ replay.home_prob }}%</span>
+        </div>
+
+        <svg class="prob-chart" viewBox="0 0 640 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="liveArea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--primary)" stop-opacity="0.35" />
+              <stop offset="1" stop-color="var(--primary)" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <line x1="8" x2="632" y1="8" y2="8" class="grid-line" />
+          <line x1="8" x2="632" y1="51" y2="51" class="grid-line" />
+          <line x1="8" x2="632" y1="90" y2="90" class="grid-line ref-line" />
+          <line x1="8" x2="632" y1="129" y2="129" class="grid-line" />
+          <line x1="8" x2="632" y1="172" y2="172" class="grid-line" />
+          <path id="chartArea" fill="url(#liveArea)" />
+          <path id="chartLine" fill="none" stroke="var(--primary)" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round" />
+          <circle id="chartDotGlow" r="9" fill="var(--primary)" opacity="0.2" />
+          <circle id="chartDot" r="4.5" fill="var(--primary)" />
+        </svg>
+
+        <div class="event-feed" id="eventFeed"></div>
+      </div>
+    </div>
+
+    <p class="center muted tiny more-link">
+      Final score: {{ replay.away_abbr }} {{ replay.final_away }} –
+      {{ replay.final_home }} {{ replay.home_abbr }} · NHL game {{ replay.nhl_game_id }}
+    </p>
+  {% else %}
+    <p class="glass empty-note">The replay has not been loaded yet.</p>
+  {% endif %}
+</section>
+
+<!-- ============ NEXT GAMES ============ -->
+<section class="section">
+  {{ ui.section_head("Coming up", "The next games on the schedule",
+     "Each card shows the probability our model gives the home side, the fair odds
+      that probability implies, and how confident the model is.") }}
+
+  {% if games %}
+    <div class="cards-grid">
+      {% for game in games %}
+        {{ ui.game_card(game) }}
+      {% endfor %}
+    </div>
+
+    <p class="center more-link">
+      <a href="{{ url_for('games_page') }}" class="btn btn-secondary">See every game →</a>
+    </p>
+  {% else %}
+    <p class="glass empty-note">
+      There are no games scheduled at the moment. The predictions come back as
+      soon as the NHL publishes the next fixtures.
+    </p>
+  {% endif %}
+</section>
+
+<!-- ============ TOP MEMBERS ============ -->
+<section class="section">
+  {{ ui.section_head("Leaderboard", "Who is picking best",
+     "Five automatic strategies are already playing along, each scored on the same
+      real playoff games. Sign in and see if you can beat them.") }}
+
+  {% if top_members|length >= 3 %}
+    <div class="podium">
+      {# second place first, so the winner stands in the middle #}
+      {% for member in [top_members[1], top_members[0], top_members[2]] %}
+        <div class="podium-card glass {% if member.rank == 1 %}first{% endif %}">
+          {% if member.rank == 1 %}<span class="crown">👑</span>{% endif %}
+          <span class="avatar" style="--h:{{ member.hue }}">{{ member.initials }}</span>
+          <p class="podium-name">{{ member.username }}</p>
+          <p class="muted tiny">{{ member.tagline or "Rank #" ~ member.rank }}</p>
+          <div class="podium-stats">
+            <div><div class="mono acc">{{ member.accuracy }}%</div><div class="muted">accuracy</div></div>
+            <div><div class="mono">{{ member.points }}</div><div class="muted">points</div></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <p class="center more-link">
+    <a href="{{ url_for('leaderboard_page') }}" class="btn btn-secondary">Full leaderboard →</a>
+  </p>
+</section>
+
+{% endblock %}

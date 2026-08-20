@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as ui %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+
+<section class="section page-top">
+  {{ ui.section_head("The honest scoreboard", "How the model actually did",
+     "Every probability below was worked out before the game was played, using
+      only data from earlier games. Then the puck dropped. This page shows what
+      happened next — the misses as well as the hits.") }}
+
+  <!-- the headline numbers -->
+  <div class="hero-stats results-stats">
+    <div class="stat-card glass">
+      <span class="stat-icon">🎯</span>
+      <div>
+        <div class="stat-value">{{ summary.overall_accuracy }}%</div>
+        <div class="stat-label">
+          Accuracy across {{ "{:,}".format(summary.tested_games|int) }} games
+          ({{ summary.tested_seasons }} seasons)
+        </div>
+      </div>
+    </div>
+    <div class="stat-card glass">
+      <span class="stat-icon">🏒</span>
+      <div>
+        <div class="stat-value">{{ summary.accuracy }}%</div>
+        <div class="stat-label">{{ summary.label }} season · {{ summary.games }} games</div>
+      </div>
+    </div>
+    <div class="stat-card glass">
+      <span class="stat-icon">🔥</span>
+      <div>
+        <div class="stat-value">{{ summary.confident_accuracy }}%</div>
+        <div class="stat-label">
+          On the {{ summary.confident_games }} games the model was most sure about
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- how the different models compared -->
+  {% if model_rows %}
+    <div class="glass board-table model-table">
+      <div class="board-row board-header model-row">
+        <span>#</span>
+        <span>Model</span>
+        <span class="right">Accuracy</span>
+        <span class="right hide-mobile">Log loss</span>
+        <span class="right hide-mobile">Best run</span>
+      </div>
+      {% for row in model_rows %}
+        <div class="board-row board-body-row model-row {% if loop.first %}is-me{% endif %}">
+          <span class="rank-cell">{{ row.rank }}</span>
+          <div class="board-user">
+            <div>
+              <p class="bold">{{ row.model }}</p>
+              <p class="mobile-sub">{{ row.correct_picks }}/{{ row.games }} correct</p>
+            </div>
+          </div>
+          <span class="board-acc">{{ row.accuracy }}%</span>
+          <span class="board-streak hide-mobile mono">{{ row.log_loss }}</span>
+          <span class="board-points hide-mobile">{{ row.best_streak }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    <p class="center muted tiny more-link">
+      Log loss rewards being right <em>and</em> honest about how sure you are —
+      lower is better. "Best run" is the longest streak of correct picks.
+    </p>
+  {% endif %}
+
+  <!-- filters -->
+  <div class="matchup-tabs results-tabs">
+    {% for key, label in [("all", "Every game"), ("correct", "Model was right"),
+                          ("missed", "Model was wrong"), ("playoffs", "Playoffs only")] %}
+      <a class="{% if only == key %}active{% endif %}"
+         href="{{ url_for('results_page', filter=key) }}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- the games themselves -->
+  <div class="glass board-table results-table">
+    <div class="board-row board-header result-row">
+      <span>Date</span>
+      <span>Game</span>
+      <span class="right hide-mobile">Model said</span>
+      <span class="right">Score</span>
+      <span class="right">Call</span>
+    </div>
+
+    {% for game in games %}
+      <div class="board-row board-body-row result-row">
+        <span class="muted tiny">{{ game.date }}</span>
+
+        <div class="board-user">
+          {{ ui.team_logo(game.away, "small-logo") }}
+          <div>
+            <p class="bold">{{ game.away.abbr }} @ {{ game.home.abbr }}</p>
+            <p class="mobile-sub">
+              {{ game.favourite.abbr }} {{ game.edge }}%
+              {% if game.is_playoff %}· playoff{% endif %}
+            </p>
+          </div>
+          {{ ui.team_logo(game.home, "small-logo") }}
+        </div>
+
+        <span class="hide-mobile mono">
+          {{ game.favourite.abbr }} {{ game.edge }}%
+        </span>
+
+        <span class="mono bold">{{ game.away_score }}–{{ game.home_score }}</span>
+
+        <span class="call-cell {% if game.model_was_right %}call-hit{% else %}call-miss{% endif %}">
+          {% if game.model_was_right %}✓{% else %}✕{% endif %}
+        </span>
+      </div>
+    {% else %}
+      <p class="empty-note">No finished games to show yet.</p>
+    {% endfor %}
+  </div>
+
+  <!-- paging -->
+  {% if pages > 1 %}
+    <div class="pager">
+      {% if page > 1 %}
+        <a class="btn btn-secondary btn-sm"
+           href="{{ url_for('results_page', filter=only, page=page-1) }}">← Newer</a>
+      {% endif %}
+      <span class="muted small">
+        Page {{ page }} of {{ pages }} · {{ "{:,}".format(total) }} games
+      </span>
+      {% if page < pages %}
+        <a class="btn btn-secondary btn-sm"
+           href="{{ url_for('results_page', filter=only, page=page+1) }}">Older →</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+
+{% endblock %}

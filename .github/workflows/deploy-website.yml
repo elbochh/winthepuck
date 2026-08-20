@@ -1,0 +1,58 @@
+# ===========================================================
+# Deploy the website to Azure App Service
+#
+# Every time we push a change to the website on the main branch, GitHub
+# packages the app and sends it to Azure for us. Nobody has to remember a
+# deployment command, and the live site always matches what is in the repo.
+# ===========================================================
+name: Deploy website to Azure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Phase 5/winthepuck-cloud/**'
+      - '.github/workflows/deploy-website.yml'
+  workflow_dispatch:        # lets us press "Run workflow" by hand
+
+env:
+  AZURE_WEBAPP_NAME: winthepuck
+  APP_FOLDER: 'Phase 5/winthepuck-cloud'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check the app at least starts
+        working-directory: ${{ env.APP_FOLDER }}
+        run: |
+          pip install -r requirements.txt
+          python -c "import app; print('the app imported cleanly')"
+
+      - name: Send it to Azure
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.APP_FOLDER }}
+
+      - name: Check the site answers
+        run: |
+          sleep 45
+          for attempt in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" \
+              https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/healthz)
+            echo "attempt $attempt: HTTP $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 20
+          done
+          echo "the site did not come back healthy"
+          exit 1

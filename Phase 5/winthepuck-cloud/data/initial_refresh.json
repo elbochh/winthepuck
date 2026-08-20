@@ -1,0 +1,1515 @@
+{
+ "generatedAt": "2026-08-20T03:51:34+00:00",
+ "season": 20262027,
+ "modelTrainedTo": "2026-06-14",
+ "teams": [
+  {
+   "abbr": "COL",
+   "city": "Colorado",
+   "name": "Avalanche",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/COL_light.svg",
+   "record": "55-16-11",
+   "points": 121,
+   "pointsPct": 0.738,
+   "gamesPlayed": 82,
+   "streak": "W3",
+   "form": [
+    "W",
+    "L",
+    "L",
+    "L",
+    "L"
+   ],
+   "elo": 1568.0,
+   "stats": {
+    "goalsFor": 3.63,
+    "goalsAgainst": 2.4,
+    "powerPlay": 17.1,
+    "penaltyKill": 84.6,
+    "shotsPerGame": 33.7,
+    "shotsAgainst": 26.1,
+    "faceoffWin": 51.2,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "CAR",
+   "city": "Carolina",
+   "name": "Hurricanes",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
+   "record": "53-22-7",
+   "points": 113,
+   "pointsPct": 0.689,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "W",
+    "O",
+    "W",
+    "W",
+    "W"
+   ],
+   "elo": 1587.2,
+   "stats": {
+    "goalsFor": 3.55,
+    "goalsAgainst": 2.88,
+    "powerPlay": 24.9,
+    "penaltyKill": 80.5,
+    "shotsPerGame": 32.2,
+    "shotsAgainst": 23.9,
+    "faceoffWin": 50.1,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "DAL",
+   "city": "Dallas",
+   "name": "Stars",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/DAL_light.svg",
+   "record": "50-20-12",
+   "points": 112,
+   "pointsPct": 0.683,
+   "gamesPlayed": 82,
+   "streak": "W5",
+   "form": [
+    "W",
+    "W",
+    "O",
+    "L",
+    "L"
+   ],
+   "elo": 1536.2,
+   "stats": {
+    "goalsFor": 3.33,
+    "goalsAgainst": 2.71,
+    "powerPlay": 28.6,
+    "penaltyKill": 80.3,
+    "shotsPerGame": 25.3,
+    "shotsAgainst": 26.2,
+    "faceoffWin": 51.6,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "BUF",
+   "city": "Buffalo",
+   "name": "Sabres",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/BUF_light.svg",
+   "record": "50-23-9",
+   "points": 109,
+   "pointsPct": 0.665,
+   "gamesPlayed": 82,
+   "streak": "OT1",
+   "form": [
+    "L",
+    "W",
+    "L",
+    "W",
+    "O"
+   ],
+   "elo": 1544.6,
+   "stats": {
+    "goalsFor": 3.45,
+    "goalsAgainst": 2.93,
+    "powerPlay": 19.5,
+    "penaltyKill": 81.9,
+    "shotsPerGame": 28.1,
+    "shotsAgainst": 29.1,
+    "faceoffWin": 45.9,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "TBL",
+   "city": "Tampa Bay",
+   "name": "Lightning",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/TBL_light.svg",
+   "record": "50-26-6",
+   "points": 106,
+   "pointsPct": 0.646,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "O",
+    "W",
+    "L",
+    "W",
+    "L"
+   ],
+   "elo": 1546.7,
+   "stats": {
+    "goalsFor": 3.49,
+    "goalsAgainst": 2.79,
+    "powerPlay": 20.7,
+    "penaltyKill": 82.6,
+    "shotsPerGame": 28.1,
+    "shotsAgainst": 26.7,
+    "faceoffWin": 47.4,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "MTL",
+   "city": "Montr\u00e9al",
+   "name": "Canadiens",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+   "record": "48-24-10",
+   "points": 106,
+   "pointsPct": 0.646,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "W",
+    "O",
+    "O",
+    "L",
+    "L"
+   ],
+   "elo": 1532.7,
+   "stats": {
+    "goalsFor": 3.4,
+    "goalsAgainst": 3.06,
+    "powerPlay": 23.1,
+    "penaltyKill": 78.2,
+    "shotsPerGame": 26.3,
+    "shotsAgainst": 27.8,
+    "faceoffWin": 51.0,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "MIN",
+   "city": "Minnesota",
+   "name": "Wild",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/MIN_light.svg",
+   "record": "46-24-12",
+   "points": 104,
+   "pointsPct": 0.634,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "L",
+    "L",
+    "W",
+    "L",
+    "O"
+   ],
+   "elo": 1532.7,
+   "stats": {
+    "goalsFor": 3.27,
+    "goalsAgainst": 2.87,
+    "powerPlay": 25.2,
+    "penaltyKill": 79.8,
+    "shotsPerGame": 29.2,
+    "shotsAgainst": 29.4,
+    "faceoffWin": 46.6,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "BOS",
+   "city": "Boston",
+   "name": "Bruins",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/BOS_light.svg?season=20252026",
+   "record": "45-27-10",
+   "points": 100,
+   "pointsPct": 0.61,
+   "gamesPlayed": 82,
+   "streak": "W2",
+   "form": [
+    "W",
+    "L",
+    "L",
+    "W",
+    "L"
+   ],
+   "elo": 1509.4,
+   "stats": {
+    "goalsFor": 3.27,
+    "goalsAgainst": 3.01,
+    "powerPlay": 23.4,
+    "penaltyKill": 77.0,
+    "shotsPerGame": 27.0,
+    "shotsAgainst": 29.7,
+    "faceoffWin": 53.1,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "OTT",
+   "city": "Ottawa",
+   "name": "Senators",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+   "record": "44-27-11",
+   "points": 99,
+   "pointsPct": 0.604,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "W",
+    "L",
+    "O",
+    "L",
+    "L"
+   ],
+   "elo": 1523.9,
+   "stats": {
+    "goalsFor": 3.35,
+    "goalsAgainst": 2.99,
+    "powerPlay": 24.0,
+    "penaltyKill": 75.7,
+    "shotsPerGame": 28.9,
+    "shotsAgainst": 24.4,
+    "faceoffWin": 54.5,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "PIT",
+   "city": "Pittsburgh",
+   "name": "Penguins",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/PIT_light.svg",
+   "record": "41-25-16",
+   "points": 98,
+   "pointsPct": 0.598,
+   "gamesPlayed": 82,
+   "streak": "L3",
+   "form": [
+    "L",
+    "L",
+    "W",
+    "W",
+    "O"
+   ],
+   "elo": 1505.6,
+   "stats": {
+    "goalsFor": 3.54,
+    "goalsAgainst": 3.15,
+    "powerPlay": 24.1,
+    "penaltyKill": 81.4,
+    "shotsPerGame": 28.6,
+    "shotsAgainst": 27.4,
+    "faceoffWin": 48.2,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "PHI",
+   "city": "Philadelphia",
+   "name": "Flyers",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/PHI_light.svg",
+   "record": "43-27-12",
+   "points": 98,
+   "pointsPct": 0.598,
+   "gamesPlayed": 82,
+   "streak": "W3",
+   "form": [
+    "W",
+    "L",
+    "O",
+    "L",
+    "O"
+   ],
+   "elo": 1503.9,
+   "stats": {
+    "goalsFor": 2.93,
+    "goalsAgainst": 2.91,
+    "powerPlay": 15.7,
+    "penaltyKill": 77.6,
+    "shotsPerGame": 25.5,
+    "shotsAgainst": 25.5,
+    "faceoffWin": 49.5,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "WSH",
+   "city": "Washington",
+   "name": "Capitals",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_light.svg",
+   "record": "43-30-9",
+   "points": 95,
+   "pointsPct": 0.579,
+   "gamesPlayed": 82,
+   "streak": "W4",
+   "form": [
+    "L",
+    "W",
+    "W",
+    "W",
+    "W"
+   ],
+   "elo": 1524.0,
+   "stats": {
+    "goalsFor": 3.18,
+    "goalsAgainst": 2.9,
+    "powerPlay": 17.8,
+    "penaltyKill": 80.1,
+    "shotsPerGame": 28.0,
+    "shotsAgainst": 28.1,
+    "faceoffWin": 49.3,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "VGK",
+   "city": "Vegas",
+   "name": "Golden Knights",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/VGK_light.svg",
+   "record": "39-26-17",
+   "points": 95,
+   "pointsPct": 0.579,
+   "gamesPlayed": 82,
+   "streak": "W3",
+   "form": [
+    "O",
+    "W",
+    "L",
+    "L",
+    "L"
+   ],
+   "elo": 1538.3,
+   "stats": {
+    "goalsFor": 3.22,
+    "goalsAgainst": 2.95,
+    "powerPlay": 24.6,
+    "penaltyKill": 81.4,
+    "shotsPerGame": 29.0,
+    "shotsAgainst": 24.4,
+    "faceoffWin": 51.0,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "EDM",
+   "city": "Edmonton",
+   "name": "Oilers",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/EDM_light.svg",
+   "record": "41-30-11",
+   "points": 93,
+   "pointsPct": 0.567,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "L",
+    "L",
+    "O",
+    "W",
+    "L"
+   ],
+   "elo": 1514.2,
+   "stats": {
+    "goalsFor": 3.44,
+    "goalsAgainst": 3.23,
+    "powerPlay": 30.6,
+    "penaltyKill": 77.8,
+    "shotsPerGame": 29.7,
+    "shotsAgainst": 26.7,
+    "faceoffWin": 52.6,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "UTA",
+   "city": "Utah",
+   "name": "Mammoth",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/UTA_light.svg?season=20252026",
+   "record": "43-33-6",
+   "points": 92,
+   "pointsPct": 0.561,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "W",
+    "W",
+    "O",
+    "O",
+    "L"
+   ],
+   "elo": 1509.4,
+   "stats": {
+    "goalsFor": 3.27,
+    "goalsAgainst": 2.93,
+    "powerPlay": 20.0,
+    "penaltyKill": 78.1,
+    "shotsPerGame": 27.7,
+    "shotsAgainst": 26.1,
+    "faceoffWin": 49.2,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "DET",
+   "city": "Detroit",
+   "name": "Red Wings",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg?season=20252026",
+   "record": "41-31-10",
+   "points": 92,
+   "pointsPct": 0.561,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "O",
+    "W",
+    "L",
+    "O",
+    "L"
+   ],
+   "elo": 1494.8,
+   "stats": {
+    "goalsFor": 2.91,
+    "goalsAgainst": 3.1,
+    "powerPlay": 22.6,
+    "penaltyKill": 77.1,
+    "shotsPerGame": 28.2,
+    "shotsAgainst": 27.7,
+    "faceoffWin": 51.0,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "CBJ",
+   "city": "Columbus",
+   "name": "Blue Jackets",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg",
+   "record": "40-30-12",
+   "points": 92,
+   "pointsPct": 0.561,
+   "gamesPlayed": 82,
+   "streak": "L2",
+   "form": [
+    "W",
+    "L",
+    "W",
+    "L",
+    "L"
+   ],
+   "elo": 1507.4,
+   "stats": {
+    "goalsFor": 3.0,
+    "goalsAgainst": 3.06,
+    "powerPlay": 18.9,
+    "penaltyKill": 76.0,
+    "shotsPerGame": 29.4,
+    "shotsAgainst": 28.8,
+    "faceoffWin": 50.6,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "ANA",
+   "city": "Anaheim",
+   "name": "Ducks",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/ANA_light.svg",
+   "record": "43-33-6",
+   "points": 92,
+   "pointsPct": 0.561,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "W",
+    "L",
+    "W",
+    "O",
+    "L"
+   ],
+   "elo": 1486.6,
+   "stats": {
+    "goalsFor": 3.23,
+    "goalsAgainst": 3.51,
+    "powerPlay": 18.6,
+    "penaltyKill": 76.4,
+    "shotsPerGame": 30.8,
+    "shotsAgainst": 28.4,
+    "faceoffWin": 48.0,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "NYI",
+   "city": "New York",
+   "name": "Islanders",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/NYI_light.svg",
+   "record": "43-34-5",
+   "points": 91,
+   "pointsPct": 0.555,
+   "gamesPlayed": 82,
+   "streak": "L3",
+   "form": [
+    "L",
+    "W",
+    "L",
+    "L",
+    "L"
+   ],
+   "elo": 1490.9,
+   "stats": {
+    "goalsFor": 2.79,
+    "goalsAgainst": 2.88,
+    "powerPlay": 16.5,
+    "penaltyKill": 80.8,
+    "shotsPerGame": 28.2,
+    "shotsAgainst": 27.7,
+    "faceoffWin": 52.6,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "LAK",
+   "city": "Los Angeles",
+   "name": "Kings",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/LAK_light.svg",
+   "record": "35-27-20",
+   "points": 90,
+   "pointsPct": 0.549,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "L",
+    "L",
+    "O",
+    "L",
+    "L"
+   ],
+   "elo": 1483.4,
+   "stats": {
+    "goalsFor": 2.68,
+    "goalsAgainst": 2.9,
+    "powerPlay": 17.0,
+    "penaltyKill": 74.6,
+    "shotsPerGame": 28.0,
+    "shotsAgainst": 27.2,
+    "faceoffWin": 49.8,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "NJD",
+   "city": "New Jersey",
+   "name": "Devils",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/NJD_light.svg",
+   "record": "42-37-3",
+   "points": 87,
+   "pointsPct": 0.53,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "L",
+    "L",
+    "W",
+    "W",
+    "L"
+   ],
+   "elo": 1495.5,
+   "stats": {
+    "goalsFor": 2.76,
+    "goalsAgainst": 3.09,
+    "powerPlay": 22.0,
+    "penaltyKill": 79.3,
+    "shotsPerGame": 29.6,
+    "shotsAgainst": 27.4,
+    "faceoffWin": 50.5,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "STL",
+   "city": "St. Louis",
+   "name": "Blues",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/STL_light.svg?season=20252026",
+   "record": "37-33-12",
+   "points": 86,
+   "pointsPct": 0.524,
+   "gamesPlayed": 82,
+   "streak": "W4",
+   "form": [
+    "L",
+    "W",
+    "W",
+    "W",
+    "W"
+   ],
+   "elo": 1508.3,
+   "stats": {
+    "goalsFor": 2.8,
+    "goalsAgainst": 3.1,
+    "powerPlay": 17.6,
+    "penaltyKill": 76.7,
+    "shotsPerGame": 25.3,
+    "shotsAgainst": 27.7,
+    "faceoffWin": 49.4,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "NSH",
+   "city": "Nashville",
+   "name": "Predators",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/NSH_light.svg",
+   "record": "38-34-10",
+   "points": 86,
+   "pointsPct": 0.524,
+   "gamesPlayed": 82,
+   "streak": "L2",
+   "form": [
+    "W",
+    "L",
+    "W",
+    "L",
+    "L"
+   ],
+   "elo": 1486.3,
+   "stats": {
+    "goalsFor": 2.95,
+    "goalsAgainst": 3.26,
+    "powerPlay": 23.1,
+    "penaltyKill": 81.7,
+    "shotsPerGame": 27.9,
+    "shotsAgainst": 29.6,
+    "faceoffWin": 50.5,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "SJS",
+   "city": "San Jose",
+   "name": "Sharks",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/SJS_light.svg",
+   "record": "39-35-8",
+   "points": 86,
+   "pointsPct": 0.524,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "L",
+    "O",
+    "W",
+    "L",
+    "W"
+   ],
+   "elo": 1456.5,
+   "stats": {
+    "goalsFor": 3.04,
+    "goalsAgainst": 3.54,
+    "powerPlay": 21.2,
+    "penaltyKill": 76.4,
+    "shotsPerGame": 25.8,
+    "shotsAgainst": 29.6,
+    "faceoffWin": 47.8,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "FLA",
+   "city": "Florida",
+   "name": "Panthers",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/FLA_light.svg",
+   "record": "40-38-4",
+   "points": 84,
+   "pointsPct": 0.512,
+   "gamesPlayed": 82,
+   "streak": "W3",
+   "form": [
+    "O",
+    "L",
+    "W",
+    "W",
+    "W"
+   ],
+   "elo": 1513.0,
+   "stats": {
+    "goalsFor": 3.0,
+    "goalsAgainst": 3.34,
+    "powerPlay": 19.5,
+    "penaltyKill": 81.0,
+    "shotsPerGame": 28.0,
+    "shotsAgainst": 26.8,
+    "faceoffWin": 46.8,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "WPG",
+   "city": "Winnipeg",
+   "name": "Jets",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/WPG_light.svg",
+   "record": "35-35-12",
+   "points": 82,
+   "pointsPct": 0.5,
+   "gamesPlayed": 82,
+   "streak": "L4",
+   "form": [
+    "W",
+    "L",
+    "L",
+    "L",
+    "L"
+   ],
+   "elo": 1494.3,
+   "stats": {
+    "goalsFor": 2.79,
+    "goalsAgainst": 3.12,
+    "powerPlay": 18.5,
+    "penaltyKill": 77.6,
+    "shotsPerGame": 26.4,
+    "shotsAgainst": 27.8,
+    "faceoffWin": 51.1,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "SEA",
+   "city": "Seattle",
+   "name": "Kraken",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/SEA_light.svg",
+   "record": "34-37-11",
+   "points": 79,
+   "pointsPct": 0.482,
+   "gamesPlayed": 82,
+   "streak": "L3",
+   "form": [
+    "W",
+    "W",
+    "L",
+    "L",
+    "L"
+   ],
+   "elo": 1466.7,
+   "stats": {
+    "goalsFor": 2.73,
+    "goalsAgainst": 3.13,
+    "powerPlay": 19.5,
+    "penaltyKill": 72.2,
+    "shotsPerGame": 25.6,
+    "shotsAgainst": 29.5,
+    "faceoffWin": 47.7,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "TOR",
+   "city": "Toronto",
+   "name": "Maple Leafs",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+   "record": "32-36-14",
+   "points": 78,
+   "pointsPct": 0.476,
+   "gamesPlayed": 82,
+   "streak": "L5",
+   "form": [
+    "L",
+    "L",
+    "L",
+    "L",
+    "L"
+   ],
+   "elo": 1476.3,
+   "stats": {
+    "goalsFor": 3.07,
+    "goalsAgainst": 3.6,
+    "powerPlay": 21.3,
+    "penaltyKill": 81.2,
+    "shotsPerGame": 26.3,
+    "shotsAgainst": 32.4,
+    "faceoffWin": 54.2,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "CGY",
+   "city": "Calgary",
+   "name": "Flames",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/CGY_light.svg",
+   "record": "34-39-9",
+   "points": 77,
+   "pointsPct": 0.47,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "L",
+    "L",
+    "W",
+    "L",
+    "W"
+   ],
+   "elo": 1476.4,
+   "stats": {
+    "goalsFor": 2.54,
+    "goalsAgainst": 3.12,
+    "powerPlay": 16.2,
+    "penaltyKill": 80.4,
+    "shotsPerGame": 28.1,
+    "shotsAgainst": 29.9,
+    "faceoffWin": 49.3,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "NYR",
+   "city": "New York",
+   "name": "Rangers",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/NYR_light.svg",
+   "record": "34-39-9",
+   "points": 77,
+   "pointsPct": 0.47,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "W",
+    "L",
+    "L",
+    "L",
+    "W"
+   ],
+   "elo": 1493.1,
+   "stats": {
+    "goalsFor": 2.87,
+    "goalsAgainst": 3.04,
+    "powerPlay": 24.7,
+    "penaltyKill": 79.9,
+    "shotsPerGame": 25.2,
+    "shotsAgainst": 28.8,
+    "faceoffWin": 54.5,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "CHI",
+   "city": "Chicago",
+   "name": "Blackhawks",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/CHI_light.svg?season=20252026",
+   "record": "29-39-14",
+   "points": 72,
+   "pointsPct": 0.439,
+   "gamesPlayed": 82,
+   "streak": "W1",
+   "form": [
+    "L",
+    "L",
+    "L",
+    "L",
+    "W"
+   ],
+   "elo": 1437.0,
+   "stats": {
+    "goalsFor": 2.56,
+    "goalsAgainst": 3.29,
+    "powerPlay": 16.9,
+    "penaltyKill": 83.6,
+    "shotsPerGame": 24.6,
+    "shotsAgainst": 30.0,
+    "faceoffWin": 46.0,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  },
+  {
+   "abbr": "VAN",
+   "city": "Vancouver",
+   "name": "Canucks",
+   "logo": "https://assets.nhle.com/logos/nhl/svg/VAN_light.svg",
+   "record": "25-49-8",
+   "points": 58,
+   "pointsPct": 0.354,
+   "gamesPlayed": 82,
+   "streak": "L1",
+   "form": [
+    "L",
+    "W",
+    "W",
+    "W",
+    "L"
+   ],
+   "elo": 1433.8,
+   "stats": {
+    "goalsFor": 2.56,
+    "goalsAgainst": 3.83,
+    "powerPlay": 21.8,
+    "penaltyKill": 71.5,
+    "shotsPerGame": 26.0,
+    "shotsAgainst": 29.8,
+    "faceoffWin": 49.3,
+    "gamesPlayed": 82
+   },
+   "statsSeason": 20252026
+  }
+ ],
+ "upcoming": [
+  {
+   "gameId": 2026020001,
+   "gameDate": "2026-09-29",
+   "startTimeUtc": "2026-09-29T21:00:00Z",
+   "venue": "Lenovo Center",
+   "home": "CAR",
+   "away": "FLA",
+   "homeWinProb": 69.4,
+   "confidence": 69.4,
+   "homeOdds": -226,
+   "awayOdds": 226,
+   "pick": "CAR"
+  },
+  {
+   "gameId": 2026020002,
+   "gameDate": "2026-09-29",
+   "startTimeUtc": "2026-09-29T23:00:00Z",
+   "venue": "Scotiabank Arena",
+   "home": "TOR",
+   "away": "MTL",
+   "homeWinProb": 41.8,
+   "confidence": 58.2,
+   "homeOdds": 139,
+   "awayOdds": -139,
+   "pick": "MTL"
+  },
+  {
+   "gameId": 2026020003,
+   "gameDate": "2026-09-29",
+   "startTimeUtc": "2026-09-30T00:00:00Z",
+   "venue": "TD Garden",
+   "home": "BOS",
+   "away": "NYR",
+   "homeWinProb": 52.3,
+   "confidence": 52.3,
+   "homeOdds": -110,
+   "awayOdds": 110,
+   "pick": "BOS"
+  },
+  {
+   "gameId": 2026020004,
+   "gameDate": "2026-09-29",
+   "startTimeUtc": "2026-09-30T02:00:00Z",
+   "venue": "Rogers Place",
+   "home": "EDM",
+   "away": "VAN",
+   "homeWinProb": 67.9,
+   "confidence": 67.9,
+   "homeOdds": -211,
+   "awayOdds": 211,
+   "pick": "EDM"
+  },
+  {
+   "gameId": 2026020005,
+   "gameDate": "2026-09-29",
+   "startTimeUtc": "2026-09-30T02:30:00Z",
+   "venue": "T-Mobile Arena",
+   "home": "VGK",
+   "away": "CHI",
+   "homeWinProb": 71.4,
+   "confidence": 71.4,
+   "homeOdds": -249,
+   "awayOdds": 249,
+   "pick": "VGK"
+  },
+  {
+   "gameId": 2026020006,
+   "gameDate": "2026-09-30",
+   "startTimeUtc": "2026-09-30T23:30:00Z",
+   "venue": "Xfinity Mobile Arena",
+   "home": "PHI",
+   "away": "PIT",
+   "homeWinProb": 53.1,
+   "confidence": 53.1,
+   "homeOdds": -113,
+   "awayOdds": 113,
+   "pick": "PHI"
+  },
+  {
+   "gameId": 2026020007,
+   "gameDate": "2026-09-30",
+   "startTimeUtc": "2026-10-01T02:00:00Z",
+   "venue": "Ball Arena",
+   "home": "COL",
+   "away": "LAK",
+   "homeWinProb": 67.9,
+   "confidence": 67.9,
+   "homeOdds": -211,
+   "awayOdds": 211,
+   "pick": "COL"
+  },
+  {
+   "gameId": 2026020008,
+   "gameDate": "2026-09-30",
+   "startTimeUtc": "2026-09-30T23:30:00Z",
+   "venue": "Scotiabank Arena",
+   "home": "TOR",
+   "away": "NYI",
+   "homeWinProb": 39.0,
+   "confidence": 61.0,
+   "homeOdds": 156,
+   "awayOdds": -156,
+   "pick": "NYI"
+  },
+  {
+   "gameId": 2026020009,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-01T23:00:00Z",
+   "venue": "Prudential Center",
+   "home": "NJD",
+   "away": "PHI",
+   "homeWinProb": 48.5,
+   "confidence": 51.5,
+   "homeOdds": 106,
+   "awayOdds": -106,
+   "pick": "PHI"
+  },
+  {
+   "gameId": 2026020010,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-01T23:00:00Z",
+   "venue": "Madison Square Garden",
+   "home": "NYR",
+   "away": "TBL",
+   "homeWinProb": 49.9,
+   "confidence": 50.1,
+   "homeOdds": 101,
+   "awayOdds": -101,
+   "pick": "TBL"
+  },
+  {
+   "gameId": 2026020011,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-01T23:00:00Z",
+   "venue": "Nationwide Arena",
+   "home": "CBJ",
+   "away": "BUF",
+   "homeWinProb": 45.3,
+   "confidence": 54.7,
+   "homeOdds": 121,
+   "awayOdds": -121,
+   "pick": "BUF"
+  },
+  {
+   "gameId": 2026020012,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-02T00:00:00Z",
+   "venue": "Bridgestone Arena",
+   "home": "NSH",
+   "away": "MIN",
+   "homeWinProb": 38.9,
+   "confidence": 61.1,
+   "homeOdds": 157,
+   "awayOdds": -157,
+   "pick": "MIN"
+  },
+  {
+   "gameId": 2026020013,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-02T01:00:00Z",
+   "venue": "Delta Center",
+   "home": "UTA",
+   "away": "CHI",
+   "homeWinProb": 65.8,
+   "confidence": 65.8,
+   "homeOdds": -193,
+   "awayOdds": 193,
+   "pick": "UTA"
+  },
+  {
+   "gameId": 2026020014,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-02T01:00:00Z",
+   "venue": "Scotiabank Saddledome",
+   "home": "CGY",
+   "away": "SEA",
+   "homeWinProb": 48.2,
+   "confidence": 51.8,
+   "homeOdds": 107,
+   "awayOdds": -107,
+   "pick": "SEA"
+  },
+  {
+   "gameId": 2026020015,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-02T02:00:00Z",
+   "venue": "Rogers Arena",
+   "home": "VAN",
+   "away": "EDM",
+   "homeWinProb": 37.3,
+   "confidence": 62.7,
+   "homeOdds": 168,
+   "awayOdds": -168,
+   "pick": "EDM"
+  },
+  {
+   "gameId": 2026020016,
+   "gameDate": "2026-10-01",
+   "startTimeUtc": "2026-10-02T02:00:00Z",
+   "venue": "SAP Center at San Jose",
+   "home": "SJS",
+   "away": "FLA",
+   "homeWinProb": 45.7,
+   "confidence": 54.3,
+   "homeOdds": 119,
+   "awayOdds": -119,
+   "pick": "FLA"
+  },
+  {
+   "gameId": 2026020017,
+   "gameDate": "2026-10-02",
+   "startTimeUtc": "2026-10-02T22:30:00Z",
+   "venue": "Little Caesars Arena",
+   "home": "DET",
+   "away": "NYR",
+   "homeWinProb": 50.0,
+   "confidence": 50.0,
+   "homeOdds": -100,
+   "awayOdds": 100,
+   "pick": "DET"
+  },
+  {
+   "gameId": 2026020018,
+   "gameDate": "2026-10-02",
+   "startTimeUtc": "2026-10-02T23:00:00Z",
+   "venue": "Lenovo Center",
+   "home": "CAR",
+   "away": "WSH",
+   "homeWinProb": 67.1,
+   "confidence": 67.1,
+   "homeOdds": -204,
+   "awayOdds": 204,
+   "pick": "CAR"
+  },
+  {
+   "gameId": 2026020019,
+   "gameDate": "2026-10-02",
+   "startTimeUtc": "2026-10-03T00:00:00Z",
+   "venue": "Canada Life Centre",
+   "home": "WPG",
+   "away": "BOS",
+   "homeWinProb": 49.9,
+   "confidence": 50.1,
+   "homeOdds": 100,
+   "awayOdds": -100,
+   "pick": "BOS"
+  },
+  {
+   "gameId": 2026020020,
+   "gameDate": "2026-10-02",
+   "startTimeUtc": "2026-10-03T01:00:00Z",
+   "venue": "American Airlines Center",
+   "home": "DAL",
+   "away": "STL",
+   "homeWinProb": 52.5,
+   "confidence": 52.5,
+   "homeOdds": -110,
+   "awayOdds": 110,
+   "pick": "DAL"
+  },
+  {
+   "gameId": 2026020021,
+   "gameDate": "2026-10-02",
+   "startTimeUtc": "2026-10-03T02:00:00Z",
+   "venue": "T-Mobile Arena",
+   "home": "VGK",
+   "away": "ANA",
+   "homeWinProb": 52.2,
+   "confidence": 52.2,
+   "homeOdds": -109,
+   "awayOdds": 109,
+   "pick": "VGK"
+  },
+  {
+   "gameId": 2026020022,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "KeyBank Center",
+   "home": "BUF",
+   "away": "CHI",
+   "homeWinProb": 70.7,
+   "confidence": 70.7,
+   "homeOdds": -242,
+   "awayOdds": 242,
+   "pick": "BUF"
+  },
+  {
+   "gameId": 2026020023,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "Scotiabank Arena",
+   "home": "TOR",
+   "away": "OTT",
+   "homeWinProb": 42.9,
+   "confidence": 57.1,
+   "homeOdds": 133,
+   "awayOdds": -133,
+   "pick": "OTT"
+  },
+  {
+   "gameId": 2026020024,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "Benchmark International Arena",
+   "home": "TBL",
+   "away": "WSH",
+   "homeWinProb": 57.4,
+   "confidence": 57.4,
+   "homeOdds": -135,
+   "awayOdds": 135,
+   "pick": "TBL"
+  },
+  {
+   "gameId": 2026020025,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "Xfinity Mobile Arena",
+   "home": "PHI",
+   "away": "CAR",
+   "homeWinProb": 43.0,
+   "confidence": 57.0,
+   "homeOdds": 133,
+   "awayOdds": -133,
+   "pick": "CAR"
+  },
+  {
+   "gameId": 2026020026,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "PPG Paints Arena",
+   "home": "PIT",
+   "away": "MTL",
+   "homeWinProb": 51.0,
+   "confidence": 51.0,
+   "homeOdds": -104,
+   "awayOdds": 104,
+   "pick": "PIT"
+  },
+  {
+   "gameId": 2026020027,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "Nationwide Arena",
+   "home": "CBJ",
+   "away": "UTA",
+   "homeWinProb": 47.1,
+   "confidence": 52.9,
+   "homeOdds": 112,
+   "awayOdds": -112,
+   "pick": "UTA"
+  },
+  {
+   "gameId": 2026020028,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:00:00Z",
+   "venue": "Rogers Place",
+   "home": "EDM",
+   "away": "SEA",
+   "homeWinProb": 62.7,
+   "confidence": 62.7,
+   "homeOdds": -168,
+   "awayOdds": 168,
+   "pick": "EDM"
+  },
+  {
+   "gameId": 2026020029,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-03T23:30:00Z",
+   "venue": "UBS Arena",
+   "home": "NYI",
+   "away": "NJD",
+   "homeWinProb": 57.4,
+   "confidence": 57.4,
+   "homeOdds": -135,
+   "awayOdds": 135,
+   "pick": "NYI"
+  },
+  {
+   "gameId": 2026020030,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-04T00:00:00Z",
+   "venue": "Bridgestone Arena",
+   "home": "NSH",
+   "away": "DAL",
+   "homeWinProb": 44.5,
+   "confidence": 55.5,
+   "homeOdds": 125,
+   "awayOdds": -125,
+   "pick": "DAL"
+  },
+  {
+   "gameId": 2026020031,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-04T00:00:00Z",
+   "venue": "Grand Casino Arena",
+   "home": "MIN",
+   "away": "BOS",
+   "homeWinProb": 57.8,
+   "confidence": 57.8,
+   "homeOdds": -137,
+   "awayOdds": 137,
+   "pick": "MIN"
+  },
+  {
+   "gameId": 2026020032,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-04T01:00:00Z",
+   "venue": "Ball Arena",
+   "home": "COL",
+   "away": "STL",
+   "homeWinProb": 64.1,
+   "confidence": 64.1,
+   "homeOdds": -179,
+   "awayOdds": 179,
+   "pick": "COL"
+  },
+  {
+   "gameId": 2026020033,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-04T02:00:00Z",
+   "venue": "Rogers Arena",
+   "home": "VAN",
+   "away": "CGY",
+   "homeWinProb": 49.0,
+   "confidence": 51.0,
+   "homeOdds": 104,
+   "awayOdds": -104,
+   "pick": "CGY"
+  },
+  {
+   "gameId": 2026020034,
+   "gameDate": "2026-10-03",
+   "startTimeUtc": "2026-10-04T02:00:00Z",
+   "venue": "SAP Center at San Jose",
+   "home": "SJS",
+   "away": "LAK",
+   "homeWinProb": 46.3,
+   "confidence": 53.7,
+   "homeOdds": 116,
+   "awayOdds": -116,
+   "pick": "LAK"
+  }
+ ],
+ "finished": [],
+ "modelReport": {
+  "testedGames": 5592,
+  "testedSeasons": 4,
+  "overallAccuracy": 58.6,
+  "confidentAccuracy": 65.4,
+  "confidentGames": 2356,
+  "perModel": [
+   {
+    "model": "WinThePuck Ensemble",
+    "accuracy": 58.6,
+    "logLoss": 0.6662,
+    "correctPicks": 3278,
+    "games": 5592,
+    "bestStreak": 15,
+    "rank": 1
+   },
+   {
+    "model": "Logistic Regression",
+    "accuracy": 58.6,
+    "logLoss": 0.6665,
+    "correctPicks": 3278,
+    "games": 5592,
+    "bestStreak": 14,
+    "rank": 2
+   },
+   {
+    "model": "CatBoost",
+    "accuracy": 58.4,
+    "logLoss": 0.668,
+    "correctPicks": 3266,
+    "games": 5592,
+    "bestStreak": 15,
+    "rank": 3
+   },
+   {
+    "model": "Gradient Boosting",
+    "accuracy": 58.2,
+    "logLoss": 0.6687,
+    "correctPicks": 3253,
+    "games": 5592,
+    "bestStreak": 13,
+    "rank": 4
+   },
+   {
+    "model": "Elo Baseline",
+    "accuracy": 57.6,
+    "logLoss": 0.6726,
+    "correctPicks": 3220,
+    "games": 5592,
+    "bestStreak": 14,
+    "rank": 5
+   }
+  ],
+  "perSeason": [
+   {
+    "season": "2022-23",
+    "games": 1400,
+    "accuracy": 59.6
+   },
+   {
+    "season": "2023-24",
+    "games": 1400,
+    "accuracy": 61.1
+   },
+   {
+    "season": "2024-25",
+    "games": 1398,
+    "accuracy": 58.3
+   },
+   {
+    "season": "2025-26",
+    "games": 1394,
+    "accuracy": 55.4
+   }
+  ],
+  "confidenceBuckets": [
+   {
+    "range": "50-55%",
+    "games": 1742,
+    "accuracy": 51.3
+   },
+   {
+    "range": "55-60%",
+    "games": 1494,
+    "accuracy": 56.4
+   },
+   {
+    "range": "60-65%",
+    "games": 1220,
+    "accuracy": 60.6
+   },
+   {
+    "range": "65-70%",
+    "games": 664,
+    "accuracy": 66.6
+   },
+   {
+    "range": "70-100%",
+    "games": 472,
+    "accuracy": 76.5
+   }
+  ]
+ }
+}

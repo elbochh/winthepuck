@@ -1,0 +1,1528 @@
+/* ===========================================================
+   WinThePuck - main stylesheet
+   Dark theme NHL prediction site
+   =========================================================== */
+
+/* ---- color variables and basic settings ---- */
+:root {
+  --background: #070e15;
+  --foreground: #f3f5f8;
+  --card: #0f1821;
+  --primary: #00cdef;
+  --primary-foreground: #040e19;
+  --secondary: #1d2732;
+  --muted-foreground: #8f9aa4;
+  --accent: #18313f;
+  --live: #fb355d;
+  --green: #37b78a;
+  --gold: #d9a514;
+  --border: rgba(255, 255, 255, 0.09);
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---- small helper classes ---- */
+.glass {
+  background: rgba(15, 24, 33, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+.mono {
+  font-family: "SF Mono", "Roboto Mono", Menlo, monospace;
+}
+.bold { font-weight: 700; }
+.muted { color: var(--muted-foreground); }
+.small { font-size: 0.875rem; }
+.tiny { font-size: 0.75rem; }
+.center { text-align: center; }
+.right { text-align: right; }
+.accent { color: var(--primary); }
+
+/* small colored dot */
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* the little pinging live indicator */
+.ping {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+}
+.ping-dot {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--live);
+}
+.ping::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--live);
+  opacity: 0.75;
+  animation: ping 1.5s ease-out infinite;
+}
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 9px 16px;
+  transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 20px rgba(0, 205, 239, 0.4);
+}
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+.btn-secondary:hover {
+  background: #28333f;
+}
+.btn-lg {
+  padding: 13px 22px;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+.btn-sm {
+  padding: 7px 12px;
+  font-size: 0.8rem;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ===========================================================
+   NAV BAR
+   =========================================================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 12px;
+}
+.nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-box {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: var(--primary);
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px rgba(0, 205, 239, 0.5);
+}
+.logo-box.small {
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+}
+.logo-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-links a {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  transition: background 0.15s, color 0.15s;
+}
+.nav-links a:hover {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--foreground);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* ===========================================================
+   HERO
+   =========================================================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 16px 64px;
+  overflow: hidden;
+}
+/* the whole animated rink background sits behind the hero text */
+.rink-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 60% at 50% -10%, rgba(0, 205, 239, 0.22), transparent 70%);
+}
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(7, 14, 21, 0.4), var(--background));
+}
+.rink-lines {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  opacity: 0.18;
+}
+
+/* small pucks that glide across the screen */
+.puck {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(243, 245, 248, 0.7);
+  box-shadow: 0 0 18px var(--primary);
+}
+.puck1 { top: 28%; animation: glide 7s ease-in-out infinite; }
+.puck2 { top: 50%; animation: glide 9s ease-in-out infinite 1.6s; }
+.puck3 { top: 72%; animation: glide 11s ease-in-out infinite 3.2s; }
+@keyframes glide {
+  from { left: -5%; }
+  to   { left: 105%; }
+}
+
+/* soft light streak that fades in and out */
+.light-streak {
+  position: absolute;
+  top: -33%;
+  left: 25%;
+  width: 160px;
+  height: 120%;
+  transform: rotate(12deg);
+  background: linear-gradient(to bottom, rgba(0, 205, 239, 0.2), transparent);
+  filter: blur(40px);
+  animation: streak 6s ease-in-out infinite;
+}
+@keyframes streak {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 0.5; }
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  margin-bottom: 24px;
+}
+.hero-title {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-subtitle {
+  margin-top: 20px;
+  max-width: 620px;
+  font-size: 1.05rem;
+  color: var(--muted-foreground);
+}
+.hero-buttons {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-stats {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 640px;
+}
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  text-align: left;
+}
+.stat-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: rgba(0, 205, 239, 0.15);
+  font-size: 1.1rem;
+}
+.stat-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-label {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* ===========================================================
+   SHARED SECTION STYLES
+   =========================================================== */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 16px;
+}
+.section.narrow {
+  max-width: 720px;
+}
+.section-head {
+  margin-bottom: 32px;
+}
+.section-head.with-action {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.eyebrow-line {
+  width: 24px;
+  height: 1px;
+  background: var(--primary);
+}
+.section-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.section-desc {
+  margin-top: 12px;
+  max-width: 620px;
+  color: var(--muted-foreground);
+}
+
+/* team logo circle (used all over) */
+.team-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-family: "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #fff;
+  background: radial-gradient(120% 120% at 30% 20%, var(--c), #0b1220);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+.team-logo.small-logo {
+  width: 36px;
+  height: 36px;
+  font-size: 0.7rem;
+}
+
+/* ===========================================================
+   LIVE GAME CARD
+   =========================================================== */
+.live-card {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+.live-left {
+  padding: 24px;
+  border-right: 1px solid var(--border);
+}
+.live-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.live-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(251, 53, 93, 0.15);
+  color: var(--live);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.team-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.team-row.reverse {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.score {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+.team-row .score {
+  margin-left: auto;
+}
+.team-row.reverse .score {
+  margin-left: 0;
+  margin-right: auto;
+}
+.vs {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* win probability bar */
+.prob-block {
+  margin-top: 28px;
+}
+.prob-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+}
+.prob-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.prob-bar {
+  position: relative;
+  height: 12px;
+  width: 100%;
+  background: var(--secondary);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.prob-fill-home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f97316, #fbb074);
+  transition: width 0.6s ease;
+}
+.prob-fill-away {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(270deg, #7c3aed, #a883f5);
+  opacity: 0.9;
+  transition: width 0.6s ease;
+}
+.prob-mid {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(7, 14, 21, 0.6);
+  transform: translateX(-50%);
+}
+
+/* last event note box */
+.event-note {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(29, 39, 50, 0.6);
+  border-radius: 16px;
+  padding: 12px;
+}
+.event-arrow {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(55, 183, 138, 0.15);
+  color: var(--green);
+  font-size: 1.1rem;
+}
+.event-arrow.down {
+  background: rgba(251, 53, 93, 0.15);
+  color: var(--live);
+}
+
+/* chart side */
+.live-right {
+  padding: 24px;
+}
+.chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.chart-big {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.prob-chart {
+  width: 100%;
+  height: 170px;
+}
+.grid-line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.ref-line {
+  stroke: var(--live);
+  stroke-opacity: 0.4;
+  stroke-dasharray: 4 4;
+}
+.event-feed {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.feed-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(29, 39, 50, 0.4);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+}
+.feed-item .mono {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ===========================================================
+   PREDICTION CARDS (upcoming games)
+   =========================================================== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.pred-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pred-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  border-color: rgba(0, 205, 239, 0.4);
+}
+.pred-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-bottom: 16px;
+}
+.edge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--secondary);
+  color: var(--foreground);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+.pred-teams {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.pred-sides {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.team-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: 12px;
+}
+.team-side.fav {
+  background: rgba(0, 205, 239, 0.1);
+  border: 1px solid rgba(0, 205, 239, 0.3);
+}
+.team-side .team-logo {
+  width: 40px;
+  height: 40px;
+  font-size: 0.75rem;
+}
+.team-side-info {
+  flex: 1;
+  min-width: 0;
+}
+.team-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fav-tag {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.team-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.odds {
+  font-family: "SF Mono", monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+
+/* small confidence ring used inside the card */
+.mini-ring {
+  border-left: 1px solid var(--border);
+  padding-left: 16px;
+}
+.pred-foot {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* form pips (W / L / O) */
+.form-pips {
+  display: flex;
+  gap: 4px;
+}
+.pip {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+.pip.W { background: rgba(55, 183, 138, 0.2); color: var(--green); }
+.pip.L { background: rgba(251, 53, 93, 0.2); color: var(--live); }
+.pip.O { background: rgba(217, 165, 20, 0.2); color: var(--gold); }
+
+/* ===========================================================
+   MATCHUP COMPARISON
+   =========================================================== */
+.matchup-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.matchup-tabs button,
+.matchup-tabs a {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--secondary);
+  color: var(--muted-foreground);
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+}
+.matchup-tabs button.active,
+.matchup-tabs a.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.matchup-tabs a:hover {
+  color: var(--foreground);
+}
+.matchup-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+}
+.stat-panel {
+  border-radius: 24px;
+  padding: 24px;
+}
+.stat-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.team-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.team-head.reverse {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.team-head .team-logo {
+  width: 44px;
+  height: 44px;
+}
+.spread {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+.stat-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.stat-line-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  margin-bottom: 6px;
+}
+.stat-line-labels .mid {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+.stat-val {
+  font-family: "SF Mono", monospace;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+.stat-val.win-home { color: var(--primary); }
+.stat-val.win-away { color: var(--live); }
+.stat-bars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--secondary);
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+}
+.bar-track.left {
+  justify-content: flex-end;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.8s ease;
+}
+
+/* confidence panel */
+.conf-panel {
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.conf-badge {
+  background: rgba(0, 205, 239, 0.15);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.conf-ring-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+.conf-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.conf-num {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+.conf-pct {
+  font-size: 1.25rem;
+  color: var(--muted-foreground);
+}
+.conf-winner {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(29, 39, 50, 0.6);
+  border-radius: 12px;
+  padding: 10px 16px;
+}
+.conf-winner .team-logo {
+  width: 32px;
+  height: 32px;
+  font-size: 0.65rem;
+}
+.conf-note {
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* ===========================================================
+   LEADERBOARD
+   =========================================================== */
+.podium {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.podium-card {
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.podium-card.first {
+  border-color: rgba(0, 205, 239, 0.4);
+  box-shadow: 0 0 0 1px rgba(0, 205, 239, 0.3);
+  margin-top: -16px;
+}
+.crown {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: radial-gradient(120% 120% at 30% 20%, hsl(var(--h, 200) 70% 55%), hsl(calc(var(--h, 200) + 40) 65% 35%));
+}
+.podium-name {
+  margin-top: 12px;
+  font-weight: 700;
+}
+.podium-stats {
+  margin-top: 12px;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  font-size: 0.75rem;
+}
+.podium-stats .mono {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.podium-stats .acc { color: var(--primary); }
+
+.board-table {
+  border-radius: 18px;
+  overflow: hidden;
+}
+.board-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 90px 70px 90px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.board-row:last-child {
+  border-bottom: none;
+}
+.board-header {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+}
+.board-body-row {
+  transition: background 0.15s;
+}
+.board-body-row:hover {
+  background: rgba(29, 39, 50, 0.5);
+}
+.rank-cell {
+  font-family: "SF Mono", monospace;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+.board-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.board-acc {
+  font-family: "SF Mono", monospace;
+  font-weight: 600;
+  color: var(--primary);
+}
+.board-streak,
+.board-points {
+  font-family: "SF Mono", monospace;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.mobile-sub {
+  display: none;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* ===========================================================
+   DISCUSSION
+   =========================================================== */
+.game-context {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.context-teams {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.composer {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+}
+.composer-body {
+  flex: 1;
+}
+.composer textarea {
+  width: 100%;
+  resize: none;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(7, 14, 21, 0.4);
+  color: var(--foreground);
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.15s;
+}
+.composer textarea:focus {
+  border-color: var(--primary);
+}
+.composer textarea::placeholder {
+  color: var(--muted-foreground);
+}
+.composer-foot {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pick-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--secondary);
+  padding: 4px;
+  border-radius: 8px;
+}
+.pick-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  color: var(--muted-foreground);
+  font-family: inherit;
+}
+.pick-btn.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.comment {
+  display: flex;
+  gap: 12px;
+  border-radius: 16px;
+  padding: 16px;
+}
+.comment-body {
+  flex: 1;
+  min-width: 0;
+}
+.comment-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pick-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.comment-text {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.like-btn {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  transition: color 0.15s;
+}
+.like-btn:hover,
+.like-btn.liked {
+  color: var(--live);
+}
+
+/* ===========================================================
+   FOOTER
+   =========================================================== */
+.footer {
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ===========================================================
+   RESPONSIVE / MOBILE
+   =========================================================== */
+@media (max-width: 860px) {
+  .matchup-grid {
+    grid-template-columns: 1fr;
+  }
+  .live-card {
+    grid-template-columns: 1fr;
+  }
+  .live-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 680px) {
+  /* turn the top links into a dropdown */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 12px;
+    right: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 8px;
+    gap: 2px;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-signin {
+    display: none;
+  }
+  .menu-btn {
+    display: block;
+  }
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-stats {
+    grid-template-columns: 1fr;
+  }
+  .podium {
+    grid-template-columns: 1fr;
+  }
+  .podium-card.first {
+    margin-top: 0;
+  }
+  /* simplify the leaderboard table on small screens */
+  .board-row {
+    grid-template-columns: 40px 1fr auto;
+  }
+  .hide-mobile {
+    display: none;
+  }
+  .mobile-sub {
+    display: block;
+  }
+}
+
+/* ===========================================================
+   PHASE 4 ADDITIONS
+   New pieces the back end needed: flash messages, sign in
+   pages, the pick buttons and the pages without a hero image.
+   =========================================================== */
+
+/* pages that do not start with the hero need room for the fixed nav bar */
+.page-top {
+  padding-top: 116px;
+}
+
+/* ---- messages from the server (saved, signed in, errors...) ---- */
+.flash-area {
+  max-width: 1100px;
+  margin: 92px auto 0;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.flash {
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+.flash-success {
+  background: rgba(55, 183, 138, 0.15);
+  border-color: rgba(55, 183, 138, 0.4);
+  color: var(--green);
+}
+.flash-error {
+  background: rgba(251, 53, 93, 0.15);
+  border-color: rgba(251, 53, 93, 0.4);
+  color: var(--live);
+}
+/* when a message is showing, the page below it needs less top padding */
+.flash-area + .section.page-top {
+  padding-top: 24px;
+}
+
+/* ---- the signed in member in the nav bar ---- */
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.avatar.small-avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 0.65rem;
+}
+
+/* ---- the number drawn in the middle of a confidence ring ---- */
+.ring-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.conf-ring-wrap .ring-number {
+  font-size: 2.25rem;
+}
+
+/* ---- the pick buttons on a prediction card ---- */
+.pick-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.pick-form .pick-btn {
+  background: var(--secondary);
+  padding: 6px 14px;
+  transition: background 0.15s, color 0.15s;
+}
+.pick-form .pick-btn:hover {
+  color: var(--foreground);
+}
+.pick-form .pick-btn.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* ---- the tabs above the discussion ---- */
+.discussion-tabs {
+  margin-bottom: 20px;
+}
+
+/* ---- sign in and create account pages ---- */
+.auth-card {
+  border-radius: 24px;
+  padding: 32px;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+.auth-form label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  margin-top: 10px;
+}
+.auth-form input {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(7, 14, 21, 0.4);
+  color: var(--foreground);
+  padding: 11px 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.15s;
+}
+.auth-form input:focus {
+  border-color: var(--primary);
+}
+.auth-form .btn {
+  margin-top: 20px;
+}
+.auth-switch {
+  margin-top: 18px;
+}
+.demo-hint {
+  margin-top: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* ---- the "your stats" strip on the leaderboard ---- */
+.my-stats {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.my-stats > div {
+  flex: 1;
+  min-width: 180px;
+}
+.board-body-row.is-me {
+  background: rgba(0, 205, 239, 0.08);
+}
+
+/* ---- small shared bits ---- */
+.empty-note {
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+}
+.more-link {
+  margin-top: 28px;
+}
+.center-buttons {
+  justify-content: center;
+}
+.error-code {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+}
+
+/* the like button sits inside its own form now, so drop the form margin */
+.comment-body form {
+  margin: 0;
+}
+
+/* ===========================================================
+   PHASE 5 ADDITIONS
+   Real NHL crests, the results page and the paging controls.
+   =========================================================== */
+
+/* --- the club badge now holds the NHL's own logo --- */
+.team-logo {
+  position: relative;
+  overflow: hidden;
+}
+.team-logo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 15%;
+  /* the crest sits on top of the coloured circle */
+  z-index: 1;
+}
+/* the three letter code shows through until the crest has loaded,
+   and stays visible if the NHL's image server cannot be reached */
+.team-logo-text {
+  position: relative;
+  z-index: 0;
+}
+
+/* --- results page --- */
+.results-stats {
+  margin-bottom: 28px;
+}
+.results-tabs {
+  margin: 26px 0 14px;
+}
+.results-table .result-row {
+  grid-template-columns: 92px 1fr 110px 80px 46px;
+}
+.model-table .model-row {
+  grid-template-columns: 40px 1fr 90px 90px 80px;
+}
+.results-table .board-user {
+  gap: 10px;
+}
+.call-cell {
+  text-align: right;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.call-hit {
+  color: var(--green);
+}
+.call-miss {
+  color: var(--muted-foreground);
+}
+
+/* --- paging under a long table --- */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+/* --- the little "strategy" chip on the leaderboard --- */
+.board-user .fav-tag {
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* --- a friendlier empty state --- */
+.empty-note p + p {
+  margin-top: 8px;
+}
+
+@media (max-width: 720px) {
+  .results-table .result-row {
+    grid-template-columns: 68px 1fr 62px 40px;
+  }
+  .model-table .model-row {
+    grid-template-columns: 34px 1fr 70px;
+  }
+}

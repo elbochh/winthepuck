@@ -1,0 +1,532 @@
+{
+ "gameId": 2025030413,
+ "date": "2026-06-06",
+ "label": "Playoff replay",
+ "home": "VGK",
+ "away": "CAR",
+ "finalHome": 5,
+ "finalAway": 4,
+ "pregameHomeProb": 41.6,
+ "timeline": [
+  {
+   "minute": 0.0,
+   "period": 1,
+   "clock": "20:00",
+   "label": "Period 1 starts",
+   "team": "neutral",
+   "homeProb": 33.0,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 2.9,
+   "period": 1,
+   "clock": "17:07",
+   "label": "VGK shot on goal",
+   "team": "home",
+   "homeProb": 30.7,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 5.2,
+   "period": 1,
+   "clock": "14:47",
+   "label": "CAR shot on goal",
+   "team": "away",
+   "homeProb": 31.8,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 8.3,
+   "period": 1,
+   "clock": "11:43",
+   "label": "VGK shot misses",
+   "team": "home",
+   "homeProb": 24.0,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 12.9,
+   "period": 1,
+   "clock": "07:07",
+   "label": "VGK hit",
+   "team": "home",
+   "homeProb": 27.4,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 14.8,
+   "period": 1,
+   "clock": "05:14",
+   "label": "Play stopped",
+   "team": "neutral",
+   "homeProb": 30.4,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 17.8,
+   "period": 1,
+   "clock": "02:13",
+   "label": "VGK hit",
+   "team": "home",
+   "homeProb": 40.6,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 20.0,
+   "period": 1,
+   "clock": "00:00",
+   "label": "End of period 1",
+   "team": "neutral",
+   "homeProb": 40.3,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 20.0,
+   "period": 2,
+   "clock": "20:00",
+   "label": "Period 2 starts",
+   "team": "neutral",
+   "homeProb": 40.3,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 22.0,
+   "period": 2,
+   "clock": "17:58",
+   "label": "VGK hit",
+   "team": "home",
+   "homeProb": 7.9,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 24.6,
+   "period": 2,
+   "clock": "15:23",
+   "label": "VGK takeaway",
+   "team": "home",
+   "homeProb": 33.0,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 26.8,
+   "period": 2,
+   "clock": "13:11",
+   "label": "CAR giveaway",
+   "team": "away",
+   "homeProb": 10.5,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 29.8,
+   "period": 2,
+   "clock": "10:13",
+   "label": "CAR hit",
+   "team": "away",
+   "homeProb": 4.8,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 30.3,
+   "period": 2,
+   "clock": "09:44",
+   "label": "CAR penalty",
+   "team": "away",
+   "homeProb": 8.4,
+   "homeScore": 0,
+   "awayScore": 0
+  },
+  {
+   "minute": 30.4,
+   "period": 2,
+   "clock": "09:34",
+   "label": "VGK goal",
+   "team": "home",
+   "homeProb": 40.3,
+   "homeScore": 1,
+   "awayScore": 0
+  },
+  {
+   "minute": 30.7,
+   "period": 2,
+   "clock": "09:18",
+   "label": "VGK goal",
+   "team": "home",
+   "homeProb": 81.6,
+   "homeScore": 2,
+   "awayScore": 0
+  },
+  {
+   "minute": 32.3,
+   "period": 2,
+   "clock": "07:42",
+   "label": "CAR giveaway",
+   "team": "away",
+   "homeProb": 79.9,
+   "homeScore": 2,
+   "awayScore": 0
+  },
+  {
+   "minute": 34.2,
+   "period": 2,
+   "clock": "05:45",
+   "label": "CAR giveaway",
+   "team": "away",
+   "homeProb": 84.7,
+   "homeScore": 2,
+   "awayScore": 0
+  },
+  {
+   "minute": 34.5,
+   "period": 2,
+   "clock": "05:28",
+   "label": "VGK goal",
+   "team": "home",
+   "homeProb": 98.3,
+   "homeScore": 3,
+   "awayScore": 0
+  },
+  {
+   "minute": 36.1,
+   "period": 2,
+   "clock": "03:56",
+   "label": "Play stopped",
+   "team": "neutral",
+   "homeProb": 93.0,
+   "homeScore": 3,
+   "awayScore": 0
+  },
+  {
+   "minute": 36.9,
+   "period": 2,
+   "clock": "03:08",
+   "label": "VGK goal",
+   "team": "home",
+   "homeProb": 99.8,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 38.8,
+   "period": 2,
+   "clock": "01:14",
+   "label": "VGK hit",
+   "team": "home",
+   "homeProb": 100.0,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 40.0,
+   "period": 2,
+   "clock": "00:00",
+   "label": "End of period 2",
+   "team": "neutral",
+   "homeProb": 100.0,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 40.0,
+   "period": 3,
+   "clock": "20:00",
+   "label": "Period 3 starts",
+   "team": "neutral",
+   "homeProb": 100.0,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 41.0,
+   "period": 3,
+   "clock": "18:59",
+   "label": "CAR shot misses",
+   "team": "away",
+   "homeProb": 100.0,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 43.2,
+   "period": 3,
+   "clock": "16:45",
+   "label": "VGK penalty",
+   "team": "home",
+   "homeProb": 99.9,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 44.1,
+   "period": 3,
+   "clock": "15:56",
+   "label": "CAR penalty",
+   "team": "away",
+   "homeProb": 100.0,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 46.9,
+   "period": 3,
+   "clock": "13:07",
+   "label": "VGK giveaway",
+   "team": "home",
+   "homeProb": 100.0,
+   "homeScore": 4,
+   "awayScore": 0
+  },
+  {
+   "minute": 47.0,
+   "period": 3,
+   "clock": "12:57",
+   "label": "CAR goal",
+   "team": "away",
+   "homeProb": 99.9,
+   "homeScore": 4,
+   "awayScore": 1
+  },
+  {
+   "minute": 47.5,
+   "period": 3,
+   "clock": "12:31",
+   "label": "CAR goal",
+   "team": "away",
+   "homeProb": 99.9,
+   "homeScore": 4,
+   "awayScore": 2
+  },
+  {
+   "minute": 47.7,
+   "period": 3,
+   "clock": "12:18",
+   "label": "CAR goal",
+   "team": "away",
+   "homeProb": 99.0,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 48.7,
+   "period": 3,
+   "clock": "11:20",
+   "label": "CAR giveaway",
+   "team": "away",
+   "homeProb": 98.3,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 51.5,
+   "period": 3,
+   "clock": "08:30",
+   "label": "VGK hit",
+   "team": "home",
+   "homeProb": 99.7,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 52.1,
+   "period": 3,
+   "clock": "07:53",
+   "label": "CAR penalty",
+   "team": "away",
+   "homeProb": 99.7,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 54.1,
+   "period": 3,
+   "clock": "05:56",
+   "label": "Faceoff",
+   "team": "away",
+   "homeProb": 99.7,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 56.5,
+   "period": 3,
+   "clock": "03:32",
+   "label": "CAR shot misses",
+   "team": "away",
+   "homeProb": 99.7,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 57.1,
+   "period": 3,
+   "clock": "02:55",
+   "label": "VGK penalty",
+   "team": "home",
+   "homeProb": 99.8,
+   "homeScore": 4,
+   "awayScore": 3
+  },
+  {
+   "minute": 58.3,
+   "period": 3,
+   "clock": "01:42",
+   "label": "CAR goal",
+   "team": "away",
+   "homeProb": 55.0,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 59.8,
+   "period": 3,
+   "clock": "00:13",
+   "label": "Play stopped",
+   "team": "neutral",
+   "homeProb": 51.2,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 60.0,
+   "period": 3,
+   "clock": "00:00",
+   "label": "End of period 3",
+   "team": "neutral",
+   "homeProb": 66.3,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 60.0,
+   "period": 4,
+   "clock": "20:00",
+   "label": "Period 4 starts",
+   "team": "neutral",
+   "homeProb": 66.3,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 62.8,
+   "period": 4,
+   "clock": "17:10",
+   "label": "Shot blocked",
+   "team": "away",
+   "homeProb": 77.9,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 66.1,
+   "period": 4,
+   "clock": "13:55",
+   "label": "CAR giveaway",
+   "team": "away",
+   "homeProb": 77.9,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 68.5,
+   "period": 4,
+   "clock": "11:29",
+   "label": "VGK hit",
+   "team": "home",
+   "homeProb": 62.7,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 72.0,
+   "period": 4,
+   "clock": "07:58",
+   "label": "Faceoff",
+   "team": "home",
+   "homeProb": 91.7,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 76.4,
+   "period": 4,
+   "clock": "03:37",
+   "label": "Faceoff",
+   "team": "away",
+   "homeProb": 95.8,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 80.0,
+   "period": 4,
+   "clock": "00:00",
+   "label": "End of period 4",
+   "team": "neutral",
+   "homeProb": 91.7,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 65.0,
+   "period": 5,
+   "clock": "20:00",
+   "label": "Period 5 starts",
+   "team": "neutral",
+   "homeProb": 92.7,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 65.0,
+   "period": 5,
+   "clock": "20:00",
+   "label": "Faceoff",
+   "team": "away",
+   "homeProb": 89.7,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 67.3,
+   "period": 5,
+   "clock": "17:43",
+   "label": "Faceoff",
+   "team": "away",
+   "homeProb": 87.4,
+   "homeScore": 4,
+   "awayScore": 4
+  },
+  {
+   "minute": 70.6,
+   "period": 5,
+   "clock": "14:22",
+   "label": "VGK goal",
+   "team": "home",
+   "homeProb": 100.0,
+   "homeScore": 5,
+   "awayScore": 4
+  },
+  {
+   "minute": 70.6,
+   "period": 5,
+   "clock": "14:22",
+   "label": "End of period 5",
+   "team": "neutral",
+   "homeProb": 100.0,
+   "homeScore": 5,
+   "awayScore": 4
+  }
+ ]
+}

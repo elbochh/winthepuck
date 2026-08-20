@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+
+<section class="section narrow page-top">
+  <div class="glass auth-card">
+    <h2 class="section-title center">Create an account</h2>
+    <p class="section-desc center">It takes a few seconds and your password is stored as a secure hash.</p>
+
+    <form method="post" class="auth-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" minlength="3" required autofocus />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" minlength="6" required />
+
+      <label for="confirm">Confirm password</label>
+      <input type="password" id="confirm" name="confirm" minlength="6" required />
+
+      <button type="submit" class="btn btn-primary btn-lg">Create account</button>
+    </form>
+
+    <p class="muted small center auth-switch">
+      Already a member? <a href="{{ url_for('login') }}" class="accent bold">Sign in</a>
+    </p>
+  </div>
+</section>
+
+{% endblock %}
