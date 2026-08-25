@@ -50,7 +50,7 @@ class TeamState:
                 "features": self.features}
 
     @classmethod
-    def from_dict(cls, data: dict) -> "TeamState":
+    def from_dict(cls, data: dict) -> TeamState:
         return cls(data["elo"], data["decay_gd"], data["decay_win"],
                    data.get("season", 0), data.get("features", {}))
 

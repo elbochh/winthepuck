@@ -20,7 +20,7 @@ import argparse
 import json
 import math
 import urllib.request
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import joblib
@@ -138,12 +138,27 @@ def build_row(home_state: elo.TeamState, away_state: elo.TeamState,
     row["season_game_index"] = float(season_game_index)
 
     # Most inputs are stored a second time as a home-minus-away difference.
+    #
+    # Two spellings are tried, because the Phase 1 pipeline is not quite
+    # consistent about it. Most differences are named after the plain feature
+    # (last_5_win_pct -> last_5_win_pct_diff), but the season-record ones keep
+    # the pipeline's longer column name on the two sides while dropping it in
+    # the middle: home_season_points_pct_before_game and its away twin become
+    # season_points_pct_diff. Only checking the first spelling left that one
+    # column empty on every prediction the site has ever made, and because the
+    # logistic model imputes what is missing, it quietly filled it with the
+    # training-set average instead of the real gap between the two teams.
     for column in feature_cols:
-        if column.endswith("_diff") and column not in row:
-            base = column[: -len("_diff")]
-            home_col, away_col = f"home_{base}", f"away_{base}"
+        if not column.endswith("_diff") or column in row:
+            continue
+        base = column[: -len("_diff")]
+        for home_col, away_col in (
+            (f"home_{base}", f"away_{base}"),
+            (f"home_{base}_before_game", f"away_{base}_before_game"),
+        ):
             if home_col in row and away_col in row:
                 row[column] = row[home_col] - row[away_col]
+                break
 
     # two differences the pipeline builds out of opposite splits
     if {"home_home_win_pct_before_game", "away_road_win_pct_before_game"} <= row.keys():
@@ -181,8 +196,10 @@ def fair_odds(probability: float) -> int:
 # ===========================================================
 
 def standings_end(season: int) -> date:
-    payload = nhl_api.get_json(f"{nhl_api.WEB_API}/standings-season")
-    for row in payload.get("seasons", []):
+    """The last day the league table was published for a season."""
+    payload = nhl_api.get_json_optional(
+        f"{nhl_api.WEB_API}/standings-season", "the season calendar")
+    for row in (payload or {}).get("seasons", []):
         if int(row["id"]) == season:
             return min(nhl_api.parse_date(row["standingsEnd"]), date.today())
     return date.today()
@@ -203,6 +220,15 @@ def team_table(games: list[dict], book: FormBook, season: int,
     table = nhl_api.standings(standings_end(shown_season))
     stats = nhl_api.club_stats(shown_season)
     form = last_five_form(book, shown_season)
+
+    # If the league table could not be fetched we send no teams at all, and the
+    # website simply keeps the ones it already has. The predictions in this
+    # same payload are unaffected, which is the whole point of not treating a
+    # cosmetic endpoint as fatal.
+    if not table:
+        print("WARNING: no standings available - sending predictions only, "
+              "the website will keep the team table it already has")
+        return []
 
     details: dict[str, dict] = {}
     for game in games:
@@ -300,9 +326,10 @@ def build_payload(days_ahead: int, history_days: int) -> dict:
         ))
         meta.append(game)
 
-    probabilities = predict(models, feature_cols, rows) if rows else []
+    probabilities: list[float] = (
+        [float(p) for p in predict(models, feature_cols, rows)] if rows else [])
     upcoming = []
-    for game, probability in zip(meta, probabilities):
+    for game, probability in zip(meta, probabilities, strict=True):
         probability = float(probability)
         if math.isnan(probability):
             continue
@@ -339,7 +366,7 @@ def build_payload(days_ahead: int, history_days: int) -> dict:
     report = json.loads(report_path.read_text()) if report_path.exists() else {}
 
     return {
-        "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generatedAt": datetime.now(UTC).isoformat(timespec="seconds"),
         "season": current_season,
         "modelTrainedTo": state["asOfDate"],
         "teams": team_table(games, book, current_season, states),

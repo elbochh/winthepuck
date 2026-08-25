@@ -15,6 +15,7 @@ long without anyone having to re-run the 18 GB pipeline.
 """
 from __future__ import annotations
 
+from collections.abc import Sequence
 from datetime import date
 
 import nhl_api
@@ -29,8 +30,14 @@ SEASON_FEATURES = [
 ]
 
 
-def _average(values: list[float]) -> float | None:
+def _average(values: Sequence[float]) -> float | None:
     return round(sum(values) / len(values), 4) if values else None
+
+
+def _pair_key(home: str, away: str) -> tuple[str, str]:
+    """One key per pair of clubs, whichever way round they are playing."""
+    first, second = sorted((home, away))
+    return first, second
 
 
 class FormBook:
@@ -63,7 +70,7 @@ class FormBook:
                 "overtime": game["last_period_type"] in {"OT", "SO"},
             })
 
-        self.by_pair.setdefault(tuple(sorted((home, away))), []).append({
+        self.by_pair.setdefault(_pair_key(home, away), []).append({
             "date": day,
             "game_id": game["game_id"],
             "home": home,
@@ -92,7 +99,10 @@ class FormBook:
         road_games = [r for r in this_season if r["is_home"] == 0]
 
         gap = (game_day - history[-1]["date"]).days
-        features: dict[str, float] = {
+        # Built as "float or nothing" and filtered at the end: a team with no
+        # away games yet genuinely has no away record, and the model was
+        # trained with that column absent rather than zeroed.
+        features: dict[str, float | None] = {
             "rest_days": float(min(gap, 14)),
             "back_to_back": 1.0 if gap == 1 else 0.0,
             "games_last_3_days": float(self._count_within(history, game_day, 3)),
@@ -125,25 +135,26 @@ class FormBook:
 
     def head_to_head(self, home: str, away: str, game_day: date) -> dict[str, float]:
         """How these two clubs have got on against each other lately."""
-        history = [r for r in self.by_pair.get(tuple(sorted((home, away))), [])
+        history = [r for r in self.by_pair.get(_pair_key(home, away), [])
                    if r["date"] < game_day]
         if not history:
             return {"h2h_games_last_365_days": 0.0}
 
         last_5 = history[-5:]
-        wins = [int(r["winner"] == home) for r in last_5]
-        margins = []
+        wins: list[float] = [float(r["winner"] == home) for r in last_5]
+        margins: list[float] = []
         for row in last_5:
             if row["home"] == home:
                 margins.append(row["home_goals"] - row["away_goals"])
             else:
                 margins.append(row["away_goals"] - row["home_goals"])
 
-        return {
+        head_to_head: dict[str, float | None] = {
             "h2h_games_last_365_days": float(self._count_within(history, game_day, 365)),
             "h2h_home_team_win_pct_last_5": _average(wins),
             "h2h_home_team_goal_diff_avg_last_5": _average(margins),
         }
+        return {k: v for k, v in head_to_head.items() if v is not None}
 
     @staticmethod
     def _count_within(history: list[dict], game_day: date, days: int) -> int:
