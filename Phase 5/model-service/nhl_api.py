@@ -12,10 +12,11 @@ Everything here is free, needs no API key and no login.
 """
 from __future__ import annotations
 
+import json
+import random
 import time
 import urllib.error
 import urllib.request
-import json
 from datetime import date, datetime
 from typing import Any
 
@@ -24,25 +25,91 @@ STATS_API = "https://api.nhle.com/stats/rest/en"
 
 USER_AGENT = "WinThePuck/1.0 (student project)"
 TIMEOUT = 30
-RETRIES = 4
+RETRIES = 5
+
+# Codes worth trying again. 429 means we asked too fast, and 5xx means the
+# NHL's own servers are having a moment - both usually clear on their own.
+# Anything else (401, 403, a malformed URL) will fail exactly the same way
+# five times in a row, so we stop immediately instead of wasting a minute.
+RETRYABLE_STATUS = {408, 425, 429, 500, 502, 503, 504}
+
+BACKOFF_BASE = 1.5
+BACKOFF_CAP = 30.0
+
+
+def _sleep_for(attempt: int, retry_after: str | None = None) -> float:
+    """
+    How long to wait before trying again.
+
+    The delay doubles each time, which gives a struggling server room to
+    recover instead of being hit at the same rate that knocked it over. The
+    random fraction on the end matters more than it looks: without it, every
+    client that failed at the same moment retries at the same moment, and the
+    server gets a fresh spike each round.
+
+    If the server told us how long to wait, we believe it.
+    """
+    if retry_after:
+        try:
+            return min(float(retry_after), BACKOFF_CAP)
+        except ValueError:
+            pass
+    delay = min(BACKOFF_BASE * (2 ** attempt), BACKOFF_CAP)
+    return delay * (0.5 + random.random() / 2)
 
 
 def get_json(url: str) -> dict[str, Any]:
-    """Ask the NHL API for one address and give back the answer as a dict."""
+    """
+    Ask the NHL API for one address and give back the answer as a dict.
+
+    Raises RuntimeError if it cannot be reached. Use `get_json_optional` for
+    anything the job can manage without.
+    """
     last_error: Exception | None = None
+
     for attempt in range(RETRIES):
         try:
             request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
             with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
                 return json.loads(response.read().decode("utf-8"))
+
         except urllib.error.HTTPError as error:
             if error.code == 404:
                 return {}
             last_error = error
-        except Exception as error:            # network hiccup, try again
+            if error.code not in RETRYABLE_STATUS:
+                break
+            wait = _sleep_for(attempt, error.headers.get("Retry-After"))
+
+        except Exception as error:            # timeout, DNS, connection reset
             last_error = error
-        time.sleep(1.5 * (attempt + 1))
+            wait = _sleep_for(attempt)
+
+        if attempt < RETRIES - 1:
+            print(f"  {url.rsplit('/', 1)[-1][:60]} failed ({last_error}); "
+                  f"retrying in {wait:.1f}s")
+            time.sleep(wait)
+
     raise RuntimeError(f"NHL API failed for {url}: {last_error}")
+
+
+def get_json_optional(url: str, label: str) -> dict[str, Any] | None:
+    """
+    The same request, for data the job would rather have than not.
+
+    The daily run died on 20 August 2026 because the NHL's team-stats endpoint
+    returned 503 for a minute. Those stats fill the comparison bars on the
+    matchup page - they have nothing to do with the predictions, which were
+    already calculated and ready to send. Losing a whole day of predictions
+    over a cosmetic endpoint is the wrong trade, so calls like that come
+    through here and return None instead of bringing the job down.
+    """
+    try:
+        return get_json(url)
+    except RuntimeError as error:
+        print(f"WARNING: could not fetch {label} ({error}). "
+              f"Carrying on without it.")
+        return None
 
 
 def team_abbrevs(season: int) -> list[str]:
@@ -105,18 +172,31 @@ def all_games(season: int, teams: list[str] | None = None) -> list[dict[str, Any
 
 
 def standings(on_date: date | None = None) -> list[dict[str, Any]]:
-    """The league table on a date (defaults to today)."""
+    """
+    The league table on a date (defaults to today).
+
+    Optional: the website keeps showing the table from the last successful
+    refresh if this comes back empty, which is much better than no refresh.
+    """
     stamp = (on_date or date.today()).isoformat()
-    payload = get_json(f"{WEB_API}/standings/{stamp}")
-    return payload.get("standings", [])
+    payload = get_json_optional(f"{WEB_API}/standings/{stamp}", "the standings")
+    return (payload or {}).get("standings", [])
 
 
 def club_stats(season: int) -> dict[str, dict[str, float]]:
-    """Season totals per club: the numbers behind the matchup comparison bars."""
-    summary = get_json(
-        f"{STATS_API}/team/summary?cayenneExp=seasonId={season}%20and%20gameTypeId=2"
-    )
-    directory = get_json(f"{STATS_API}/team")
+    """
+    Season totals per club: the numbers behind the matchup comparison bars.
+
+    Optional for the same reason as the standings - these decorate the matchup
+    page and play no part in any prediction.
+    """
+    summary = get_json_optional(
+        f"{STATS_API}/team/summary?cayenneExp=seasonId={season}%20and%20gameTypeId=2",
+        f"team stats for {season}")
+    directory = get_json_optional(f"{STATS_API}/team", "the team directory")
+    if not summary or not directory:
+        return {}
+
     code_of = {t["fullName"]: t["triCode"] for t in directory.get("data", [])}
 
     out: dict[str, dict[str, float]] = {}
