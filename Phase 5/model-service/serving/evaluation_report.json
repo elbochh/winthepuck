@@ -1,0 +1,176 @@
+{
+ "method": "tuned on seasons before 20252026, tested once on 20252026",
+ "trainGames": 4198,
+ "heldOutGames": 1394,
+ "baseline": {
+  "name": "Equal-weight ensemble (what is live today)",
+  "train": {
+   "games": 4198,
+   "logLoss": 0.6598,
+   "brier": 0.2339,
+   "accuracy": 59.7
+  },
+  "heldOut": {
+   "games": 1394,
+   "logLoss": 0.6857,
+   "brier": 0.2463,
+   "accuracy": 55.4
+  }
+ },
+ "candidates": [
+  {
+   "name": "Platt scaling",
+   "idea": "rescale the probabilities so stated confidence matches reality",
+   "fitted": {
+    "slope": 1.0807,
+    "bias": -0.0294
+   },
+   "reading": "slope above 1 - the model was under-confident on the training seasons",
+   "train": {
+    "games": 4198,
+    "logLoss": 0.6596,
+    "brier": 0.2338,
+    "accuracy": 59.8
+   },
+   "heldOut": {
+    "games": 1394,
+    "logLoss": 0.6862,
+    "brier": 0.2466,
+    "accuracy": 55.9
+   },
+   "verdict": {
+    "helped": false,
+    "logLossDelta": 0.0005,
+    "note": "no real difference - inside the noise floor"
+   }
+  },
+  {
+   "name": "Adaptive home-ice advantage",
+   "idea": "home ice was worth 51.9%-56.5% depending on the season, but the model always assumes 54.4%",
+   "fitted": {
+    "window": 800,
+    "strength": 0.75,
+    "gridSize": 20
+   },
+   "train": {
+    "games": 4198,
+    "logLoss": 0.6595,
+    "brier": 0.2338,
+    "accuracy": 60.3
+   },
+   "heldOut": {
+    "games": 1394,
+    "logLoss": 0.6854,
+    "brier": 0.2462,
+    "accuracy": 55.5
+   },
+   "verdict": {
+    "helped": false,
+    "logLossDelta": -0.0003,
+    "note": "no real difference - inside the noise floor"
+   }
+  },
+  {
+   "name": "Fitted ensemble weights",
+   "idea": "the live model averages its parts equally - fit real weights instead",
+   "fitted": {
+    "weights": {
+     "p_hgb": 0.2096,
+     "p_logit": 0.5754,
+     "p_catboost": 0.2424
+    },
+    "bias": -0.0187
+   },
+   "train": {
+    "games": 4198,
+    "logLoss": 0.6594,
+    "brier": 0.2337,
+    "accuracy": 59.8
+   },
+   "heldOut": {
+    "games": 1394,
+    "logLoss": 0.6853,
+    "brier": 0.2462,
+    "accuracy": 55.2
+   },
+   "verdict": {
+    "helped": false,
+    "logLossDelta": -0.0004,
+    "note": "no real difference - inside the noise floor"
+   }
+  },
+  {
+   "name": "Fitted ensemble weights + Elo",
+   "idea": "the live model averages its parts equally - fit real weights instead",
+   "fitted": {
+    "weights": {
+     "p_hgb": 0.1058,
+     "p_logit": 0.5097,
+     "p_catboost": 0.2697,
+     "elo": 0.1663
+    },
+    "bias": -0.0403
+   },
+   "train": {
+    "games": 4198,
+    "logLoss": 0.6593,
+    "brier": 0.2337,
+    "accuracy": 59.5
+   },
+   "heldOut": {
+    "games": 1394,
+    "logLoss": 0.6855,
+    "brier": 0.2463,
+    "accuracy": 55.1
+   },
+   "verdict": {
+    "helped": false,
+    "logLossDelta": -0.0002,
+    "note": "no real difference - inside the noise floor"
+   }
+  }
+ ],
+ "perSeason": [
+  {
+   "season": 20222023,
+   "games": 1400,
+   "logLoss": 0.6628,
+   "brier": 0.2353,
+   "accuracy": 59.6,
+   "meanPrediction": 0.544,
+   "spread": 0.113,
+   "actualHomeWinRate": 52.0
+  },
+  {
+   "season": 20232024,
+   "games": 1400,
+   "logLoss": 0.6555,
+   "brier": 0.2319,
+   "accuracy": 61.1,
+   "meanPrediction": 0.545,
+   "spread": 0.118,
+   "actualHomeWinRate": 53.7
+  },
+  {
+   "season": 20242025,
+   "games": 1398,
+   "logLoss": 0.661,
+   "brier": 0.2345,
+   "accuracy": 58.3,
+   "meanPrediction": 0.544,
+   "spread": 0.106,
+   "actualHomeWinRate": 56.5
+  },
+  {
+   "season": 20252026,
+   "games": 1394,
+   "logLoss": 0.6857,
+   "brier": 0.2463,
+   "accuracy": 55.4,
+   "meanPrediction": 0.544,
+   "spread": 0.092,
+   "actualHomeWinRate": 51.9
+  }
+ ],
+ "conclusion": "None of the three candidates beat the equal-weight ensemble on the held-out season. Each one gained about 0.0004 log loss on the data it was tuned on and none of that carried over, which is the signature of fitting noise. The ensemble stays as it is. The real finding is in perSeason: accuracy fell from 59.6% to 55.4% and the spread of the predictions narrowed from 0.113 to 0.092 as the model aged away from its training data. That is an argument for monitoring and retraining, not for a post-hoc correction."
+}
