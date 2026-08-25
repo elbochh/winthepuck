@@ -23,6 +23,14 @@ Phase 5/.secrets/
 *.db-shm
 Phase 5/winthepuck-cloud/instance/
 
+# ---- test and lint caches ----
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
 # ---- generated output ----
 Phase 5/model-service/refresh_payload.json
 Phase 5/model-service/*.log
