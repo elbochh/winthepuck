@@ -42,3 +42,14 @@ RESULTS_PAGE_SIZE = 25
 # Points for the leaderboard.
 POINTS_FOR_CORRECT = 100
 POINTS_FOR_WRONG = 10
+
+# ---- how hard somebody is allowed to hammer the site ----
+# Six tries a minute is plenty for a person who has forgotten their password,
+# and useless for a script working through a word list.
+LOGIN_ATTEMPTS = int(os.environ.get("LOGIN_ATTEMPTS", 6))
+LOGIN_WINDOW_SECONDS = int(os.environ.get("LOGIN_WINDOW_SECONDS", 60))
+
+# The daily job posts once a day. Ten an hour leaves room to re-run it by hand
+# after a failure without ever getting near the limit.
+REFRESH_ATTEMPTS = int(os.environ.get("REFRESH_ATTEMPTS", 10))
+REFRESH_WINDOW_SECONDS = int(os.environ.get("REFRESH_WINDOW_SECONDS", 3600))
