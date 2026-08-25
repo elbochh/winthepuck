@@ -65,7 +65,9 @@ def run_command(sql: str, values: tuple = ()) -> int:
     connection = get_connection()
     cursor = connection.execute(sql, values)
     connection.commit()
-    return cursor.lastrowid
+    # lastrowid is None for statements that insert nothing, such as an UPDATE
+    # or an INSERT that hit ON CONFLICT DO NOTHING.
+    return cursor.lastrowid or 0
 
 
 def build_tables() -> None:
@@ -96,7 +98,8 @@ def get_meta(key: str, default: str = "") -> str:
     return row["value"] if row else default
 
 
-def set_meta(connection: sqlite3.Connection, key: str, value: str) -> None:
+def set_meta(connection: sqlite3.Connection, key: str, value: Any) -> None:
+    """Store one setting. Numbers are written as text, which is all we read back."""
     connection.execute(
         "INSERT INTO site_meta (key, value) VALUES (?, ?) "
         "ON CONFLICT (key) DO UPDATE SET value = excluded.value",

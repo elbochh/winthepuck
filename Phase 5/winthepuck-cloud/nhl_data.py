@@ -436,6 +436,9 @@ def build_from_files() -> dict:
     if history:
         summary["history"] = load_season_history(connection, history, known)
         database.set_meta(connection, "history_label", history["label"])
+        # The monitoring page needs to know where the published track record
+        # stops and this deployment's own live predictions begin.
+        database.set_meta(connection, "history_season", history["season"])
         for key, value in history["summary"].items():
             database.set_meta(connection, f"history_{key}", value)
 

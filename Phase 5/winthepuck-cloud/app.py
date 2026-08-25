@@ -25,17 +25,28 @@ from __future__ import annotations
 import os
 import secrets
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from math import ceil
 
-from flask import (Flask, abort, flash, g, jsonify, redirect, render_template,
-                   request, session, url_for)
+from flask import (
+    Flask,
+    abort,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import config
 import database
+import monitoring
 import nhl_data
 import scoring
+import security
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -50,6 +61,20 @@ app.config.update(
 )
 
 app.teardown_appcontext(database.close_connection)
+
+# Guessing a password is the cheapest attack on a site with a login box, so
+# sign-in attempts are capped. The refresh endpoint gets its own, looser cap:
+# the daily job calls it once, and anything hammering it is not the daily job.
+login_limiter = security.RateLimiter(config.LOGIN_ATTEMPTS,
+                                     config.LOGIN_WINDOW_SECONDS)
+refresh_limiter = security.RateLimiter(config.REFRESH_ATTEMPTS,
+                                       config.REFRESH_WINDOW_SECONDS)
+
+
+@app.after_request
+def add_security_headers(response):
+    """Send the same protective headers on every response."""
+    return security.apply_headers(response, https=config.ON_AZURE)
 
 # The six numbers compared on the matchup page:
 # column, label on screen, the value that fills the bar, unit, higher is better
@@ -254,7 +279,10 @@ def games_where(clause: str, values: tuple = (), limit: int | None = None) -> li
     sql = GAME_SELECT + clause
     if limit:
         sql += f" LIMIT {int(limit)}"
-    return [build_game(row) for row in database.query_all(sql, values)]
+    # build_game only returns None for a missing row, which a SELECT loop
+    # cannot produce, but the filter keeps the type honest either way.
+    games = (build_game(row) for row in database.query_all(sql, values))
+    return [game for game in games if game is not None]
 
 
 def get_game(game_id: int) -> dict | None:
@@ -299,6 +327,10 @@ def replay_snapshot(advance: bool) -> dict | None:
         "SELECT * FROM teams WHERE id = ?", (game["home_team_id"],)))
     away = build_team(database.query_one(
         "SELECT * FROM teams WHERE id = ?", (game["away_team_id"],)))
+    if home is None or away is None:
+        # The replay names two clubs; if either has gone from the teams table
+        # the home page shows no replay rather than a half-drawn one.
+        return None
 
     return {
         "title": game["title"],
@@ -505,7 +537,7 @@ def results_page():
         clause += " AND games.is_playoff = 1"
 
     total = database.query_value(
-        "SELECT COUNT(*) FROM games" + clause.replace("games.", "games."), default=0)
+        "SELECT COUNT(*) FROM games" + clause, default=0)
     pages = max(1, ceil(total / config.RESULTS_PAGE_SIZE))
     page = min(page, pages)
     offset = (page - 1) * config.RESULTS_PAGE_SIZE
@@ -532,6 +564,17 @@ def results_page():
             "overall_accuracy": database.get_meta("model_overallAccuracy", "0"),
         },
     )
+
+
+@app.route("/monitoring")
+def monitoring_page():
+    """
+    How the model is holding up since it was deployed.
+
+    Phase 2 scored the model once. This page keeps scoring it, because a model
+    that was good in June is not automatically good in February.
+    """
+    return render_template("monitoring.html", report=monitoring.build_report())
 
 
 @app.route("/leaderboard")
@@ -640,12 +683,12 @@ def make_prediction(game_id: int):
         flash("That game has already been played, so picks are closed.", "error")
         return redirect(url_for("games_page"))
 
-    team_id = request.form.get("team_id", "")
-    if not team_id.isdigit():
+    chosen = request.form.get("team_id", "")
+    if not chosen.isdigit():
         flash("Please choose a team.", "error")
         return redirect(url_for("games_page"))
 
-    team_id = int(team_id)
+    team_id = int(chosen)
     if team_id not in (game["home"]["id"], game["away"]["id"]):
         flash("That team is not playing in this game.", "error")
         return redirect(url_for("games_page"))
@@ -701,14 +744,26 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        caller = security.client_address(request)
+        if not login_limiter.allow(caller):
+            wait = login_limiter.retry_after(caller)
+            flash(f"Too many sign-in attempts. Try again in {wait} seconds.",
+                  "error")
+            return render_template("login.html",
+                                   demo_username=config.DEMO_USERNAME,
+                                   demo_password=config.DEMO_PASSWORD), 429
+
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
         user = database.query_one(
             "SELECT * FROM users WHERE username = ? AND kind = 'member'", (username,))
 
         if user is None or not check_password_hash(user["password_hash"], password):
+            # The same message either way, so the form cannot be used to work
+            # out which usernames exist.
             flash("Wrong username or password.", "error")
         else:
+            login_limiter.reset(caller)
             session.clear()
             session["user_id"] = user["id"]
             session["username"] = user["username"]
@@ -763,6 +818,12 @@ def api_model():
     })
 
 
+@app.route("/api/monitoring")
+def api_monitoring():
+    """Calibration, drift and live accuracy as JSON."""
+    return jsonify(monitoring.build_report())
+
+
 @app.route("/api/admin/refresh", methods=["POST"])
 def api_refresh():
     """
@@ -773,6 +834,10 @@ def api_refresh():
     """
     if not config.REFRESH_TOKEN:
         return jsonify({"error": "Refreshing is switched off on this server"}), 503
+
+    caller = security.client_address(request)
+    if not refresh_limiter.allow(caller):
+        return jsonify({"error": "Too many refresh attempts"}), 429
 
     header = request.headers.get("Authorization", "")
     supplied = header[7:] if header.startswith("Bearer ") else ""
@@ -799,13 +864,20 @@ def healthz():
         "status": "ok", "teams": teams,
         "games": database.query_value("SELECT COUNT(*) FROM games", default=0),
         "lastRefresh": database.get_meta("last_refresh"),
-        "time": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "time": datetime.now(UTC).isoformat(timespec="seconds"),
     })
 
 
 # ===========================================================
 # ERROR PAGES
 # ===========================================================
+
+@app.errorhandler(429)
+def too_many_requests(error):
+    return render_template("404.html", code=429,
+                           message="That was a lot of requests at once. "
+                                   "Please wait a moment and try again."), 429
+
 
 @app.errorhandler(400)
 def bad_request(error):

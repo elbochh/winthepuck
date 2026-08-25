@@ -1526,3 +1526,145 @@ a {
     grid-template-columns: 34px 1fr 70px;
   }
 }
+
+/* ===========================================================
+   MODEL HEALTH PAGE
+   Watching the model after it was deployed: drift, calibration,
+   and how the live games compare with the published track record.
+   =========================================================== */
+
+.monitor-card {
+  padding: 22px;
+  margin-bottom: 18px;
+}
+.monitor-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+.monitor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+/* the verdict pill: green when nothing is wrong, gold when it is worth
+   a look, red when the model has genuinely moved away from its baseline */
+.monitor-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+}
+.monitor-badge.is-stable,
+.monitor-badge.is-on-track {
+  color: var(--green);
+  border-color: rgba(55, 183, 138, 0.4);
+  background: rgba(55, 183, 138, 0.1);
+}
+.monitor-badge.is-above-baseline {
+  color: var(--primary);
+  border-color: rgba(0, 205, 239, 0.4);
+  background: rgba(0, 205, 239, 0.1);
+}
+.monitor-badge.is-watch {
+  color: var(--gold);
+  border-color: rgba(217, 165, 20, 0.4);
+  background: rgba(217, 165, 20, 0.1);
+}
+.monitor-badge.is-shifted,
+.monitor-badge.is-below-baseline {
+  color: var(--live);
+  border-color: rgba(251, 53, 93, 0.4);
+  background: rgba(251, 53, 93, 0.1);
+}
+
+/* a coloured edge so the drift verdict reads at a glance */
+.monitor-drift {
+  border-left: 3px solid var(--border);
+}
+.monitor-drift.is-stable { border-left-color: var(--green); }
+.monitor-drift.is-watch { border-left-color: var(--gold); }
+.monitor-drift.is-shifted { border-left-color: var(--live); }
+
+.monitor-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin: 16px 0 12px;
+}
+.monitor-figures .stat-value {
+  font-size: 1.5rem;
+}
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.monitor-grid .monitor-card {
+  margin-bottom: 0;
+}
+
+/* the reliability table. Each row carries a two-bar sparkline underneath:
+   what the model claimed, and what actually happened. */
+.monitor-table {
+  margin: 16px 0 12px;
+}
+.monitor-table .monitor-row {
+  grid-template-columns: 90px 70px 100px 130px 70px;
+  row-gap: 6px;
+}
+.monitor-table .right {
+  text-align: right;
+}
+.monitor-bar {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--secondary);
+  overflow: hidden;
+}
+.monitor-bar-said,
+.monitor-bar-real {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  border-radius: 999px;
+}
+.monitor-bar-said {
+  background: var(--muted-foreground);
+}
+.monitor-bar-real {
+  top: 4px;
+  background: var(--primary);
+}
+
+.gap-ok { color: var(--green); }
+.gap-over { color: var(--live); }
+.gap-under { color: var(--primary); }
+
+.monitor-note p + p {
+  margin-top: 10px;
+}
+
+@media (max-width: 700px) {
+  .monitor-table .monitor-row {
+    grid-template-columns: 80px 55px 1fr 1fr;
+  }
+  .monitor-figures {
+    gap: 18px;
+  }
+  .monitor-figures .stat-value {
+    font-size: 1.25rem;
+  }
+}
