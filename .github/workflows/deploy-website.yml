@@ -1,9 +1,11 @@
 # ===========================================================
 # Deploy the website to Azure App Service
 #
-# Every time we push a change to the website on the main branch, GitHub
-# packages the app and sends it to Azure for us. Nobody has to remember a
-# deployment command, and the live site always matches what is in the repo.
+# Pushing a change to the website on main sends it to Azure. Nobody has to
+# remember a deployment command, and the live site always matches the repo.
+#
+# The tests run first and the deployment only happens if they pass, so a
+# broken change stops here rather than on the live site.
 # ===========================================================
 name: Deploy website to Azure
 
@@ -15,19 +17,62 @@ on:
       - '.github/workflows/deploy-website.yml'
   workflow_dispatch:        # lets us press "Run workflow" by hand
 
+# Two deployments overlapping would have Azure swapping between two versions.
+# This queues them instead - and unlike CI, a deployment already in flight is
+# allowed to finish rather than being cancelled halfway.
+concurrency:
+  group: deploy-website
+  cancel-in-progress: false
+
 env:
   AZURE_WEBAPP_NAME: winthepuck
   APP_FOLDER: 'Phase 5/winthepuck-cloud'
 
 jobs:
-  deploy:
+
+  # ---------------------------------------------------------
+  test:
+    name: Check it works before shipping it
     runs-on: ubuntu-latest
     steps:
-      - name: Get the code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            Phase 5/winthepuck-cloud/requirements.txt
+            Phase 5/model-service/requirements.txt
+
+      - name: Install
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -r "Phase 5/winthepuck-cloud/requirements.txt"
+          pip install -r "Phase 5/model-service/requirements.txt"
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Types
+        run: mypy "Phase 5"
+
+      - name: Tests
+        run: pytest
+
+  # ---------------------------------------------------------
+  deploy:
+    name: Send it to Azure
+    needs: test               # nothing ships unless the job above is green
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://winthepuck.azurewebsites.net
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -46,12 +91,18 @@ jobs:
 
       - name: Check the site answers
         run: |
+          # Azure needs a moment to swap the running app over, and the first
+          # request after a deployment also pays for a cold start.
           sleep 45
           for attempt in 1 2 3 4 5 6; do
             code=$(curl -s -o /dev/null -w "%{http_code}" \
               https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/healthz)
             echo "attempt $attempt: HTTP $code"
-            if [ "$code" = "200" ]; then exit 0; fi
+            if [ "$code" = "200" ]; then
+              echo "deployed and answering:"
+              curl -s https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/healthz
+              exit 0
+            fi
             sleep 20
           done
           echo "the site did not come back healthy"

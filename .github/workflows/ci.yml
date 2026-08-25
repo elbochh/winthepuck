@@ -1,0 +1,188 @@
+# ===========================================================
+# Continuous integration
+#
+# Runs on every push and every pull request. Nothing reaches the deploy
+# workflow without passing this first, which means "main is broken" should
+# never be something anybody has to find out from the live site.
+#
+# Four jobs, deliberately separate so a failure says which kind of failure it
+# was rather than just "the build broke":
+#
+#   quality   ruff and mypy - style and types
+#   tests     the full pytest suite, on two Python versions, with coverage
+#   docker    both images really build, and the website really answers
+#   model     the trained model still loads and still predicts
+# ===========================================================
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A second push while the first is still running cancels the first. There is
+# no point paying for a test run on a commit that has already been replaced.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+
+  # ---------------------------------------------------------
+  quality:
+    name: Lint and types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            Phase 5/winthepuck-cloud/requirements.txt
+            Phase 5/model-service/requirements.txt
+
+      - name: Install the tools
+        run: pip install -r requirements-dev.txt
+
+      - name: ruff - style and common mistakes
+        run: ruff check . --output-format=github
+
+      - name: mypy - type checking
+        run: mypy "Phase 5"
+
+  # ---------------------------------------------------------
+  tests:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Azure runs 3.12. 3.13 is tested too so the next upgrade is not a
+        # surprise discovered in production.
+        python-version: ['3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            Phase 5/winthepuck-cloud/requirements.txt
+            Phase 5/model-service/requirements.txt
+
+      - name: Install everything the tests need
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -r "Phase 5/winthepuck-cloud/requirements.txt"
+          pip install -r "Phase 5/model-service/requirements.txt"
+
+      - name: Run the suite
+        # Coverage tracing makes pure-Python loops several times slower, and
+        # the evaluation study is one long loop, so it is measured separately.
+        run: pytest -m "not slow" --cov --cov-report=term-missing --cov-report=xml
+
+      - name: Run the slow ones too
+        run: pytest -m slow
+
+      - name: Keep the coverage report
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
+          retention-days: 14
+
+  # ---------------------------------------------------------
+  docker:
+    name: Container builds and answers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build the website image
+        run: docker build -t winthepuck:ci "Phase 5/winthepuck-cloud"
+
+      - name: Build the prediction job image
+        run: docker build -t winthepuck-model:ci "Phase 5/model-service"
+
+      - name: Start the website and wait for it to be healthy
+        run: |
+          docker run -d --name winthepuck -p 8000:8000 \
+            -e SECRET_KEY=ci-only-key winthepuck:ci
+
+          # The database is built from the seed files on first start, which
+          # takes a few seconds, so this waits rather than assuming.
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:8000/healthz > /dev/null 2>&1; then
+              echo "healthy after ${attempt} attempts"
+              curl -s http://localhost:8000/healthz
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo "the container never became healthy - logs follow"
+          docker logs winthepuck
+          exit 1
+
+      - name: Check the pages really render
+        run: |
+          for path in / /games /results /monitoring /leaderboard; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8000${path}")
+            echo "${path} -> ${code}"
+            [ "$code" = "200" ] || exit 1
+          done
+
+      - name: Stop it again
+        if: always()
+        run: docker rm -f winthepuck || true
+
+  # ---------------------------------------------------------
+  model:
+    name: Model loads and predicts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: 'Phase 5/model-service/requirements.txt'
+
+      - name: Install what the model needs
+        working-directory: 'Phase 5/model-service'
+        run: pip install -r requirements.txt
+
+      - name: Reproduce the evaluation study
+        working-directory: 'Phase 5/model-service'
+        run: python evaluate_model.py --out /tmp/evaluation_report.json
+
+      - name: Check the committed report still matches
+        working-directory: 'Phase 5/model-service'
+        run: |
+          python - <<'PY'
+          import json
+          # The report in serving/ is what the model card quotes. If a change
+          # to the model or the study moves those numbers, the two must be
+          # brought back into step deliberately rather than drifting apart.
+          fresh = json.load(open("/tmp/evaluation_report.json"))
+          committed = json.load(open("serving/evaluation_report.json"))
+          if fresh["baseline"] != committed["baseline"]:
+              raise SystemExit(
+                  "the evaluation baseline has moved:\n"
+                  f"  committed: {committed['baseline']}\n"
+                  f"  now:       {fresh['baseline']}\n"
+                  "re-run evaluate_model.py and commit the new report")
+          print("evaluation report is unchanged")
+          PY

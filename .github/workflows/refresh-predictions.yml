@@ -6,7 +6,8 @@
 # site on Azure, and fills in the scores of any game that has been played.
 #
 # It runs on GitHub's free runners rather than on Azure, which keeps the
-# website itself small enough for the free App Service tier.
+# website itself small enough for the free App Service tier: scikit-learn and
+# CatBoost together are larger than the entire Flask app.
 # ===========================================================
 name: Refresh NHL predictions
 
@@ -15,21 +16,47 @@ on:
     - cron: '30 11 * * *'      # 11:30 UTC every day = early morning in Calgary
   workflow_dispatch:
 
+concurrency:
+  group: refresh-predictions
+  cancel-in-progress: false
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    # The model runs in about a minute. Anything past ten means something has
+    # hung, and the job should give up rather than sit there holding a runner.
+    timeout-minutes: 10
     steps:
       - name: Get the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: 'Phase 5/model-service/requirements.txt'
 
       - name: Install what the model needs
         working-directory: 'Phase 5/model-service'
         run: pip install -r requirements.txt
+
+      - name: Check the model still loads and predicts
+        working-directory: 'Phase 5/model-service'
+        run: |
+          # A quick sanity check before spending a minute downloading
+          # schedules. If the model file is corrupt, fail here with a clear
+          # message rather than somewhere deep in the run.
+          python - <<'PY'
+          import refresh_predictions as refresh
+          models, columns = refresh.load_bundle()
+          state = refresh.load_state()
+          assert set(models) == {"hgb", "logit", "catboost"}, models
+          assert len(columns) == 127, len(columns)
+          assert len(state["teams"]) >= 32, len(state["teams"])
+          print(f"model ready: {len(models)} components, {len(columns)} features, "
+                f"{len(state['teams'])} teams, trained to {state['asOfDate']}")
+          PY
 
       - name: Predict the next games and send them to the website
         working-directory: 'Phase 5/model-service'
@@ -44,9 +71,29 @@ jobs:
             --post "$SITE_URL" \
             --token "$REFRESH_TOKEN"
 
+      - name: Confirm the website took it
+        env:
+          SITE_URL: ${{ secrets.WINTHEPUCK_URL }}
+        run: |
+          # Posting can succeed while the site quietly fails to store anything,
+          # so the last word comes from the site itself.
+          health=$(curl -fsS "${SITE_URL%/}/healthz")
+          echo "$health"
+          python - <<PY
+          import json, sys
+          health = json.loads('''$health''')
+          if health.get("status") != "ok":
+              sys.exit("the website is not healthy after the refresh")
+          if not health.get("lastRefresh"):
+              sys.exit("the website did not record a refresh")
+          print("website confirmed the refresh:", health["lastRefresh"])
+          PY
+
       - name: Keep a copy of what we sent
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: refresh-payload
           path: 'Phase 5/model-service/refresh_payload.json'
           retention-days: 14
+          if-no-files-found: warn
