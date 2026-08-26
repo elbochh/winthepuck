@@ -17,6 +17,9 @@ Project_Phase3.docx
 *.zip
 *.ipynb
 .ipynb_checkpoints/
+# the scripts that built those reports and notebooks
+.docx_work/
+.notebook_work/
 
 # ---- the raw data ----
 # The pipeline downloads about 18 GB of play-by-play and shift charts, and
