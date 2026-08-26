@@ -77,28 +77,30 @@ and one database.
 
 ---
 
-## 3. The five phases
+## 3. The layers
 
-The project was built in five stages, and the repository still has all of
-them. Each phase is a working system on its own.
+Five directories, each a working piece on its own, arranged roughly in the
+order data flows through them.
 
-| Phase | Folder | What it does |
-|---|---|---|
-| 1 — Data | `nhl_data_pipeline/` | Downloads 15 seasons from the NHL API: schedules, box scores, play-by-play, shift charts. About 18 GB. |
-| 2 — Model | `nhl_model/` | Builds 127 features per game, trains the ensemble, runs the walk-forward test. |
-| 3 — Front end | `Phase 3/winthepuck-website/` | The first site: HTML, CSS and JavaScript only. |
-| 4 — Back end | `Phase 4/winthepuck-backend/` | Flask and SQLite: accounts, picks, comments, leaderboard. |
-| 5 — Cloud | `Phase 5/` | Real data end to end, deployed to Azure, with CI and monitoring. |
+| Directory | What it does |
+|---|---|
+| `pipeline/` | Collects the raw data. Downloads 15 seasons from the NHL API: schedules, box scores, play-by-play, shift charts. About 18 GB on disk, none of it in this repository. |
+| `ml/` | Turns that into a model. Builds 127 features per game, trains the ensemble, runs the walk-forward test, and trains the separate in-game win-probability model. |
+| `model/` | Serves the model. The trained bundle, the daily prediction job, and the evaluation study. Deployed to a GitHub Actions runner. |
+| `web/` | The Flask site that is actually deployed. Pages, accounts, picks, comments, leaderboard, monitoring. |
+| `frontend/` | A second interface in Next.js and TypeScript, reading the same exported data. |
 
-Phases 1–4 were submitted for marking and are kept exactly as they were handed
-in — the linter is pointed only at Phase 5, so the repository does not
-disagree with the reports that describe it.
+The split between `ml/` and `model/` is the important one and it is not
+cosmetic: `ml/` needs pandas and the full 18 GB dataset and runs on a laptop,
+while `model/` only ever loads an already-trained bundle and runs in the cloud
+in about a minute. Keeping them apart is what makes the daily job cheap enough
+to run on a free runner.
 
 ---
 
 ## 4. The prediction job
 
-`Phase 5/model-service/` — runs on a GitHub Actions runner, finishes in about
+`model/` — runs on a GitHub Actions runner, finishes in about
 a minute.
 
 ### What it does each night
@@ -131,7 +133,7 @@ This is directly tested — see `test_running_twice_changes_nothing_the_second_t
 ### Why some features are frozen
 
 The box-score features (hits, blocked shots, goalie save percentage) need the
-full 18 GB Phase 1 dataset, which cannot live on a free runner. Those are
+full full 18 GB dataset, which cannot live on a free runner. Those are
 carried in `team_state.json` from the last full retrain and stay fixed between
 retrains.
 
@@ -144,7 +146,7 @@ trade-off rather than an oversight.
 
 ## 5. The website
 
-`Phase 5/winthepuck-cloud/` — Flask, SQLite, and three dependencies.
+`web/` — Flask, SQLite, and three dependencies.
 
 ```
 app.py          routes: 8 pages, 5 JSON endpoints
@@ -316,7 +318,6 @@ somebody grinding through a password list does not need to be exact.
 
 ```bash
 # the website, in a container, with nothing else installed
-cd "Phase 5"
 docker compose up --build         # http://localhost:8000
 
 # the prediction job against that container
@@ -325,7 +326,7 @@ docker compose run --rm refresh
 
 ```bash
 # or directly
-cd "Phase 5/winthepuck-cloud"
+cd web
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python app.py                     # http://127.0.0.1:5000
@@ -335,7 +336,7 @@ python app.py                     # http://127.0.0.1:5000
 # the checks CI runs
 pip install -r requirements-dev.txt
 ruff check .
-mypy "Phase 5"
+mypy web model
 pytest --cov
 ```
 

@@ -2,17 +2,34 @@
 # What never goes into GitHub
 # ===========================================================
 
+# ---- coursework, kept on disk but out of the repository ----
+# The marked reports, submission archives and earlier phase folders live
+# locally. They are not part of the application and nobody reading the code
+# needs them.
+Phase 2/
+Phase 3/
+Phase 4/
+Phase 5/
+Phase_1/
+Project_Phase3.docx
+*.docx
+*.pdf
+*.zip
+*.ipynb
+.ipynb_checkpoints/
+
 # ---- the raw data ----
-# The pipeline downloads about 18 GB of play-by-play and shift charts.
-# It is far too big for a repository, and anybody can download it again by
-# running `python main.py --mode historical` in nhl_data_pipeline.
-nhl_data_pipeline/data/
-nhl_data_pipeline/logs/
-nhl_data_pipeline/reports/
+# The pipeline downloads about 18 GB of play-by-play and shift charts, and
+# building the feature table from it produces a further 17 MB of CSV. Both are
+# reproducible with `python main.py --mode historical` in pipeline/, so
+# neither belongs in a repository.
+pipeline/data/
+pipeline/logs/
+pipeline/reports/
+ml/data/model_dataset.csv
 
 # ---- secrets ----
 # Passwords, tokens and Azure publish profiles. Never commit these.
-Phase 5/.secrets/
 .secrets/
 *.env
 .env
@@ -21,7 +38,7 @@ Phase 5/.secrets/
 *.db
 *.db-wal
 *.db-shm
-Phase 5/winthepuck-cloud/instance/
+web/instance/
 
 # ---- test and lint caches ----
 .pytest_cache/
@@ -32,12 +49,9 @@ coverage.xml
 htmlcov/
 
 # ---- generated output ----
-Phase 5/model-service/refresh_payload.json
-Phase 5/model-service/*.log
-nhl_model/*.log
-
-# ---- submission archives (the marked copies live in Brightspace) ----
-*.zip
+model/refresh_payload.json
+model/*.log
+ml/*.log
 
 # ---- python ----
 __pycache__/

@@ -8,14 +8,14 @@
 
 [tool.pytest.ini_options]
 testpaths = [
-    "Phase 5/winthepuck-cloud/tests",
-    "Phase 5/model-service/tests",
+    "web/tests",
+    "model/tests",
 ]
 # The website and the model service are deployed separately and neither is an
 # installed package, so their folders go on the import path directly.
 pythonpath = [
-    "Phase 5/winthepuck-cloud",
-    "Phase 5/model-service",
+    "web",
+    "model",
 ]
 addopts = "-q --strict-markers"
 markers = [
@@ -26,10 +26,10 @@ filterwarnings = ["error::DeprecationWarning"]
 
 
 [tool.coverage.run]
-source = ["Phase 5/winthepuck-cloud", "Phase 5/model-service"]
+source = ["web", "model"]
 omit = [
     "*/tests/*",
-    # Retraining needs the 18 GB Phase 1 dataset, so it cannot run on a CI
+    # Retraining needs the full 18 GB dataset, so it cannot run on a CI
     # runner and there is nothing honest to measure here.
     "*/build_serving_bundle.py",
     "*/export_history.py",
@@ -48,18 +48,7 @@ precision = 1
 [tool.ruff]
 line-length = 96
 target-version = "py312"
-exclude = [
-    ".venv", "venv", "__pycache__", ".next", "node_modules",
-    # Phases 1-4 were submitted for marking and are kept exactly as they were
-    # handed in. Reformatting them now would make the repository disagree with
-    # the reports that describe it, so the linter is pointed at the code that
-    # is still being worked on.
-    "nhl_data_pipeline",
-    "nhl_model",
-    "Phase 2",
-    "Phase 3",
-    "Phase 4",
-]
+exclude = [".venv", "venv", "__pycache__", ".next", "node_modules", "*.ipynb"]
 
 [tool.ruff.lint]
 select = [

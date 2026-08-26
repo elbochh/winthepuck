@@ -1,6 +1,0 @@
-# What retraining needs, on top of requirements.txt.
-#
-# Only used by build_serving_bundle.py and export_history.py, which run on a
-# laptop next to the Phase 1 data pipeline - never in the cloud.
--r requirements.txt
-pandas==2.3.3

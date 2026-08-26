@@ -46,8 +46,8 @@ jobs:
           cache: pip
           cache-dependency-path: |
             requirements-dev.txt
-            Phase 5/winthepuck-cloud/requirements.txt
-            Phase 5/model-service/requirements.txt
+            web/requirements.txt
+            model/requirements.txt
 
       - name: Install the tools
         run: pip install -r requirements-dev.txt
@@ -56,7 +56,7 @@ jobs:
         run: ruff check . --output-format=github
 
       - name: mypy - type checking
-        run: mypy "Phase 5"
+        run: mypy web model
 
   # ---------------------------------------------------------
   tests:
@@ -77,14 +77,14 @@ jobs:
           cache: pip
           cache-dependency-path: |
             requirements-dev.txt
-            Phase 5/winthepuck-cloud/requirements.txt
-            Phase 5/model-service/requirements.txt
+            web/requirements.txt
+            model/requirements.txt
 
       - name: Install everything the tests need
         run: |
           pip install -r requirements-dev.txt
-          pip install -r "Phase 5/winthepuck-cloud/requirements.txt"
-          pip install -r "Phase 5/model-service/requirements.txt"
+          pip install -r "web/requirements.txt"
+          pip install -r "model/requirements.txt"
 
       - name: Run the suite
         # Coverage tracing makes pure-Python loops several times slower, and
@@ -110,10 +110,10 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Build the website image
-        run: docker build -t winthepuck:ci "Phase 5/winthepuck-cloud"
+        run: docker build -t winthepuck:ci "web"
 
       - name: Build the prediction job image
-        run: docker build -t winthepuck-model:ci "Phase 5/model-service"
+        run: docker build -t winthepuck-model:ci "model"
 
       - name: Start the website and wait for it to be healthy
         run: |
@@ -158,18 +158,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
-          cache-dependency-path: 'Phase 5/model-service/requirements.txt'
+          cache-dependency-path: 'model/requirements.txt'
 
       - name: Install what the model needs
-        working-directory: 'Phase 5/model-service'
+        working-directory: 'model'
         run: pip install -r requirements.txt
 
       - name: Reproduce the evaluation study
-        working-directory: 'Phase 5/model-service'
+        working-directory: 'model'
         run: python evaluate_model.py --out /tmp/evaluation_report.json
 
       - name: Check the committed report still matches
-        working-directory: 'Phase 5/model-service'
+        working-directory: 'model'
         run: |
           python - <<'PY'
           import json

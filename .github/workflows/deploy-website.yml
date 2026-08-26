@@ -13,7 +13,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'Phase 5/winthepuck-cloud/**'
+      - 'web/**'
       - '.github/workflows/deploy-website.yml'
   workflow_dispatch:        # lets us press "Run workflow" by hand
 
@@ -26,7 +26,7 @@ concurrency:
 
 env:
   AZURE_WEBAPP_NAME: winthepuck
-  APP_FOLDER: 'Phase 5/winthepuck-cloud'
+  APP_FOLDER: 'web'
 
 jobs:
 
@@ -43,20 +43,20 @@ jobs:
           cache: pip
           cache-dependency-path: |
             requirements-dev.txt
-            Phase 5/winthepuck-cloud/requirements.txt
-            Phase 5/model-service/requirements.txt
+            web/requirements.txt
+            model/requirements.txt
 
       - name: Install
         run: |
           pip install -r requirements-dev.txt
-          pip install -r "Phase 5/winthepuck-cloud/requirements.txt"
-          pip install -r "Phase 5/model-service/requirements.txt"
+          pip install -r "web/requirements.txt"
+          pip install -r "model/requirements.txt"
 
       - name: Lint
         run: ruff check .
 
       - name: Types
-        run: mypy "Phase 5"
+        run: mypy web model
 
       - name: Tests
         run: pytest
