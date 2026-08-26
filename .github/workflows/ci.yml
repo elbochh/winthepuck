@@ -49,8 +49,17 @@ jobs:
             web/requirements.txt
             model/requirements.txt
 
-      - name: Install the tools
-        run: pip install -r requirements-dev.txt
+      - name: Install the tools, and what they are checking
+        # mypy needs the real Flask installed, not just its own dependencies.
+        # Without it, `flask.abort` resolves to Any, mypy stops knowing that it
+        # never returns, and it flags every line guarded by an abort(404) as
+        # indexing a possible None. Checking code against libraries that are
+        # not there is checking a fiction - and it is why this job once passed
+        # locally and failed here.
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -r web/requirements.txt
+          pip install -r model/requirements.txt
 
       - name: ruff - style and common mistakes
         run: ruff check . --output-format=github
