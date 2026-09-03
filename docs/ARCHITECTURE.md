@@ -229,7 +229,7 @@ guarding failures that would otherwise be silent:
 - **All 127 features are present**, asserted exactly. See the next section.
 - **A transient upstream outage does not take the job down.**
 
-## 8. Two bugs worth describing
+## 8. Three bugs worth describing
 
 ### A feature that was silently missing
 
@@ -268,6 +268,27 @@ A cosmetic endpoint cost a day of predictions. Two changes came out of it:
    through `get_json_optional`, which warns and returns nothing. If the standings
    cannot be fetched, the job sends its predictions anyway and the site keeps the
    table it already has.
+
+### A container that could not write its own output
+
+The prediction job runs as a non-root user, which is the right default: if
+anything ever got into that image, it arrives without permission to change the
+application it is running in.
+
+It also writes its payload to a file in its working directory before posting
+it. Those two facts do not fit together by default. `WORKDIR /app` creates the
+directory as root, and `COPY --chown` only changes the files copied into it,
+not the directory itself. So the job did all its work, fetched 2,738 games,
+built 39 predictions, and then died on the last line trying to create a file.
+
+What made it survive so long is that nothing ran it. CI built the image and
+checked the website answered, and the daily job on GitHub Actions runs the
+script directly on the runner rather than in the container, where none of this
+applies. The image was only ever built, never started.
+
+The fix is one line, `chown modeluser:modeluser /app`. The more useful change
+is the check next to it in CI, which starts the image and has it touch a file.
+It takes about a second, needs no network, and fails on the old image.
 
 ## 9. Security
 

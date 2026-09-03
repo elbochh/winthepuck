@@ -120,6 +120,15 @@ jobs:
       - name: Build the prediction job image
         run: docker build -t winthepuck-model:ci "model"
 
+      - name: The prediction job can write where it runs
+        # It runs as a non-root user and writes its payload into the working
+        # directory before posting it. That broke once because WORKDIR creates
+        # the directory as root, and nothing caught it: the image built, and
+        # the job is never actually run anywhere else in CI.
+        run: |
+          docker run --rm --entrypoint sh winthepuck-model:ci \
+            -c 'touch refresh_payload.json && echo "working directory is writable"'
+
       - name: Start the website and wait for it to be healthy
         run: |
           docker run -d --name winthepuck -p 8000:8000 \

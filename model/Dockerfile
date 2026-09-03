@@ -19,6 +19,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=modeluser:modeluser . .
 
+# The job writes its payload into the working directory before posting it, so
+# the directory itself has to belong to the user that runs it. WORKDIR creates
+# it as root, and COPY --chown only covers the files copied into it.
+RUN chown modeluser:modeluser /app
+
 USER modeluser
 
 # Reads SITE_URL and REFRESH_TOKEN from the environment, the same two settings

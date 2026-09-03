@@ -135,7 +135,7 @@ somewhere the app reads them. A prediction here is good for a day, so recomputin
 it on every request would be waste rather than freshness. It also means the
 website needs exactly three dependencies and starts in under a second.
 
-There is more on the trade-offs, and on two bugs worth reading about, in
+There is more on the trade-offs, and on three bugs worth reading about, in
 **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## What is in here
