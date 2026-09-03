@@ -1,8 +1,4 @@
-# ===========================================================
-# What never goes into GitHub
-# ===========================================================
-
-# ---- coursework, kept on disk but out of the repository ----
+# Coursework, kept on disk but out of the repository.
 # The marked reports, submission archives and earlier phase folders live
 # locally. They are not part of the application and nobody reading the code
 # needs them.
@@ -11,17 +7,15 @@ Phase 3/
 Phase 4/
 Phase 5/
 Phase_1/
-Project_Phase3.docx
 *.docx
 *.pdf
 *.zip
 *.ipynb
 .ipynb_checkpoints/
-# the scripts that built those reports and notebooks
 .docx_work/
 .notebook_work/
 
-# ---- the raw data ----
+# The raw data.
 # The pipeline downloads about 18 GB of play-by-play and shift charts, and
 # building the feature table from it produces a further 17 MB of CSV. Both are
 # reproducible with `python main.py --mode historical` in pipeline/, so
@@ -31,19 +25,18 @@ pipeline/logs/
 pipeline/reports/
 ml/data/model_dataset.csv
 
-# ---- secrets ----
-# Passwords, tokens and Azure publish profiles. Never commit these.
+# Secrets: passwords, tokens and Azure publish profiles. Never commit these.
 .secrets/
 *.env
 .env
 
-# ---- databases created at run time ----
+# Databases created at run time.
 *.db
 *.db-wal
 *.db-shm
 web/instance/
 
-# ---- test and lint caches ----
+# Test and lint caches.
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -51,24 +44,23 @@ web/instance/
 coverage.xml
 htmlcov/
 
-# ---- generated output ----
+# Generated output.
 model/refresh_payload.json
 model/*.log
 ml/*.log
 
-# ---- python ----
+# Python.
 __pycache__/
 *.py[cod]
 .venv/
 venv/
-.ipynb_checkpoints/
 
-# ---- node / next.js ----
+# Node and Next.js.
 node_modules/
 .next/
 *.tsbuildinfo
 
-# ---- editors and macOS ----
+# Editors and macOS.
 .DS_Store
 .vscode/
 .idea/

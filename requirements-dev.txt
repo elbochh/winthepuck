@@ -1,6 +1,6 @@
 # Everything needed to lint, type-check and test the project.
 #   pip install -r requirements-dev.txt
-#   ruff check . && mypy "Phase 5" && pytest
+#   ruff check . && mypy web model && pytest
 pytest==8.4.2
 pytest-cov==6.2.1
 ruff==0.14.2

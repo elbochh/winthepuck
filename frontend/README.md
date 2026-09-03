@@ -1,8 +1,8 @@
-# WinThePuck — React front end
+# WinThePuck: the React front end
 
 A second interface for the WinThePuck predictions, built with Next.js 16,
-React 19 and TypeScript. Every number on it is real model output; there is no
-mock data anywhere in this folder.
+React 19 and TypeScript. Every number on it is real model output, and there is
+no mock data anywhere in this folder.
 
 The deployed site at
 [winthepuck.azurewebsites.net](https://winthepuck.azurewebsites.net) is the
@@ -12,18 +12,18 @@ shift, so you can watch the line move on a goal.
 
 ## What is on it
 
-- **Home** — the pre-game slate, the in-game replay, how the model called the
+- **Home**, showing the pre-game slate, the in-game replay, how the model called the
   Stanley Cup Final, a head-to-head comparison, and the model leaderboard.
-- **Season review** — every prediction the model made last season next to what
+- **Season review**, every prediction the model made last season next to what
   actually happened, misses included.
 
 ## Where the data comes from
 
 ```
-pipeline/  (Python)   free NHL APIs → CSVs (games, stats, play-by-play)
+pipeline/  (Python)   free NHL APIs -> CSVs (games, stats, play-by-play)
 ml/        (Python)   pre-game ensemble + in-game live model
-    │  export_site_data.py  → data/*.json  (this folder)
-    │  live_server.py       → ws://localhost:8765  (live win probability)
+    │  export_site_data.py  -> data/*.json  (this folder)
+    │  live_server.py       -> ws://localhost:8765  (live win probability)
     ▼
 frontend/  (Next.js 16)
     app/page.tsx             home
