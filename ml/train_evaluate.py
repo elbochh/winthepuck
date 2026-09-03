@@ -31,7 +31,7 @@ warnings.filterwarnings("ignore")
 DATA_PATH = Path(__file__).resolve().parent / "data" / "model_dataset.csv"
 
 DROP_COLS = {
-    # identifiers / outcomes / text — never features
+    # identifiers, outcomes and text: never features
     "game_id", "season", "game_type", "game_date", "start_time_utc", "venue",
     "home_team", "away_team", "home_score", "away_score", "winner_team",
     "target_home_win", "home_last_starting_goalie_id", "home_last_starting_goalie_name",

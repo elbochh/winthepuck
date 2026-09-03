@@ -32,6 +32,14 @@ SEASON_LABEL = "2025-26"
 
 
 def export_season_history() -> None:
+    """
+    Write last season's predictions and results to JSON for the website.
+
+    Joins the walk-forward probabilities onto the real scores so the results
+    page can show what the model said next to what actually happened. Every
+    probability here was produced before its game, so the misses are real
+    misses rather than hindsight.
+    """
     walk_forward = pd.read_csv(ML_DIR / "data" / "walkforward_predictions.csv",
                                parse_dates=["game_date"])
     dataset = pd.read_csv(ML_DIR / "data" / "model_dataset.csv",
@@ -103,6 +111,7 @@ def export_live_replay() -> None:
 
 
 def main() -> None:
+    """Rebuild both JSON files the website seeds itself from."""
     OUT.mkdir(exist_ok=True)
     export_season_history()
     export_live_replay()

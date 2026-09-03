@@ -52,9 +52,7 @@ DRIFT_CONFIDENT_SAMPLE = 100
 EPSILON = 1e-15
 
 
-# ===========================================================
-# THE PAIRS EVERYTHING IS BUILT FROM
-# ===========================================================
+# The pairs everything is built from
 #
 # Every function below takes the same thing: a list of (probability, outcome)
 # pairs, where probability is the chance the model gave the home team as a
@@ -109,9 +107,7 @@ def baseline_log_loss() -> float:
     return round(-math.log(0.5), 4)
 
 
-# ===========================================================
-# CALIBRATION - IS THE MODEL HONEST ABOUT HOW SURE IT IS?
-# ===========================================================
+# Calibration: is the model honest about how sure it is?
 
 def reliability_curve(pairs: list[tuple[float, int]],
                       bins: int = 10) -> list[dict]:
@@ -182,9 +178,7 @@ def expected_calibration_error(pairs: list[tuple[float, int]],
     return round(weighted / played, 2)
 
 
-# ===========================================================
-# DRIFT - HAS THE WORLD MOVED SINCE TRAINING?
-# ===========================================================
+# Drift: has the world moved since training?
 
 def distribution(probabilities: list[float], edges: list[float]) -> list[float]:
     """What share of the predictions falls into each band."""
@@ -286,9 +280,7 @@ def drift_report(reference: list[float], current: list[float]) -> dict:
     }
 
 
-# ===========================================================
-# PUTTING IT TOGETHER
-# ===========================================================
+# Putting it together
 
 def summarise(pairs: list[tuple[float, int]], bins: int = 10) -> dict:
     """Every calibration number for one set of graded predictions."""

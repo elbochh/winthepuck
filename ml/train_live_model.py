@@ -8,7 +8,7 @@ and outputs P(home wins | state now).
 Design notes (research-grounded):
   - Score diff x time remaining is the dominant signal (all published in-game
     models: score effects + time transforms). We add score_diff scaled by
-    1/sqrt(time remaining) — the classic "goals matter more late" transform.
+    1/sqrt(time remaining), the classic "goals matter more late" transform.
   - The pregame prior should dominate at t=0 and wash out by t=end; the model
     learns this blend itself from data.
   - Train: 2022-23 .. 2024-25 events. Test: all 2025-26 events (unseen season).

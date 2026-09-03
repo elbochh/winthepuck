@@ -10,9 +10,7 @@ from __future__ import annotations
 import time
 from collections import defaultdict, deque
 
-# ===========================================================
-# RESPONSE HEADERS
-# ===========================================================
+# Response headers
 #
 # Team crests are loaded from the NHL's own asset host, so images have to be
 # allowed from there. Everything else is locked to our own origin, which is
@@ -60,6 +58,14 @@ HSTS_HEADER = "max-age=31536000; includeSubDomains"
 
 
 def apply_headers(response, https: bool):
+    """
+    Attach the security headers to a response on its way out.
+
+    setdefault rather than assignment, so a view that has deliberately set its
+    own value for one of these keeps it. HSTS is only sent over https, because
+    sending it from a plain http response tells the browser nothing useful and
+    would lock out local development.
+    """
     for name, value in SECURITY_HEADERS.items():
         response.headers.setdefault(name, value)
     if https:
@@ -67,9 +73,7 @@ def apply_headers(response, https: bool):
     return response
 
 
-# ===========================================================
-# RATE LIMITING
-# ===========================================================
+# Rate limiting
 
 class RateLimiter:
     """

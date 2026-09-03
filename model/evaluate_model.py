@@ -15,7 +15,7 @@ The rule followed throughout is the one that makes a result mean anything:
 Anything tuned on the season you then report on will look like an improvement
 whether or not it is one.
 
-The three candidates:
+The three ideas, tested in four variants:
 
   1. Platt / temperature scaling - the standard fix for a model that is
      over-confident. Stretches or squashes the probabilities.
@@ -55,9 +55,7 @@ COMPONENTS = ["p_hgb", "p_logit", "p_catboost"]
 ASSUMED_HOME_RATE = 0.544
 
 
-# ===========================================================
-# SMALL MATHS HELPERS
-# ===========================================================
+# Small maths helpers
 
 def logit(p: float) -> float:
     p = min(max(p, 1e-9), 1 - 1e-9)
@@ -88,6 +86,7 @@ def accuracy(pairs: list[tuple[float, int]]) -> float:
 
 
 def score(pairs: list[tuple[float, int]]) -> dict:
+    """All three headline numbers for one set of (probability, outcome) pairs."""
     return {
         "games": len(pairs),
         "logLoss": round(log_loss(pairs), 4),
@@ -96,11 +95,15 @@ def score(pairs: list[tuple[float, int]]) -> dict:
     }
 
 
-# ===========================================================
-# LOADING THE TEST BED
-# ===========================================================
+# Loading the test bed
 
 def load(path: Path) -> list[dict]:
+    """
+    Read the walk-forward predictions CSV into date-ordered rows.
+
+    Every probability in that file was produced before its game was played,
+    which is the only reason any of the experiments below mean anything.
+    """
     rows = []
     with path.open() as handle:
         for row in csv.DictReader(handle):
@@ -124,9 +127,7 @@ def split(rows: list[dict]) -> tuple[list[dict], list[dict]]:
     return train, test
 
 
-# ===========================================================
-# A TINY GRADIENT DESCENT
-# ===========================================================
+# A tiny gradient descent
 #
 # Every candidate below is a logistic regression on top of the model's own
 # output, so one small optimiser does for all of them. Written out by hand
@@ -134,6 +135,13 @@ def split(rows: list[dict]) -> tuple[list[dict], list[dict]]:
 
 def fit_logistic(inputs: list[list[float]], targets: list[int],
                  iterations: int = 6000, rate: float = 0.3) -> tuple[list[float], float]:
+    """
+    Plain batch gradient descent on a logistic model.
+
+    Written by hand rather than imported so this study needs nothing but the
+    standard library. It runs in a couple of seconds on 4,200 rows and CI can
+    rerun it on every push without installing scikit-learn.
+    """
     width = len(inputs[0])
     weights = [1.0 / width] * width
     bias = 0.0
@@ -153,9 +161,7 @@ def fit_logistic(inputs: list[list[float]], targets: list[int],
     return weights, bias
 
 
-# ===========================================================
 # CANDIDATE 1 - PLATT SCALING
-# ===========================================================
 
 def platt(train: list[dict], test: list[dict]) -> dict:
     """Stretch or squash the probabilities to fix over-confidence."""
@@ -181,9 +187,7 @@ def platt(train: list[dict], test: list[dict]) -> dict:
     }
 
 
-# ===========================================================
 # CANDIDATE 2 - ADAPTIVE HOME-ICE ADVANTAGE
-# ===========================================================
 
 def adaptive_home_ice(rows: list[dict], window: int, strength: float
                       ) -> list[tuple[float, int]]:
@@ -206,6 +210,14 @@ def adaptive_home_ice(rows: list[dict], window: int, strength: float
 
 
 def home_ice(train: list[dict], test: list[dict]) -> dict:
+    """
+    Candidate 2: let home-ice advantage move instead of being fixed.
+
+    The model assumes home teams win about 54.4% of the time, and the real
+    figure swung between 51.9% and 56.5% over these four seasons. This grid
+    searches for a rolling window and a strength on the tuning seasons, then
+    applies the winner once to the held-out season.
+    """
     grid = [(w, s) for w in (100, 200, 300, 500, 800)
             for s in (0.25, 0.5, 0.75, 1.0)]
 
@@ -226,12 +238,17 @@ def home_ice(train: list[dict], test: list[dict]) -> dict:
     }
 
 
-# ===========================================================
 # CANDIDATE 3 - FITTED ENSEMBLE WEIGHTS
-# ===========================================================
 
 def weighted_ensemble(train: list[dict], test: list[dict],
                       parts: list[str], label: str) -> dict:
+    """
+    Candidate 3: fit real ensemble weights instead of averaging equally.
+
+    The three models are combined in logit space, which is the usual way to
+    blend probabilities. Called twice: once over the three models, and once
+    with the raw Elo probability added as a fourth input.
+    """
     weights, bias = fit_logistic([[logit(r[p]) for p in parts] for r in train],
                                  [r["y"] for r in train])
 
@@ -249,9 +266,7 @@ def weighted_ensemble(train: list[dict], test: list[dict],
     }
 
 
-# ===========================================================
-# HOW THE SEASONS COMPARE
-# ===========================================================
+# How the seasons compare
 
 def per_season(rows: list[dict]) -> list[dict]:
     """
@@ -278,9 +293,7 @@ def per_season(rows: list[dict]) -> list[dict]:
     return out
 
 
-# ===========================================================
-# THE REPORT
-# ===========================================================
+# The report
 
 def verdict(candidate: dict, baseline: dict) -> dict:
     """
@@ -304,6 +317,13 @@ def verdict(candidate: dict, baseline: dict) -> dict:
 
 
 def build_report(rows: list[dict]) -> dict:
+    """
+    Run the whole study and return everything it found.
+
+    The split matters more than any of the candidates: each one is tuned only
+    on the earlier seasons and then measured once against the last, which is
+    the difference between a result and a number that flatters itself.
+    """
     train, test = split(rows)
 
     baseline_train = score([(r["ensemble"], r["y"]) for r in train])
@@ -329,7 +349,7 @@ def build_report(rows: list[dict]) -> dict:
         "candidates": candidates,
         "perSeason": per_season(rows),
         "conclusion": (
-            "None of the three candidates beat the equal-weight ensemble on the "
+            "None of the candidates beat the equal-weight ensemble on the "
             "held-out season. Each one gained about 0.0004 log loss on the data "
             "it was tuned on and none of that carried over, which is the "
             "signature of fitting noise. The ensemble stays as it is. The real "
@@ -342,6 +362,7 @@ def build_report(rows: list[dict]) -> dict:
 
 
 def print_report(report: dict) -> None:
+    """Print the report as a table, so a run is readable without opening the JSON."""
     print(f"\n{report['method']}")
     print(f"{report['trainGames']} games to tune on, "
           f"{report['heldOutGames']} sealed until the end\n")
@@ -378,6 +399,12 @@ def print_report(report: dict) -> None:
 
 
 def main() -> None:
+    """
+    Run the study and write the report next to the model.
+
+    CI runs this on every push and fails if the numbers stop matching the ones
+    quoted in the model card, so the documentation cannot quietly go stale.
+    """
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--predictions", type=Path, default=DEFAULT_PREDICTIONS,
                         help="the walk-forward predictions CSV")

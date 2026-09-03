@@ -43,7 +43,7 @@ RESULTS_PAGE_SIZE = 25
 POINTS_FOR_CORRECT = 100
 POINTS_FOR_WRONG = 10
 
-# ---- how hard somebody is allowed to hammer the site ----
+# How hard somebody is allowed to hammer the site.
 # Six tries a minute is plenty for a person who has forgotten their password,
 # and useless for a script working through a word list.
 LOGIN_ATTEMPTS = int(os.environ.get("LOGIN_ATTEMPTS", 6))

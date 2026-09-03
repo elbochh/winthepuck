@@ -52,16 +52,21 @@ REGULAR_SEASON_PLAYOFF_COLUMNS = {
 }
 
 
-# ===========================================================
 # 1) LOADING WHAT THE MODEL NEEDS
-# ===========================================================
 
 def load_bundle() -> tuple[dict, list[str]]:
+    """The three trained models, and the exact feature order they expect."""
     bundle = joblib.load(SERVING / "pregame_model.joblib")
     return bundle["models"], bundle["feature_cols"]
 
 
 def load_state() -> dict:
+    """
+    Every club's Elo rating and decayed form, as of the last successful run.
+
+    Also carries the date it is accurate to, which is what lets the job
+    download a whole season every night without applying the same game twice.
+    """
     return json.loads((SERVING / "team_state.json").read_text())
 
 
@@ -71,11 +76,15 @@ def season_id(day: date) -> int:
     return int(f"{year}{year + 1}")
 
 
-# ===========================================================
 # 2) CATCHING THE RATINGS UP WITH REAL RESULTS
-# ===========================================================
 
 def collect_games(seasons: list[int]) -> list[dict]:
+    """
+    Download every game of the given seasons, in date order.
+
+    Preseason and exhibition games are dropped, because the model was never
+    trained on them and clubs do not play them seriously.
+    """
     games: list[dict] = []
     for season in seasons:
         print(f"fetching schedule and results for season {season} ...")
@@ -112,9 +121,7 @@ def prepare_for_season(states: dict[str, elo.TeamState], season: int) -> None:
         elo.start_new_season(state, season)
 
 
-# ===========================================================
 # 3) BUILDING THE INPUT ROW FOR ONE UPCOMING GAME
-# ===========================================================
 
 def build_row(home_state: elo.TeamState, away_state: elo.TeamState,
               home_form: dict, away_form: dict, h2h: dict,
@@ -191,9 +198,7 @@ def fair_odds(probability: float) -> int:
     return int(round(100 * (1 - probability) / probability))
 
 
-# ===========================================================
 # 4) THE LEAGUE TABLE SHOWN ON THE WEBSITE
-# ===========================================================
 
 def standings_end(season: int) -> date:
     """The last day the league table was published for a season."""
@@ -264,11 +269,22 @@ def team_table(games: list[dict], book: FormBook, season: int,
     return rows
 
 
-# ===========================================================
 # 5) PUTTING IT ALL TOGETHER
-# ===========================================================
 
 def build_payload(days_ahead: int, history_days: int) -> dict:
+    """
+    Do the whole night's work and return the JSON the website is sent.
+
+    In order: load the model and the saved ratings, download the season, bring
+    the ratings up to date on anything that has finished since the last run,
+    rebuild recent form from real scores, then build a 127-feature row per
+    upcoming game, run all three models, average them, and price fair odds
+    off the result. Finished games from the last few weeks go in too, so the
+    site can fill in scores and settle members' picks.
+
+    Nothing here writes to disk or posts anywhere. That is main()'s job, which
+    makes this the part that can be tested.
+    """
     models, feature_cols = load_bundle()
     state = load_state()
     states = {team: elo.TeamState.from_dict(data)
@@ -377,6 +393,12 @@ def build_payload(days_ahead: int, history_days: int) -> dict:
 
 
 def post_payload(base_url: str, token: str, payload: dict) -> None:
+    """
+    Send the payload to the website's one write endpoint.
+
+    The bearer token is the only thing standing between this endpoint and the
+    open internet, so it is passed in rather than read from anywhere here.
+    """
     url = base_url.rstrip("/") + "/api/admin/refresh"
     request = urllib.request.Request(
         url, data=json.dumps(payload).encode("utf-8"), method="POST",
@@ -388,6 +410,12 @@ def post_payload(base_url: str, token: str, payload: dict) -> None:
 
 
 def main() -> None:
+    """
+    Run the job from the command line, which is how GitHub Actions calls it.
+
+    Without --post it only writes the payload to a file, which is handy for
+    looking at what would have been sent before sending it.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--days-ahead", type=int, default=14,
                         help="how far into the future to predict")

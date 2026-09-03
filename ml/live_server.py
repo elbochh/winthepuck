@@ -3,10 +3,10 @@
 Broadcasts JSON snapshots on ws://localhost:8765 for the website's live section.
 
 Modes (auto-selected each cycle):
-  LIVE    — if the NHL is playing right now: refresh the data pipeline's live
+  LIVE    if the NHL is playing right now: refresh the data pipeline's live
             snapshot (`main.py --mode live`), run the current game state through
             the pregame prior + live model, broadcast one snapshot per game.
-  REPLAY  — otherwise (offseason / no games): replay a real recent playoff game
+  REPLAY  otherwise (offseason or no games): replay a real recent playoff game
             through the live model at ~40x speed so the UI always has a live feed.
 
 Message shape:

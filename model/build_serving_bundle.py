@@ -78,6 +78,13 @@ def make_models(seed: int = 7) -> dict:
 
 
 def load_dataset() -> tuple[pd.DataFrame, list[str]]:
+    """
+    Read the full feature table and work out which columns are features.
+
+    Anything non-numeric, and anything in DROP_COLS, is left out. That list is
+    what keeps identifiers and the final score from being trained on, which
+    would leak the answer straight into the model.
+    """
     df = pd.read_csv(DATASET, parse_dates=["game_date"])
     df = df.sort_values(["game_date", "game_id"]).reset_index(drop=True)
     feature_cols = [
@@ -241,6 +248,13 @@ def model_report() -> dict:
 
 
 def main() -> None:
+    """
+    Train the three models and write everything the daily job needs.
+
+    Run on a laptop with the full dataset present, not in CI. The output is a
+    joblib bundle plus a small team_state.json, which together are all the
+    prediction job ever loads.
+    """
     OUT.mkdir(exist_ok=True)
     df, feature_cols = load_dataset()
 

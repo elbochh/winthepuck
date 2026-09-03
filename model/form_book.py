@@ -80,12 +80,17 @@ class FormBook:
         })
 
     def sort(self) -> None:
+        """
+        Put every club's games in date order.
+
+        Called once after all the games are added, because the lookups that
+        follow rely on the ordering and re-sorting on every insert would be
+        needlessly slow.
+        """
         for rows in self.by_team.values():
             rows.sort(key=lambda r: (r["date"], r["game_id"]))
         for rows in self.by_pair.values():
             rows.sort(key=lambda r: (r["date"], r["game_id"]))
-
-    # -------------------------------------------------------
 
     def team_features(self, team: str, game_day: date, season: int) -> dict[str, float]:
         """The form numbers for one team going into a game on `game_day`."""

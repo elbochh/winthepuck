@@ -60,17 +60,17 @@ def today() -> str:
 
 
 def read_seed(name: str) -> dict | None:
+    """Read one of the JSON files in data/, or None if it is not there."""
     path = config.SEED_DIR / name
     if not path.exists():
         return None
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-# ===========================================================
-# TEAMS
-# ===========================================================
+# Teams
 
 def team_ids(connection: sqlite3.Connection) -> dict[str, int]:
+    """Map club codes like 'TOR' to their database ids, since payloads use codes."""
     return {row["abbr"]: row["id"]
             for row in connection.execute("SELECT abbr, id FROM teams")}
 
@@ -138,9 +138,7 @@ def ensure_team(connection: sqlite3.Connection, abbr: str,
     return None
 
 
-# ===========================================================
-# GAMES
-# ===========================================================
+# Games
 
 def upsert_upcoming(connection: sqlite3.Connection, games: list[dict],
                     known: dict[str, int], season: int) -> int:
@@ -242,11 +240,17 @@ def american_odds(probability: float) -> int:
     return int(round(100 * (1 - probability) / probability))
 
 
-# ===========================================================
-# MODEL SCORECARD AND THE PLAYOFF REPLAY
-# ===========================================================
+# Model scorecard and the playoff replay
 
 def load_model_report(connection: sqlite3.Connection, report: dict) -> None:
+    """
+    Replace the stored walk-forward scorecard with a fresh one.
+
+    This is how the accuracy figures on the site stay tied to the model that
+    is actually deployed rather than to numbers typed into a template. The
+    table is emptied first, so a retrain cannot leave old models behind on
+    the leaderboard.
+    """
     connection.execute("DELETE FROM model_metrics")
     for row in report.get("perModel", []):
         connection.execute(
@@ -295,12 +299,17 @@ def load_replay(connection: sqlite3.Connection, replay: dict,
     connection.commit()
 
 
-# ===========================================================
-# ACCOUNTS AND THE STARTING LEADERBOARD
-# ===========================================================
+# Accounts and the starting leaderboard
 
 def create_account(connection: sqlite3.Connection, username: str, password: str,
                    hue: int, kind: str, tagline: str) -> int:
+    """
+    Create one of the accounts the site starts with, and return its id.
+
+    Used for the demo login and for the model's own leaderboard entries. The
+    conflict clause makes it safe to call on a database that already has the
+    account, which is what happens when a redeploy reuses the saved file.
+    """
     connection.execute(
         """INSERT INTO users (username, password_hash, hue, kind, tagline, joined_on)
            VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (username) DO NOTHING""",
@@ -384,9 +393,7 @@ def seed_demo_account(connection: sqlite3.Connection) -> int:
                           200, "member", "Demo account for marking")
 
 
-# ===========================================================
-# THE TWO ENTRY POINTS
-# ===========================================================
+# The two entry points
 
 def apply_refresh(payload: dict) -> dict:
     """Take a delivery from the daily prediction job and save all of it."""

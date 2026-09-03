@@ -172,5 +172,5 @@
    "actualHomeWinRate": 51.9
   }
  ],
- "conclusion": "None of the three candidates beat the equal-weight ensemble on the held-out season. Each one gained about 0.0004 log loss on the data it was tuned on and none of that carried over, which is the signature of fitting noise. The ensemble stays as it is. The real finding is in perSeason: accuracy fell from 59.6% to 55.4% and the spread of the predictions narrowed from 0.113 to 0.092 as the model aged away from its training data. That is an argument for monitoring and retraining, not for a post-hoc correction."
+ "conclusion": "None of the candidates beat the equal-weight ensemble on the held-out season. Each one gained about 0.0004 log loss on the data it was tuned on and none of that carried over, which is the signature of fitting noise. The ensemble stays as it is. The real finding is in perSeason: accuracy fell from 59.6% to 55.4% and the spread of the predictions narrowed from 0.113 to 0.092 as the model aged away from its training data. That is an argument for monitoring and retraining, not for a post-hoc correction."
 }

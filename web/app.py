@@ -87,9 +87,7 @@ STAT_ROWS = [
 ]
 
 
-# ===========================================================
-# STARTING UP
-# ===========================================================
+# Starting up
 
 def ensure_database() -> None:
     """
@@ -128,9 +126,7 @@ with app.app_context():
     ensure_database()
 
 
-# ===========================================================
-# SMALL HELPERS
-# ===========================================================
+# Small helpers
 
 def logged_in() -> bool:
     return session.get("user_id") is not None
@@ -150,6 +146,13 @@ def csrf_token() -> str:
 
 @app.before_request
 def check_csrf() -> None:
+    """
+    Reject any form post that does not carry this session's CSRF token.
+
+    Runs before every request. The JSON API is skipped because it has no
+    forms and no cookies to hijack; it authenticates with a bearer token
+    instead.
+    """
     if request.method != "POST" or request.path.startswith("/api/"):
         return
     sent = request.form.get("csrf_token", "")
@@ -167,10 +170,18 @@ def tidy(value):
 
 
 def with_sign(odds: int) -> str:
+    """American odds read as +150 or -180, so the plus has to be added back."""
     return f"+{odds}" if odds > 0 else str(odds)
 
 
 def build_team(row) -> dict | None:
+    """
+    Turn one row of the teams table into the dict the templates expect.
+
+    Anything the pages need worked out rather than stored, like the full club
+    name or the form string split into a list, is done here so no template
+    has to do it.
+    """
     if row is None:
         return None
     return {
@@ -234,6 +245,15 @@ def side_team(row, prefix: str) -> dict:
 
 
 def build_game(row) -> dict | None:
+    """
+    Turn one joined game row into the dict every page and endpoint uses.
+
+    The row arrives with both clubs flattened onto it by GAME_SELECT. On top
+    of unpacking that, this works out the away probability (the model only
+    stores the home one), which club the model favoured, and, for a finished
+    game, whether the model got it right. Doing it once here is what keeps
+    the pages and the JSON API showing the same numbers.
+    """
     if row is None:
         return None
     home, away = side_team(row, "h"), side_team(row, "a")
@@ -275,6 +295,7 @@ def friendly_time(start_utc: str, game_date: str) -> str:
 
 
 def games_where(clause: str, values: tuple = (), limit: int | None = None) -> list[dict]:
+    """Run the big game query with an extra WHERE or ORDER BY tacked on."""
     sql = GAME_SELECT + clause
     if limit:
         sql += f" LIMIT {int(limit)}"
@@ -289,14 +310,13 @@ def get_game(game_id: int) -> dict | None:
 
 
 def upcoming_games(limit: int | None = None) -> list[dict]:
+    """Games the model has predicted but which have not been played yet."""
     return games_where(
         " WHERE games.status = 'upcoming' ORDER BY games.game_date, games.nhl_game_id",
         limit=limit)
 
 
-# ===========================================================
-# THE PLAYOFF REPLAY ON THE HOME PAGE
-# ===========================================================
+# The playoff replay on the home page
 
 def replay_snapshot(advance: bool) -> dict | None:
     """
@@ -353,9 +373,7 @@ def replay_snapshot(advance: bool) -> dict | None:
     }
 
 
-# ===========================================================
-# THE LEADERBOARD
-# ===========================================================
+# The leaderboard
 
 def get_leaderboard() -> list[dict]:
     """Add up everybody's finished picks, best first."""
@@ -397,9 +415,7 @@ def get_leaderboard() -> list[dict]:
     return board
 
 
-# ===========================================================
-# COMMENTS AND PICKS
-# ===========================================================
+# Comments and picks
 
 def get_comments(game_id: int) -> list[dict]:
     """Every message on one game, newest first, with its like count."""
@@ -427,6 +443,7 @@ def get_comments(game_id: int) -> list[dict]:
 
 
 def my_pick(game_id: int) -> int | None:
+    """Which club the signed-in member picked for a game, if they picked one."""
     if not logged_in():
         return None
     row = database.query_one(
@@ -447,9 +464,7 @@ def shared_values() -> dict:
     }
 
 
-# ===========================================================
-# PAGES
-# ===========================================================
+# Pages
 
 @app.route("/")
 def home():
@@ -578,6 +593,12 @@ def monitoring_page():
 
 @app.route("/leaderboard")
 def leaderboard_page():
+    """
+    The member leaderboard, plus the signed-in member's own row.
+
+    Their row is pulled out separately so the page can highlight it even when
+    they are too far down the table to be on screen.
+    """
     board = get_leaderboard()
     my_row = next((m for m in board if m["user_id"] == session.get("user_id")), None)
 
@@ -610,12 +631,17 @@ def discussion_page(game_id: int | None = None):
                            comments=get_comments(game["id"]))
 
 
-# ===========================================================
-# FORMS THAT SEND DATA BACK
-# ===========================================================
+# Forms that send data back
 
 @app.route("/discussion/<int:game_id>/post", methods=["POST"])
 def post_comment(game_id: int):
+    """
+    Save a member's message on a game's discussion page.
+
+    Everything is checked again on the server: signed in, the game exists,
+    the message is not empty and not longer than the column allows. The
+    browser-side checks are a convenience, not the rule.
+    """
     if not logged_in():
         flash("Please sign in before posting a message.", "error")
         return redirect(url_for("login"))
@@ -643,6 +669,12 @@ def post_comment(game_id: int):
 
 @app.route("/comment/<int:comment_id>/like", methods=["POST"])
 def like_comment(comment_id: int):
+    """
+    Add or remove this member's like on a message.
+
+    One row per member per comment, so clicking twice takes the like back
+    rather than counting it again.
+    """
     if not logged_in():
         flash("Please sign in to like a message.", "error")
         return redirect(url_for("login"))
@@ -704,12 +736,17 @@ def make_prediction(game_id: int):
     return redirect(url_for("games_page", _anchor=f"game-{game_id}"))
 
 
-# ===========================================================
-# MEMBER ACCOUNTS
-# ===========================================================
+# Member accounts
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    """
+    Show the sign-up form, and create the account when it is submitted.
+
+    The password is stored as a PBKDF2 hash and never in plain text. New
+    members are signed in straight away, because making somebody fill in a
+    login form immediately after registering is just an extra step.
+    """
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
@@ -742,6 +779,14 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    Show the sign-in form, and sign the member in when it is submitted.
+
+    Attempts are capped per address so the form cannot be used to work
+    through a password list, and a wrong password and an unknown username
+    give the same message so it cannot be used to find out who has an
+    account either.
+    """
     if request.method == "POST":
         caller = security.client_address(request)
         if not login_limiter.allow(caller):
@@ -775,14 +820,13 @@ def login():
 
 @app.route("/logout")
 def logout():
+    """Empty the session, which also throws away the CSRF token with it."""
     session.clear()
     flash("You have been signed out.", "success")
     return redirect(url_for("home"))
 
 
-# ===========================================================
 # JSON API
-# ===========================================================
 
 @app.route("/api/games")
 def api_games():
@@ -867,9 +911,7 @@ def healthz():
     })
 
 
-# ===========================================================
-# ERROR PAGES
-# ===========================================================
+# Error pages
 
 @app.errorhandler(429)
 def too_many_requests(error):
