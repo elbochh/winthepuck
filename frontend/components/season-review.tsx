@@ -109,7 +109,7 @@ export function SeasonReview({
         <div className="glass rounded-3xl border border-border p-6">
           <h3 className="mb-1 font-bold">The more confident, the more correct</h3>
           <p className="mb-5 text-xs text-muted-foreground">
-            Grouping every prediction by the model&apos;s stated confidence — a
+            Grouping every prediction by the model&apos;s stated confidence. A
             well-calibrated model should win more often exactly when it claims
             to be more sure.
           </p>

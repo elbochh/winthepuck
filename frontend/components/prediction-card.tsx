@@ -96,7 +96,7 @@ export function PredictionCard({ game, index }: { game: Game; index: number }) {
           </span>
         ) : (
           <span className="text-xs text-muted-foreground">
-            Fair odds shown — no bookmaker vig
+            Fair odds shown, no bookmaker vig
           </span>
         )}
       </div>

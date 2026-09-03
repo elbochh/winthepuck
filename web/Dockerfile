@@ -1,13 +1,11 @@
-# ===========================================================
 # WinThePuck website
 #
 # Built in two stages. The first installs the Python packages; the second
 # copies the finished packages across and leaves the compiler, the package
 # index cache and everything else used to build them behind. The result is a
 # smaller image with less in it that could go wrong.
-# ===========================================================
 
-# ---- stage 1: install the dependencies -------------------------------------
+# Stage 1: install the dependencies.
 FROM python:3.12-slim AS builder
 
 WORKDIR /install
@@ -16,7 +14,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install/deps -r requirements.txt
 
 
-# ---- stage 2: the image that actually runs ---------------------------------
+# Stage 2: the image that actually runs.
 FROM python:3.12-slim
 
 # Anything that goes wrong should appear in the logs straight away rather than

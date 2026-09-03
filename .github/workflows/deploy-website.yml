@@ -1,4 +1,3 @@
-# ===========================================================
 # Deploy the website to Azure App Service
 #
 # Pushing a change to the website on main sends it to Azure. Nobody has to
@@ -6,7 +5,7 @@
 #
 # The tests run first and the deployment only happens if they pass, so a
 # broken change stops here rather than on the live site.
-# ===========================================================
+
 name: Deploy website to Azure
 
 on:
@@ -30,7 +29,6 @@ env:
 
 jobs:
 
-  # ---------------------------------------------------------
   test:
     name: Check it works before shipping it
     runs-on: ubuntu-latest
@@ -61,7 +59,6 @@ jobs:
       - name: Tests
         run: pytest
 
-  # ---------------------------------------------------------
   deploy:
     name: Send it to Azure
     needs: test               # nothing ships unless the job above is green

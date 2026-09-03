@@ -1,4 +1,3 @@
-# ===========================================================
 # Refresh the model's predictions every day
 #
 # This is the job that keeps the website alive during the season. It runs the
@@ -8,7 +7,7 @@
 # It runs on GitHub's free runners rather than on Azure, which keeps the
 # website itself small enough for the free App Service tier: scikit-learn and
 # CatBoost together are larger than the entire Flask app.
-# ===========================================================
+
 name: Refresh NHL predictions
 
 on:

@@ -56,9 +56,7 @@ def no_real_sleeping(monkeypatch):
     monkeypatch.setattr(nhl_api.time, "sleep", lambda _seconds: None)
 
 
-# ===========================================================
-# RETRYING
-# ===========================================================
+# Retrying
 
 def test_a_good_answer_is_returned_straight_away(monkeypatch):
     server = FakeServer({"games": [1, 2]})
@@ -115,9 +113,7 @@ def test_it_eventually_gives_up_and_says_which_address_failed(monkeypatch):
         nhl_api.get_json("http://api.nhle.com/standings")
 
 
-# ===========================================================
-# BACKOFF
-# ===========================================================
+# Backoff
 
 def test_the_wait_grows_each_time():
     """
@@ -150,9 +146,7 @@ def test_the_server_is_believed_when_it_says_how_long_to_wait():
     assert nhl_api._sleep_for(0, retry_after="soon") > 0
 
 
-# ===========================================================
-# DEGRADING INSTEAD OF DYING
-# ===========================================================
+# Degrading instead of dying
 
 def test_optional_data_returns_nothing_rather_than_failing(monkeypatch, capsys):
     monkeypatch.setattr(nhl_api.urllib.request, "urlopen",
@@ -174,9 +168,7 @@ def test_the_standings_no_longer_bring_the_job_down(monkeypatch):
     assert nhl_api.standings() == []
 
 
-# ===========================================================
-# READING A GAME
-# ===========================================================
+# Reading a game
 
 RAW_GAME = {
     "id": 2025020001, "season": 20252026, "gameType": 2,

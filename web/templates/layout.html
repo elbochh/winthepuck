@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}WinThePuck{% endblock %} — WinThePuck</title>
+  <title>{% block title %}WinThePuck{% endblock %} | WinThePuck</title>
   <meta name="description" content="NHL game predictions from a machine learning model trained on 20,000 real games. Pre-game win probabilities, live win probability tracking and a community leaderboard." />
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
 </head>
 <body>
 
-  <!-- ============ NAV BAR ============ -->
+  <!-- Nav bar -->
   <header class="navbar">
     <nav class="nav glass">
       <a href="{{ url_for('home') }}" class="nav-logo">
@@ -41,7 +41,7 @@
     </nav>
   </header>
 
-  <!-- ============ FLASH MESSAGES ============ -->
+  <!-- Flash messages -->
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <div class="flash-area">
@@ -52,10 +52,10 @@
     {% endif %}
   {% endwith %}
 
-  <!-- ============ PAGE CONTENT ============ -->
+  <!-- Page content -->
   {% block content %}{% endblock %}
 
-  <!-- ============ FOOTER ============ -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="nav-logo">

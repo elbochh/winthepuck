@@ -44,9 +44,7 @@ def states():
             for abbr in ("TOR", "MTL", "BOS", "OTT")}
 
 
-# ===========================================================
-# CATCHING UP ON RESULTS
-# ===========================================================
+# Catching up on results
 
 def test_only_games_since_the_last_run_are_applied(states):
     """
@@ -131,9 +129,7 @@ def test_preparing_for_a_season_reverts_every_club(states):
         assert state.season == 20262027
 
 
-# ===========================================================
-# THE LEAGUE TABLE
-# ===========================================================
+# The league table
 
 def test_the_table_is_empty_rather_than_wrong_when_the_standings_are_down(
         monkeypatch, states, capsys):
@@ -203,9 +199,7 @@ def test_an_almost_empty_new_season_keeps_showing_last_years_records(
     assert "showing 20252026 records" in capsys.readouterr().out
 
 
-# ===========================================================
-# SENDING IT TO THE WEBSITE
-# ===========================================================
+# Sending it to the website
 
 def test_the_payload_is_posted_with_the_token(monkeypatch):
     captured = {}

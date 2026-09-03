@@ -28,7 +28,7 @@ export function Leaderboard({ entries }: { entries: ModelEntry[] }) {
       <SectionHeading
         eyebrow="Model benchmark"
         title="Model leaderboard"
-        description={`Every model was tested the honest way: retrained monthly and asked to predict games it had never seen — ${entries[0]?.games.toLocaleString()} games across four seasons (2022–2026).`}
+        description={`Every model was tested the honest way: retrained monthly and asked to predict games it had never seen. That is ${entries[0]?.games.toLocaleString()} games across four seasons (2022 to 2026).`}
       />
 
       {/* podium */}

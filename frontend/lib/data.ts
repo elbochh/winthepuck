@@ -1,5 +1,5 @@
 // Shared types + formatting helpers. All data now comes from real model
-// exports (see lib/server-data.ts) — no mock data lives here anymore.
+// exports (see lib/server-data.ts). No mock data lives here anymore.
 
 export type Team = {
   id: string
@@ -137,7 +137,7 @@ export function formatOdds(o: number) {
   return o > 0 ? `+${o}` : `${o}`
 }
 
-// Seeded discussion demo — community feature, not model output.
+// Seeded discussion demo for the community feature, not model output.
 export const comments: Comment[] = [
   {
     id: "c1",
@@ -171,7 +171,7 @@ export const comments: Comment[] = [
     user: "BlueLineBetty",
     avatarSeed: "betty",
     time: "1h",
-    text: "Check the season review page — December was rough but the model recovered.",
+    text: "Check the season review page. December was rough but the model recovered.",
     likes: 47,
     pick: "away",
   },

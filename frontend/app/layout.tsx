@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'WinThePuck — NHL Win Predictions & Live Probability',
+  title: 'WinThePuck: NHL Win Predictions & Live Probability',
   description:
     'Data-driven NHL game predictions, pre-game win probabilities, and live win probability tracking that updates with every play.',
   generator: 'v0.app',

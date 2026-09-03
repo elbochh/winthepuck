@@ -11,9 +11,7 @@ import pytest
 
 import elo
 
-# ===========================================================
-# THE PROBABILITY CURVE
-# ===========================================================
+# The probability curve
 
 def test_two_equal_teams_are_a_coin_flip():
     assert elo.win_probability(0) == 0.5
@@ -38,9 +36,7 @@ def test_home_ice_is_worth_something_but_not_everything():
     assert even["elo_prob_home"] < 0.60
 
 
-# ===========================================================
-# UPDATING AFTER A GAME
-# ===========================================================
+# Updating after a game
 
 def test_the_winner_gains_exactly_what_the_loser_drops():
     """Elo is zero-sum. If it were not, ratings would inflate all season."""
@@ -100,9 +96,7 @@ def test_playoff_games_count_for_more():
         (regular.elo - 1500) * elo.PLAYOFF_MULT, abs=1e-9)
 
 
-# ===========================================================
-# THE SUMMER RESET
-# ===========================================================
+# The summer reset
 
 def test_teams_move_back_towards_average_between_seasons():
     """
@@ -127,9 +121,7 @@ def test_the_reset_only_happens_once_per_season():
     assert state.elo == after_first
 
 
-# ===========================================================
-# SAVING AND RELOADING
-# ===========================================================
+# Saving and reloading
 
 def test_a_team_survives_a_round_trip_through_json():
     """

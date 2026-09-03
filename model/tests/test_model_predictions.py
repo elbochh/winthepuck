@@ -15,9 +15,7 @@ import elo
 import refresh_predictions as refresh
 from form_book import FormBook
 
-# ===========================================================
-# ODDS
-# ===========================================================
+# Odds
 
 @pytest.mark.parametrize("probability,expected", [
     (0.5, -100),
@@ -46,9 +44,7 @@ def test_the_two_sides_of_a_game_price_opposite_ways():
         assert refresh.fair_odds(1 - probability) > 0
 
 
-# ===========================================================
-# WHICH SEASON A DATE BELONGS TO
-# ===========================================================
+# Which season a date belongs to
 
 @pytest.mark.parametrize("day,expected", [
     (date(2026, 10, 15), 20262027),   # October is the start of a new season
@@ -60,9 +56,7 @@ def test_a_date_maps_to_the_right_season(day, expected):
     assert refresh.season_id(day) == expected
 
 
-# ===========================================================
-# THE FEATURE ROW
-# ===========================================================
+# The feature row
 
 @pytest.fixture(scope="module")
 def bundle():
@@ -222,9 +216,7 @@ def test_several_games_are_scored_in_one_pass(bundle, state):
     assert len(refresh.predict(models, feature_cols, rows)) == 3
 
 
-# ===========================================================
-# THE SAVED RATINGS
-# ===========================================================
+# The saved ratings
 
 def test_the_saved_state_covers_the_whole_league(state):
     assert state["season"] > 0

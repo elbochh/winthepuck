@@ -9,10 +9,10 @@
   {{ ui.section_head("Model health", "Is the model still any good?",
      "The walk-forward test scored the model once and wrote down a score. That score starts
       going out of date the day the model is deployed. This page keeps checking
-      it — how honest its confidence is, and whether it has drifted away from
+      it: how honest its confidence is, and whether it has drifted away from
       the hockey it was trained on.") }}
 
-  <!-- ============ DRIFT ============ -->
+  <!-- Drift -->
   {# The coloured edge and the pill have to agree. A provisional reading is
      shown in gold whatever the underlying PSI says, so the card never looks
      like an emergency on the strength of thirty-odd games. #}
@@ -31,12 +31,12 @@
     </div>
     <p class="muted">
       Comparing the spread of the model's current predictions against the spread
-      it produced during testing, using the population stability index — the
+      it produced during testing, using the population stability index, the
       measure normally used to spot a model whose inputs have moved underneath it.
     </p>
     <div class="monitor-figures">
       <div>
-        <div class="stat-value mono">{{ "%.3f"|format(report.drift.psi) if report.drift.psi is not none else "—" }}</div>
+        <div class="stat-value mono">{{ "%.3f"|format(report.drift.psi) if report.drift.psi is not none else "n/a" }}</div>
         <div class="stat-label">PSI</div>
       </div>
       <div>
@@ -65,7 +65,7 @@
     </p>
   </div>
 
-  <!-- ============ BASELINE vs LIVE ============ -->
+  <!-- Baseline vs live -->
   <div class="monitor-grid">
 
     <div class="glass monitor-card">
@@ -136,7 +136,7 @@
           {{ "{:,}".format(report.live.games) }} games this deployment predicted
           itself and which have since been played
           {% if report.comparison.delta is not none %}
-            — {{ "%+.1f"|format(report.comparison.delta) }} points against the
+            at {{ "%+.1f"|format(report.comparison.delta) }} points against the
             baseline.
           {% endif %}
         </p>
@@ -152,7 +152,7 @@
 
   </div>
 
-  <!-- ============ RELIABILITY ============ -->
+  <!-- Reliability -->
   {% if report.reference.enough %}
     <div class="glass monitor-card">
       <h3>Is the model honest about how sure it is?</h3>
@@ -198,28 +198,28 @@
     </div>
   {% endif %}
 
-  <!-- ============ WHAT WE TRIED ============ -->
+  <!-- What we tried -->
   <div class="glass monitor-card monitor-note">
     <h3>What we tried, and what we did not ship</h3>
     <p class="muted">
       The gaps above look like a model that is over-confident, and the standard
-      fix is to rescale its probabilities. We tested three candidates —
-      Platt scaling, an adaptive home-ice correction, and fitted ensemble
-      weights — tuning each one on the first three test seasons and then
-      applying it once to a fourth season it had never seen.
+      fix is to rescale its probabilities. We tested three candidates: Platt
+      scaling, an adaptive home-ice correction, and fitted ensemble weights.
+      Each one was tuned on the first three test seasons, then applied once to
+      a fourth season it had never seen.
     </p>
     <p class="muted">
       All three gained about 0.0004 log loss on the seasons they were tuned on,
       and none of it survived on the held-out season. That is the signature of
       fitting noise, so none of them were shipped. The real finding was that
       accuracy slid from 59.6% to 55.4% across the four seasons as the model
-      aged — which is a case for retraining and for this page, not for a
+      aged, which is a case for retraining and for this page, not for a
       post-hoc patch. The experiment is reproducible:
-      <span class="mono">model-service/evaluate_model.py</span>.
+      <span class="mono">model/evaluate_model.py</span>.
     </p>
     <p class="muted tiny">
       Model trained on games up to
-      <span class="mono">{{ report.modelTrainedTo or "—" }}</span>.
+      <span class="mono">{{ report.modelTrainedTo or "n/a" }}</span>.
       Baseline season <span class="mono">{{ report.baselineSeason }}</span>.
       Same numbers as JSON at <a href="{{ url_for('api_monitoring') }}">/api/monitoring</a>.
     </p>

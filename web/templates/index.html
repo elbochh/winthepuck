@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<!-- ============ HERO ============ -->
+<!-- Hero -->
 <section id="top" class="hero">
   <div class="rink-bg">
     <div class="hero-glow"></div>
@@ -52,7 +52,7 @@
     <p class="hero-subtitle">
       WinThePuck runs an ensemble of three machine learning models over ten
       seasons of NHL data. Every probability on this site was produced by that
-      model — and every result it is measured against really happened.
+      model, and every result it is measured against really happened.
     </p>
 
     <div class="hero-buttons">
@@ -86,11 +86,11 @@
   </div>
 </section>
 
-<!-- ============ WIN PROBABILITY REPLAY ============ -->
+<!-- Win probability replay -->
 <section id="live" class="section">
   {% if replay %}
     {{ ui.section_head("Win probability, play by play",
-       replay.away_team.abbr ~ " at " ~ replay.home_team.abbr ~ " — " ~ replay.title,
+       replay.away_team.abbr ~ " at " ~ replay.home_team.abbr ~ ": " ~ replay.title,
        "A real game from " ~ replay.played_on ~ ", replayed through our live model.
         The bar and the chart move on every goal, penalty and momentum swing,
         exactly as they did on the night.") }}
@@ -201,7 +201,7 @@
   {% endif %}
 </section>
 
-<!-- ============ NEXT GAMES ============ -->
+<!-- Next games -->
 <section class="section">
   {{ ui.section_head("Coming up", "The next games on the schedule",
      "Each card shows the probability our model gives the home side, the fair odds
@@ -225,7 +225,7 @@
   {% endif %}
 </section>
 
-<!-- ============ TOP MEMBERS ============ -->
+<!-- Top members -->
 <section class="section">
   {{ ui.section_head("Leaderboard", "Who is picking best",
      "Five automatic strategies are already playing along, each scored on the same

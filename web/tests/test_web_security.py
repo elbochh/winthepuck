@@ -13,9 +13,7 @@ import pytest
 import config
 import security
 
-# ===========================================================
 # CROSS-SITE REQUEST FORGERY
-# ===========================================================
 
 def test_a_form_without_a_token_is_refused(client):
     """
@@ -37,9 +35,7 @@ def test_a_form_with_somebody_elses_token_is_refused(client, csrf):
     assert response.status_code == 400
 
 
-# ===========================================================
-# THE REFRESH ENDPOINT
-# ===========================================================
+# The refresh endpoint
 
 REFRESH_PAYLOAD = {
     "generatedAt": "2026-08-25T12:00:00+00:00",
@@ -99,9 +95,7 @@ def test_refresh_updates_the_scores_of_finished_games(client, connection):
     assert (updated["home_score"], updated["away_score"]) == (4, 2)
 
 
-# ===========================================================
-# RESPONSE HEADERS
-# ===========================================================
+# Response headers
 
 @pytest.mark.parametrize("header,expected", [
     ("X-Content-Type-Options", "nosniff"),
@@ -166,9 +160,7 @@ def test_hsts_is_only_promised_over_https():
         FakeResponse(), https=True).headers
 
 
-# ===========================================================
-# RATE LIMITING
-# ===========================================================
+# Rate limiting
 
 def test_the_limiter_allows_then_refuses():
     limiter = security.RateLimiter(limit=3, window_seconds=60)

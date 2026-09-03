@@ -22,7 +22,7 @@ export function UpcomingGames({
         }
         description={
           offseason
-            ? "The NHL is in its offseason — no games are scheduled. Here is the model's pregame call for each Stanley Cup Final game, next to what actually happened."
+            ? "The NHL is in its offseason, so no games are scheduled. Here is the model's pregame call for each Stanley Cup Final game, next to what actually happened."
             : "Every matchup comes with a model-generated win probability, fair odds, recent form, and a confidence score."
         }
       />

@@ -1,11 +1,10 @@
-# ===========================================================
 # The daily prediction job
 #
 # Separate from the website on purpose. This image carries scikit-learn,
 # CatBoost and numpy, which together are far larger than the website itself.
 # Keeping them apart is what lets the website fit on Azure's free tier while
 # the model runs on a GitHub Actions runner.
-# ===========================================================
+
 FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \

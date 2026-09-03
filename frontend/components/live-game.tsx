@@ -32,7 +32,7 @@ type Feed = {
 
 /**
  * Live section. Connects to the Python live server (ws://localhost:8765),
- * which streams the in-game model's win probability — real NHL games when
+ * which streams the in-game model's win probability: real NHL games when
  * the league is playing, otherwise a replay of a real playoff game. If the
  * server isn't running, falls back to a pre-computed replay of the same
  * model (data/live_demo.json) so the section always shows real model output.
@@ -151,7 +151,7 @@ export function LiveGameSection({
     ? current.period <= 3
       ? `Period ${current.period}`
       : "Overtime"
-    : "—"
+    : "n/a"
 
   return (
     <section id="live" className="mx-auto w-full max-w-6xl px-4 py-16 sm:py-20">
@@ -161,7 +161,7 @@ export function LiveGameSection({
         description={
           isTrulyLive
             ? "The bar and chart react to every goal, penalty, and momentum swing as the game unfolds."
-            : `No NHL games are live right now, so you're watching the in-game model replay a real playoff game — ${demo.away} @ ${demo.home} (${demo.date}). Every probability is the model's actual output for that moment.`
+            : `No NHL games are live right now, so you're watching the in-game model replay a real playoff game: ${demo.away} @ ${demo.home} (${demo.date}). Every probability is the model's actual output for that moment.`
         }
       />
 

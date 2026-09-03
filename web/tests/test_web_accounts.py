@@ -22,9 +22,7 @@ def new_name() -> str:
     return "user_" + secrets.token_hex(4)
 
 
-# ===========================================================
-# REGISTRATION
-# ===========================================================
+# Registration
 
 def test_a_new_member_can_register_and_is_signed_in(client, csrf):
     name = new_name()
@@ -58,9 +56,7 @@ def test_the_password_is_never_stored_as_typed(client, connection, csrf):
     assert stored["password_hash"].startswith(("pbkdf2:", "scrypt:"))
 
 
-# ===========================================================
-# SIGNING IN
-# ===========================================================
+# Signing in
 
 def test_sign_in_and_out(client, csrf):
     name = new_name()
@@ -103,9 +99,7 @@ def test_a_strategy_account_cannot_be_signed_into(client, csrf):
     assert b"Wrong username or password" in response.data
 
 
-# ===========================================================
-# PICKS
-# ===========================================================
+# Picks
 
 def test_a_pick_needs_an_account(client, csrf):
     games = client.get("/api/games").get_json()
@@ -158,9 +152,7 @@ def test_you_cannot_pick_a_game_that_has_already_been_played(client, connection,
     assert b"picks are closed" in response.data
 
 
-# ===========================================================
-# COMMENTS
-# ===========================================================
+# Comments
 
 def test_posting_and_liking_a_message(client, csrf):
     register(client, csrf, new_name())

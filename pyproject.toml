@@ -1,10 +1,8 @@
-# ===========================================================
 # Tooling for the whole repository
 #
 # One file so that "how do I lint this?" and "how do I run the tests?" have
 # the same answer everywhere, and so the GitHub Actions workflow runs exactly
 # what a person runs on their laptop.
-# ===========================================================
 
 [tool.pytest.ini_options]
 testpaths = [

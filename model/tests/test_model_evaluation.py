@@ -25,9 +25,7 @@ def row(season, y, ensemble, hgb=None, logit=None, catboost=None, elo=None,
     }
 
 
-# ===========================================================
-# THE MATHS
-# ===========================================================
+# The maths
 
 def test_logit_and_sigmoid_undo_each_other():
     for probability in (0.01, 0.25, 0.5, 0.75, 0.99):
@@ -63,9 +61,7 @@ def test_brier_and_accuracy():
     assert study.accuracy([(0.9, 0), (0.1, 1)]) == 0.0
 
 
-# ===========================================================
-# THE SPLIT
-# ===========================================================
+# The split
 
 def test_the_held_out_season_is_kept_out_of_the_training_half():
     """
@@ -85,9 +81,7 @@ def test_the_held_out_season_is_kept_out_of_the_training_half():
     assert all(r["season"] == study.HELD_OUT_SEASON for r in test)
 
 
-# ===========================================================
-# THE ADAPTIVE CORRECTION
-# ===========================================================
+# The adaptive correction
 
 def test_the_home_ice_correction_only_ever_looks_backwards():
     """
@@ -115,9 +109,7 @@ def test_the_outcomes_are_carried_through_untouched():
     assert [y for _, y in out] == [r["y"] for r in rows]
 
 
-# ===========================================================
-# THE VERDICT
-# ===========================================================
+# The verdict
 
 def test_a_tiny_gain_is_called_noise_rather_than_an_improvement():
     """
@@ -149,9 +141,7 @@ def test_a_clear_regression_is_called_out():
     assert "worse" in verdict["note"]
 
 
-# ===========================================================
-# THE WHOLE STUDY, ON THE REAL DATA
-# ===========================================================
+# The whole study, on the real data
 
 @pytest.fixture(scope="module")
 def real_rows():

@@ -3,7 +3,7 @@
 //
 // CLOUD NOTE (Azure phase): this module is the single seam between the site
 // and its data. When the class moves to Azure, replace the `readJson` calls
-// with fetches against the deployed API (e.g. Azure Functions + Blob/SQL) —
+// with fetches against the deployed API (e.g. Azure Functions + Blob/SQL),
 // nothing else in the app needs to change. The /api route handlers already
 // expose these payloads over HTTP with the shapes the frontend consumes.
 

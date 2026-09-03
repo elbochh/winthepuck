@@ -13,9 +13,7 @@ import pytest
 
 import metrics
 
-# ===========================================================
-# ACCURACY
-# ===========================================================
+# Accuracy
 
 def test_accuracy_counts_the_side_the_model_leaned_towards():
     assert metrics.accuracy([(0.9, 1), (0.8, 1)]) == 100.0
@@ -25,9 +23,7 @@ def test_accuracy_counts_the_side_the_model_leaned_towards():
     assert metrics.accuracy([]) is None
 
 
-# ===========================================================
-# BRIER AND LOG LOSS
-# ===========================================================
+# Brier and log loss
 
 def test_a_perfect_forecaster_scores_zero():
     assert metrics.brier_score([(1.0, 1), (0.0, 0)]) == 0.0
@@ -70,9 +66,7 @@ def test_empty_input_gives_nothing_rather_than_crashing():
     assert metrics.expected_calibration_error([]) is None
 
 
-# ===========================================================
-# CALIBRATION
-# ===========================================================
+# Calibration
 
 def test_an_honest_forecaster_has_almost_no_calibration_error():
     """Says 70% on 100 games and wins exactly 70 of them."""
@@ -109,9 +103,7 @@ def test_the_reliability_curve_always_returns_every_band():
     assert any(row["games"] == 0 and row["predicted"] is None for row in curve)
 
 
-# ===========================================================
-# DRIFT
-# ===========================================================
+# Drift
 
 def test_a_distribution_has_not_drifted_from_itself():
     values = [0.3, 0.45, 0.5, 0.55, 0.7, 0.9] * 10
@@ -158,9 +150,7 @@ def test_a_short_slate_is_labelled_provisional():
     assert settled["provisional"] is False
 
 
-# ===========================================================
-# PUTTING IT TOGETHER
-# ===========================================================
+# Putting it together
 
 def test_a_small_sample_says_so_instead_of_guessing():
     summary = metrics.summarise([(0.6, 1)] * 5)

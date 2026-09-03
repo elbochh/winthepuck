@@ -1,4 +1,3 @@
-# ===========================================================
 # Run the whole thing on a laptop with one command:
 #
 #     docker compose up --build
@@ -6,7 +5,6 @@
 #
 # No Python, no virtual environment, no Azure account. This is the same image
 # that would be deployed, so "it works on my machine" means something.
-# ===========================================================
 
 services:
   website:

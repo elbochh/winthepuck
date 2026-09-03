@@ -38,9 +38,7 @@ def book():
     return book
 
 
-# ===========================================================
-# THE RULE THAT MATTERS MOST
-# ===========================================================
+# The rule that matters most
 
 def test_a_team_has_no_form_before_its_first_game(book):
     assert book.team_features("TOR", date(2025, 9, 30), 20252026) == {}
@@ -65,9 +63,7 @@ def test_form_grows_as_games_are_played(book):
     assert after_all["last_5_win_pct"] == 0.75       # three of four
 
 
-# ===========================================================
-# THE INDIVIDUAL FEATURES
-# ===========================================================
+# The individual features
 
 def test_goals_are_counted_from_each_teams_own_side(book):
     toronto = book.team_features("TOR", date(2025, 10, 8), 20252026)
@@ -120,9 +116,7 @@ def test_a_new_season_starts_the_season_records_over(book):
     assert "last_5_win_pct" in features
 
 
-# ===========================================================
-# HEAD TO HEAD
-# ===========================================================
+# Head to head
 
 def test_head_to_head_reads_from_the_home_teams_point_of_view(book):
     """
@@ -142,9 +136,7 @@ def test_teams_that_have_not_met_report_no_history(book):
         "h2h_games_last_365_days": 0.0}
 
 
-# ===========================================================
-# THE W / L / O PILLS ON THE WEBSITE
-# ===========================================================
+# The W / L / O pills on the website
 
 def test_an_overtime_loss_is_shown_differently_from_a_regulation_one():
     """

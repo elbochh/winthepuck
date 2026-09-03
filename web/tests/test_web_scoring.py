@@ -7,9 +7,7 @@ import monitoring
 import nhl_data
 import scoring
 
-# ===========================================================
-# STREAKS
-# ===========================================================
+# Streaks
 
 def test_a_streak_stops_at_the_first_miss():
     """The list arrives newest first, so counting stops at the first 0."""
@@ -19,9 +17,7 @@ def test_a_streak_stops_at_the_first_miss():
     assert scoring.count_streak([]) == 0
 
 
-# ===========================================================
-# POINTS
-# ===========================================================
+# Points
 
 def test_settling_a_pick_pays_out_and_only_once(client, connection):
     """
@@ -99,9 +95,7 @@ def test_an_unplayed_game_is_left_alone(client, connection):
     assert row["is_correct"] is None
 
 
-# ===========================================================
-# ODDS
-# ===========================================================
+# Odds
 
 @pytest.mark.parametrize("probability,expected", [
     (0.50, -100),      # an even game is priced level both ways
@@ -124,9 +118,7 @@ def test_a_favourite_is_always_priced_negative():
         assert nhl_data.american_odds(1 - probability) > 0
 
 
-# ===========================================================
-# THE MONITORING REPORT
-# ===========================================================
+# The monitoring report
 
 def test_the_monitoring_report_has_every_section_the_page_needs(client):
     report = monitoring.build_report()
